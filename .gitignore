@@ -1,0 +1,16 @@
+*.pydevproject
+*.project
+*.egg-info
+*.class
+*.pyo
+*.pyc
+*.db
+*.sqlite
+*.DS_Store
+*.idea
+*.vscode
+*.coverage
+build
+dist
+working_dir
+test_local.sh

@@ -1,0 +1,16 @@
+{% extends base_template %}
+{% load static tethys %}
+
+{% block app_navigation_items %}
+
+{% endblock %}
+
+{% block app_content %}
+    {% gizmo workflow_tab %}
+{% endblock %}
+
+{% block after_app_content %}
+    {% gizmo new_workflow_modal %}
+    {% gizmo delete_workflow_modal %}
+    
+{% endblock %}
