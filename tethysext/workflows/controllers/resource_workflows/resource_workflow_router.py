@@ -27,19 +27,18 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
     base_template = 'atcore/app_users/base.html'
     http_method_names = ['get', 'post', 'delete']
 
-    def get(self, request, resource_id, workflow_id, step_id=None, result_id=None, *args, **kwargs):
+    def get(self, request, workflow_id, step_id=None, result_id=None, *args, **kwargs):
         """
         Route GET requests.
 
         Controller for the following url patterns:
 
-        /resource/<resource_id>/my-custom-workflow/<workflow_id>/
-        /resource/<resource_id>/my-custom-workflow/<workflow_id>/step/<step_id>/
-        /resource/<resource_id>/my-custom-workflow/<workflow_id>/step/<step_id>/result/<result_id>/
+        /my-custom-workflow/<workflow_id>/
+        /my-custom-workflow/<workflow_id>/step/<step_id>/
+        /my-custom-workflow/<workflow_id>/step/<step_id>/result/<result_id>/
 
         Args:
             request(HttpRequest): The request.
-            resource_id(str): ID of the resource this workflow applies to.
             workflow_id(str): ID of the workflow.
             step_id(str): ID of the step to render. Optional. Required if result_id given.
             result_id(str): ID of the result to render. Optional.
@@ -85,7 +84,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             # If any of the required ids were not given originally, redirect to the appropriate url with derived ids
             active_app = get_active_app(request)
             app_namespace = active_app.url_namespace
-            url_kwargs = {'resource_id': resource_id, 'workflow_id': workflow_id, 'step_id': step_id}
+            url_kwargs = {'workflow_id': workflow_id, 'step_id': step_id}
             if is_result_step and not result_id_given:
                 # Redirect to the result page
                 url_name = '{}:{}_workflow_step_result'.format(app_namespace, _ResourceWorkflow.TYPE)
@@ -109,16 +108,16 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         finally:
             session and session.close()
 
-        response = self._get_response(request, resource_id, workflow_id, step_id, result_id, args, kwargs)
+        response = self._get_response(request, workflow_id, step_id, result_id, args, kwargs)
 
         return response
 
-    def post(self, request, resource_id, workflow_id, step_id, result_id=None, *args, **kwargs):
+    def post(self, request, workflow_id, step_id, result_id=None, *args, **kwargs):
         """
         Route POST requests.
         Args:
             request(HttpRequest): The request.
-            resource_id(str): ID of the resource this workflow applies to.
+           
             workflow_id(str): ID of the workflow.
             step_id(str): ID of the step to render.
             result_id(str): ID of the result to render.
@@ -127,16 +126,15 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         Returns:
             HttpResponse: A Django response.
         """
-        response = self._get_response(request, resource_id, workflow_id, step_id, result_id, args, kwargs)
+        response = self._get_response(request, workflow_id, step_id, result_id, args, kwargs)
 
         return response
 
-    def delete(self, request, resource_id, workflow_id, step_id, result_id=None, *args, **kwargs):
+    def delete(self, request, workflow_id, step_id, result_id=None, *args, **kwargs):
         """
         Route DELETE requests.
         Args:
             request(HttpRequest): The request.
-            resource_id(str): ID of the resource this workflow applies to.
             workflow_id(str): ID of the workflow.
             step_id(str): ID of the step to render.
             result_id(str): ID of the result to render.
@@ -145,17 +143,16 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         Returns:
             HttpResponse: A Django response.
         """
-        response = self._get_response(request, resource_id, workflow_id, step_id, result_id, args, kwargs)
+        response = self._get_response(request, workflow_id, step_id, result_id, args, kwargs)
 
         return response
 
-    def _get_response(self, request, resource_id, workflow_id, step_id, result_id, args, kwargs):
+    def _get_response(self, request, workflow_id, step_id, result_id, args, kwargs):
         """
         Get controller from step or result that will handle the request.
 
         Args:
             request(HttpRequest): The request.
-            resource_id(str): ID of the resource this workflow applies to.
             workflow_id(str): ID of the workflow.
             step_id(str): ID of the step to render.
             result_id(str): ID of the result to render.
@@ -168,7 +165,6 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             response = self._route_to_result_controller(
                 *args,
                 request=request,
-                resource_id=resource_id,
                 workflow_id=workflow_id,
                 step_id=step_id,
                 result_id=result_id,
@@ -179,20 +175,18 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             response = self._route_to_step_controller(
                 *args,
                 request=request,
-                resource_id=resource_id,
                 workflow_id=workflow_id,
                 step_id=step_id,
                 **kwargs
             )
         return response
 
-    def _route_to_step_controller(self, request, resource_id, workflow_id, step_id, *args, **kwargs):
+    def _route_to_step_controller(self, request, workflow_id, step_id, *args, **kwargs):
         """
         Get controller from step that will handle the request.
 
         Args:
             request(HttpRequest): The request.
-            resource_id(str): ID of the resource this workflow applies to.
             workflow_id(str): ID of the workflow.
             step_id(str): ID of the step to render.
             args, kwargs: Additional arguments passed to the controller.
@@ -200,6 +194,8 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         Returns:
             HttpResponse: A Django response.
         """
+        
+       
         _ResourceWorkflow = self.get_resource_workflow_model()
         session = None
 
@@ -211,23 +207,23 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             # Validate HTTP method
             if request.method.lower() not in step.controller.http_methods:
                 raise RuntimeError('An unexpected error has occurred: Method not allowed ({}).'.format(request.method))
-
+            
             controller = step.controller.instantiate(
                 _app=self._app,
                 _AppUser=self._AppUser,
                 _Organization=self._Organization,
-                _Resource=self._Resource,
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
                 _ResourceWorkflow=self._ResourceWorkflow,
                 _ResourceWorkflowStep=self._ResourceWorkflowStep,
                 base_template=self.base_template
             )
+            # TODO delete this
+            # breakpoint()
 
             response = controller(
                 *args,
                 request=request,
-                resource_id=resource_id,
                 workflow_id=workflow_id,
                 step_id=step_id,
                 back_url=self.back_url,
@@ -248,13 +244,12 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         finally:
             session and session.close()
 
-    def _route_to_result_controller(self, request, resource_id, workflow_id, step_id, result_id, *args, **kwargs):
+    def _route_to_result_controller(self, request, workflow_id, step_id, result_id, *args, **kwargs):
         """
         Get controller from result that will handle the request.
 
         Args:
             request(HttpRequest): The request.
-            resource_id(str): ID of the resource this workflow applies to.
             workflow_id(str): ID of the workflow.
             step_id(str): ID of the step to render.
             result_id(str): ID of the result to render.
@@ -301,7 +296,6 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             response = controller(
                 *args,
                 request=request,
-                resource_id=resource_id,
                 workflow_id=workflow_id,
                 step_id=step_id,
                 result_id=result_id,

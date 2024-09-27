@@ -20,7 +20,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
     """
     Controller for a map view with workflows integration.
     """
-    template_name = 'atcore/resource_workflows/map_workflow_view.html'
+    template_name = 'workflows/resource_workflows/map_workflow_view.html'
     valid_step_classes = [ResourceWorkflowStep]
     previous_steps_selectable = False
 
@@ -39,17 +39,11 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-        map_context = MapView.get_context(
-            self,
-            *args,
-            request=request,
-            session=session,
-            resource=resource,
-            context=context,
-            workflow_id=workflow_id,
-            step_id=step_id,
-            **kwargs
-        )
+        # TODO delete this
+        # breakpoint()
+        # TODO reformat this function call
+        map_context = MapView.get_context(self, *args, request=request, session=session, resource=resource, context=context, 
+                                          workflow_id=workflow_id, step_id=step_id, **kwargs)
 
         workflow_context = ResourceWorkflowView.get_context(
             self,
@@ -135,6 +129,8 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         steps_to_skip = set()
         mappable_step_types = (SpatialInputRWS,)
 
+        # TODO delete this
+        #breakpoint()
         # Get managers
         map_manager = self.get_map_manager(
             request=request,

@@ -18,7 +18,7 @@ class DatasetWorkflowResult(ResourceWorkflowResult):
     """
     Data model for storing spatial information about resource workflow results.
     """
-    CONTROLLER = 'tethysext.atcore.controllers.resource_workflows.results_views.dataset_workflow_results_view.DatasetWorkflowResultView'  # noqa: E501
+    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.results_views.dataset_workflow_results_view.DatasetWorkflowResultView'  # noqa: E501
     TYPE = 'dataset_workflow_result'
 
     __mapper_args__ = {

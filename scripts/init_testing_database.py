@@ -34,7 +34,6 @@ def init_testing_database(db_url, reset_db=False, init_with_project=False):
 
     # Create Tables / Initialize DB
     print("Creating epanet tables...")
-    breakpoint()
     WorkflowsBase.metadata.create_all(engine)
 
     engine.dispose()

@@ -161,7 +161,9 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-
+        
+        # TODO delete this
+        #breakpoint()
         base_context = MapWorkflowView.get_context(
             self,
             *args,

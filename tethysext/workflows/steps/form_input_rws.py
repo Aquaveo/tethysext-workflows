@@ -20,7 +20,7 @@ class FormInputRWS(ResourceWorkflowStep):
         renderer(str): Renderer option. Available values are 'django' and 'bokeh'. Defauls to 'django'. 
     """  # noqa: #501
 
-    CONTROLLER = 'tethysext.atcore.controllers.resource_workflows.workflow_views.FormInputWV'
+    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_views.FormInputWV'
     TYPE = 'form_input_resource_workflow_step'
 
     __mapper_args__ = {

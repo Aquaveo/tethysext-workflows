@@ -39,8 +39,8 @@ z
             function: the controller method.
         """  # noqa: E501
         from tethys_sdk.base import TethysController
-        from mixins import ResourceViewMixin 
-        from controllers.resource_workflows.workflow_view import ResourceWorkflowView
+        from ..controllers.app_users.mixins import ResourceViewMixin 
+        from ..controllers.resource_workflows.workflow_view import ResourceWorkflowView
 
         try:
             controller = import_from_string(self.path)

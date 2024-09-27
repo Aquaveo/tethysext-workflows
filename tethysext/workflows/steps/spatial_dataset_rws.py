@@ -24,7 +24,7 @@ class SpatialDatasetRWS(SpatialResourceWorkflowStep):
         max_rows(integer): Maximum number of rows allowed in the dataset. No maximum if not given.
         empty_rows(integer): The number of empty rows to generate if an no/empty template dataset is given.
     """  # noqa: #501
-    CONTROLLER = 'tethysext.atcore.controllers.resource_workflows.map_workflows.SpatialDatasetMWV'
+    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.map_workflows.SpatialDatasetMWV'
     TYPE = 'spatial_dataset_workflow_step'
 
     __mapper_args__ = {

@@ -18,7 +18,7 @@ class SetStatusRWS(ResourceWorkflowStep):
         status_label(str): Custom label for the status select form field. Defaults to "Status".
         statuses(list<dicts<status,label>>): List of dictionaries with two keys: "status" and "label". The value of "status" must be a valid status from the StatusMixin as determined by the valid_statuses() method on the step. The value of the "label" will be what is displayed to the user. If "label" is None or not given, the value of "status" will be displayed to the user.
     """  # noqa: #501
-    CONTROLLER = 'tethysext.atcore.controllers.resource_workflows.workflow_views.SetStatusWV'
+    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_views.SetStatusWV'
     TYPE = 'set_status_workflow_step'
 
     __mapper_args__ = {

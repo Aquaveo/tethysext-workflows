@@ -31,7 +31,7 @@ class SpatialInputMWV(MapWorkflowView):
     """
     Controller for a map workflow view requiring spatial input (drawing).
     """
-    template_name = 'atcore/resource_workflows/spatial_input_mwv.html'
+    template_name = 'workflows/resource_workflows/spatial_input_mwv.html'
     valid_step_classes = [SpatialInputRWS]
 
     def get_step_specific_context(self, request, session, context, current_step, previous_step, next_step):

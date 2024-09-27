@@ -13,8 +13,10 @@ from ...controllers.utilities import get_style_for_status
 from django.middleware.csrf import get_token
 
 from django.http import HttpResponseNotFound, HttpResponse, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, reverse
 from django.contrib import messages
+
+from ...services import BaseSpatialManager, MapManagerBase
 
 from abc import abstractmethod
 import logging
@@ -29,12 +31,14 @@ class WorkflowLayout(TethysLayout):
 
     http_method_names = ["get", "post", "delete"]
 
-    def __init__(self, **kwargs):
+    def __init__(self, spatial_manager, map_manager,**kwargs):
         """
         Constructor
         """
         super(WorkflowLayout, self).__init__(**kwargs)
         self.template_name = 'workflow_layout/workflow_layout.html'
+        self.spatial_manager = spatial_manager
+        self.map_manager = map_manager
 
     def get_context(self, request, context, *args, **kwargs):
         """
@@ -79,13 +83,12 @@ class WorkflowLayout(TethysLayout):
         workflow_cards = []
         for workflow in workflows:
             status = workflow.get_status()
-            app_namespace = "app_namespace"
-            url_name = "url_name"
-            href = "base_url"
+            app_namespace = self.app.root_url.replace("-", "_") # TODO: get app_namespace from app
+            #app_namespace = "app_namespace"
+            url_name = f'{app_namespace}:{workflow.TYPE}_workflow'
+            href = reverse(url_name, kwargs={'workflow_id': workflow.id})
             status_style = get_style_for_status(status)
-            
-
-
+        
             if status == workflow.STATUS_PENDING or status == '' or status is None:
                 statusdict = {
                     'title': 'Begin',
@@ -174,11 +177,17 @@ class WorkflowLayout(TethysLayout):
                 return redirect(request.path)
 
             try:
+                # TODO delete this
+                #breakpoint()
                 workflow_model = all_workflow_types[workflow_type]
-                workflow = workflow_model(
+                workflow = workflow_model.new(
+                    app=self.app,
                     name=workflow_name,
                     creator_id = request.user.id,
-                    creator_name = request.user.username
+                    creator_name = request.user.username,
+                    geoserver_name = "testing this name", 
+                    map_manager= self.map_manager, 
+                    spatial_manager=self.spatial_manager
                 )
                 session.add(workflow)
                 session.commit()

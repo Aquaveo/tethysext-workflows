@@ -115,7 +115,8 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             'previous_step': previous_step,
             'next_step': next_step,
             'step_url_name': step_url_name,
-            'nav_title': '{}: {}'.format(resource.name, workflow.name),
+            'nav_title': 'Replacement Resource Name: replacement workflow name',
+            # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO fix this 
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'previous_title': self.previous_title,
             'next_title': self.next_title,
@@ -159,16 +160,16 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         # Create for previous, next, and current steps
         previous_url = None
         step_url_name = self.get_step_url_name(request, workflow)
-        current_url = reverse(step_url_name, args=(resource.id, workflow.id, str(step.id)))
+        current_url = reverse(step_url_name, args=(workflow.id, str(step.id)))
 
         if next_step:
-            next_url = reverse(step_url_name, args=(resource.id, workflow.id, str(next_step.id)))
+            next_url = reverse(step_url_name, args=(workflow.id, str(next_step.id)))
         else:
             # Return to back_url if there is no next step
             next_url = back_url
 
         if previous_step:
-            previous_url = reverse(step_url_name, args=(resource.id, workflow.id, str(previous_step.id)))
+            previous_url = reverse(step_url_name, args=(workflow.id, str(previous_step.id)))
 
         # User has active role?
         user_has_active_role = self.user_has_active_role(request, step)
@@ -327,52 +328,53 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             'show': False
         }
 
-        # Check for user locks on resource.
-        resource = workflow.resource
-        if resource.is_user_locked:
-            lock_display_options['show'] = True
+        # TODO fix all of this
+        # # Check for user locks on resource.
+        # resource = workflow.resource
+        # if resource.is_user_locked:
+        #     lock_display_options['show'] = True
 
-            # Workflow is locked for all users
-            if resource.is_locked_for_all_users:
-                lock_display_options['message'] = f'The workflow is locked for editing for all users, ' \
-                                                  f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
+        #     # Workflow is locked for all users
+        #     if resource.is_locked_for_all_users:
+        #         lock_display_options['message'] = f'The workflow is locked for editing for all users, ' \
+        #                                           f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
 
-            # Request user has permission to override permissions
-            elif has_permission(request, 'can_override_user_locks'):
-                lock_display_options['message'] = f'The workflow is locked for editing for user ' \
-                                                  f'{resource.user_lock}, because the ' \
-                                                  f'{resource.DISPLAY_TYPE_SINGULAR} is locked.'
+        #     # Request user has permission to override permissions
+        #     elif has_permission(request, 'can_override_user_locks'):
+        #         lock_display_options['message'] = f'The workflow is locked for editing for user ' \
+        #                                           f'{resource.user_lock}, because the ' \
+        #                                           f'{resource.DISPLAY_TYPE_SINGULAR} is locked.'
 
-            # Different user possesses the user lock
-            elif resource.is_locked_for_request_user(request):
-                lock_display_options['message'] = f'The workflow is locked for editing by another user, ' \
-                                                  f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
+        #     # Different user possesses the user lock
+        #     elif resource.is_locked_for_request_user(request):
+        #         lock_display_options['message'] = f'The workflow is locked for editing by another user, ' \
+        #                                           f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
 
-            # Current user possesses the user lock
-            else:
-                lock_display_options['message'] = f'The workflow is locked for editing for all other users, ' \
-                                                  f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
+        #     # Current user possesses the user lock
+        #     else:
+        #         lock_display_options['message'] = f'The workflow is locked for editing for all other users, ' \
+        #                                           f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
 
-        # Check for user locks on the workflow
-        elif workflow.is_user_locked:
-            lock_display_options['show'] = True
+        # # Check for user locks on the workflow
+        # elif workflow.is_user_locked:
+        #     lock_display_options['show'] = True
 
-            # Workflow is locked for all users
-            if workflow.is_locked_for_all_users:
-                lock_display_options['message'] = 'The workflow is locked for editing for all users.'
-                lock_display_options['style'] = 'info'
+        #     # Workflow is locked for all users
+        #     if workflow.is_locked_for_all_users:
+        #         lock_display_options['message'] = 'The workflow is locked for editing for all users.'
+        #         lock_display_options['style'] = 'info'
 
-            # Request user has permission to override permissions
-            elif has_permission(request, 'can_override_user_locks'):
-                lock_display_options['message'] = f'The workflow is locked for editing for user: {workflow.user_lock}'
+        #     # Request user has permission to override permissions
+        #     elif has_permission(request, 'can_override_user_locks'):
+        #         lock_display_options['message'] = f'The workflow is locked for editing for user: {workflow.user_lock}'
 
-            # Different user possesses the user lock
-            elif workflow.is_locked_for_request_user(request):
-                lock_display_options['message'] = 'The workflow is locked for editing by another user.'
+        #     # Different user possesses the user lock
+        #     elif workflow.is_locked_for_request_user(request):
+        #         lock_display_options['message'] = 'The workflow is locked for editing by another user.'
 
-            # Current user possesses the user lock
-            else:
-                lock_display_options['message'] = 'The workflow is locked for editing for all other users.'
+        #     # Current user possesses the user lock
+        #     else:
+        #         lock_display_options['message'] = 'The workflow is locked for editing for all other users.'
 
         return lock_display_options
 
@@ -400,9 +402,11 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Returns:
             bool: True if the workflow is locked.
         """
-        is_locked = workflow.is_locked_for_request_user(request) or \
-            workflow.resource.is_locked_for_request_user(request)
-        return is_locked
+        return False
+        # TODO fix this
+        # is_locked = workflow.is_locked_for_request_user(request) or \
+        #     workflow.resource.is_locked_for_request_user(request)
+        # return is_locked
 
     def user_has_active_role(self, request, step):
         """

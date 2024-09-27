@@ -32,7 +32,7 @@ class MapView(ResourceView):
     """
     map_title = ''
     map_subtitle = ''
-    template_name = 'atcore/map_view/map_view.html'
+    template_name = 'workflows/map_view/map_view.html'
     http_method_names = ['get', 'post']
 
     default_disable_basemap = False
@@ -50,7 +50,7 @@ class MapView(ResourceView):
     layer_tab_name = 'Layers'
     map_type = 'tethys_map_view'
 
-    def get_context(self, request, session, resource, context, *args, **kwargs):
+    def get_context(self, request, session, context, *args, **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
 
@@ -64,22 +64,20 @@ class MapView(ResourceView):
             dict: modified context dictionary.
         """  # noqa: E501
         # Use scenario id from the resource, if it is there
-        scenario_id = resource.get_attribute('scenario_id') or 1 if resource else 1
+        #scenario_id = resource.get_attribute('scenario_id') or 1 if resource else 1\
+        scenario_id = 1
 
         # If "scenario-id" is passed in via the GET parameters, use that instead of the one given by the resource
         scenario_id = request.GET.get('scenario-id', scenario_id)
 
-        # Load Primary Map View
-        resource_id = None
-
-        if resource:
-            resource_id = resource.id
-
+        resource_id = 1
+        
+        # TODO DELETE THIS
+        # breakpoint()
         # Get Managers Hook
         map_manager = self.get_map_manager(
             *args,
             request=request,
-            resource=resource,
             **kwargs
         )
 
@@ -96,11 +94,11 @@ class MapView(ResourceView):
         map_view.legend = False  # Ensure the built-in legend is not turned on.
         map_view.height = '100%'  # Ensure 100% height
         map_view.width = '100%'  # Ensure 100% width
-        map_view.disable_basemap = self.should_disable_basemap(
-            request=request,
-            resource=resource,
-            map_manager=map_manager
-        )
+        # map_view.disable_basemap = self.should_disable_basemap(
+        #     request=request,
+        #     resource=resource,
+        #     map_manager=map_manager
+        # )
 
         map_view.controls = [
             'Rotate',
@@ -177,10 +175,10 @@ class MapView(ResourceView):
             'show_legends': self.show_legends,
         })
 
-        if resource:
-            context.update({'nav_title': self.map_title or resource.name})
-        else:
-            context.update({'nav_title': self.map_title})
+        # if resource:
+        #     context.update({'nav_title': self.map_title or resource.name})
+        # else:
+        #     context.update({'nav_title': self.map_title})
 
         # open_portal_mode = getattr(settings, 'ENABLE_OPEN_PORTAL', False)
         show_rename = has_permission(request, 'rename_layers')
@@ -211,7 +209,7 @@ class MapView(ResourceView):
         plot_slidesheet = SlideSheet(
             id='plot-slide-sheet',
             title='Plot',
-            content_template='atcore/map_view/map_plot.html'
+            content_template='workflows/map_view/map_plot.html'
         )
 
         context.update({'plot_slide_sheet': plot_slidesheet})
@@ -342,7 +340,7 @@ class MapView(ResourceView):
 
         html = render(
             request,
-            'atcore/map_view/color_ramp_component.html',
+            'workflows/map_view/color_ramp_component.html',
             {'legend': legend}
         )
 
@@ -384,10 +382,10 @@ class MapView(ResourceView):
         context = {'layer_group': layer_group, 'show_rename': show_rename, 'show_remove': show_remove,
                    'show_download': show_download}
         if status == 'create':
-            html_link = 'atcore/components/layer_group_content.html'
+            html_link = 'workflows/components/layer_group_content.html'
         else:
             # Only works for one layer at a time for now.
-            html_link = 'atcore/components/layer_item_content.html'
+            html_link = 'workflows/components/layer_item_content.html'
             context['layer'] = layers[0]
 
         html = render(request, html_link, context)
@@ -420,6 +418,7 @@ class MapView(ResourceView):
         Returns:
             MapManager: MapManager instance.
         """
+        # breakpoint()
         if not getattr(self, '_map_manager', None):
             gs_engine = self._app.get_spatial_dataset_service(self.geoserver_name, as_engine=True)
             spatial_manager = self._SpatialManager(geoserver_engine=gs_engine)
