@@ -46,7 +46,7 @@
 
 <ul class="layer-list" id="{{ layer_group.id }}_associated_layers" {% if layer_group.collapsed %} data-collapsed="true" style="overflow:hidden; height: 0px;" {% else %} data-collapsed="false"{% endif %}>
 {% for layer in layer_group.layers %}
-  {% include 'atcore/components/layer_item_content.html' %}
+  {% include 'workflows/components/layer_item_content.html' %}
 {% endfor %}
 </ul>
 

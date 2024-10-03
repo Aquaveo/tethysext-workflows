@@ -39,8 +39,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-        # TODO delete this
-        # breakpoint()
+
         # TODO reformat this function call
         map_context = MapView.get_context(self, *args, request=request, session=session, resource=resource, context=context, 
                                           workflow_id=workflow_id, step_id=step_id, **kwargs)
@@ -129,8 +128,6 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         steps_to_skip = set()
         mappable_step_types = (SpatialInputRWS,)
 
-        # TODO delete this
-        #breakpoint()
         # Get managers
         map_manager = self.get_map_manager(
             request=request,

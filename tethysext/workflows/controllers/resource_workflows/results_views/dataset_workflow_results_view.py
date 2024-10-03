@@ -9,7 +9,7 @@
 import logging
 from collections import OrderedDict
 from tethys_sdk.gizmos import DataTableView
-from ....models.resource_workflow_results.dataset_workflow_result import DatasetWorkflowResult
+from ....results.dataset_workflow_result import DatasetWorkflowResult
 from ..workflow_results_view import WorkflowResultsView
 from tethys_sdk.permissions import has_permission
 
@@ -21,7 +21,7 @@ class DatasetWorkflowResultView(WorkflowResultsView):
     """
     Dataset Result View Controller
     """
-    template_name = 'atcore/resource_workflows/dataset_workflow_results_view.html'
+    template_name = 'workflows/resource_workflows/dataset_workflow_results_view.html'
     valid_result_classes = [DatasetWorkflowResult]
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,

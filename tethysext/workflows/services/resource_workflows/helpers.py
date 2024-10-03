@@ -27,14 +27,14 @@ def parse_workflow_step_args():
         'resource_db_url',
         help='SQLAlchemy URL to the database containing the Resource and Workflow data.'
     )
-    parser.add_argument(
-        'model_db_url',
-        help='SQLAlchemy URL to the database containing the GSSHA model.'
-    )
-    parser.add_argument(
-        'resource_id',
-        help='ID of the Resource this job is associated with.'
-    )
+    # parser.add_argument(
+    #     'model_db_url',
+    #     help='SQLAlchemy URL to the database containing the GSSHA model.'
+    # )
+    # parser.add_argument(
+    #     'resource_id',
+    #     help='ID of the Resource this job is associated with.'
+    # )
     parser.add_argument(
         'resource_workflow_id',
         help='ID of the ResourceWorkflow this job is associated with.'
@@ -51,10 +51,10 @@ def parse_workflow_step_args():
         'gs_public_url',
         help='Public url to GeoServer.'
     )
-    parser.add_argument(
-        'resource_class',
-        help='Dot path to resource class.'
-    )
+    # parser.add_argument(
+    #     'resource_class',
+    #     help='Dot path to resource class.'
+    # )
     parser.add_argument(
         'workflow_class',
         help='Dot path to workflow class.'

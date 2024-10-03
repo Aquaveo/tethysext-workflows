@@ -9,7 +9,7 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
     """
     Base class for result views.
     """
-    template_name = 'atcore/resource_workflows/workflow_results_view.html'
+    template_name = 'workflows/resource_workflows/workflow_results_view.html'
     valid_step_classes = [ResultsResourceWorkflowStep]
     valid_result_classes = [ResourceWorkflowResult]
 

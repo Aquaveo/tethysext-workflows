@@ -1,4 +1,4 @@
-{% extends "atcore/resource_workflows/resource_workflow_view.html" %}
+{% extends "workflows/resource_workflows/resource_workflow_view.html" %}
 {% load static django_bootstrap5 %}
 
 {% block before_workflow_form %}
@@ -9,21 +9,21 @@
 {% block workflow_form_content %}
 <div class="row">
   <div class="col">
-    {% include 'atcore/resource_workflows/components/spatial_dataset_form.html' %}
+    {% include 'workflows/resource_workflows/components/spatial_dataset_form.html' %}
   </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
-  <script src="{% static 'atcore/js/utilities.js' %}" type="text/javascript"></script>
-  <script src="{% static 'atcore/resource_workflows/spatial_data_mwv.js' %}" type="text/javascript"></script>
-  <script src="{% static 'atcore/resource_workflows/spatial_dataset_mwv.js' %}" type="text/javascript"></script>
-  <script src="{% static 'atcore/resource_workflows/table_input_wv.js' %}" type="text/javascript"></script>
+  <script src="{% static 'workflows/js/utilities.js' %}" type="text/javascript"></script>
+  <script src="{% static 'workflows/resource_workflows/spatial_data_mwv.js' %}" type="text/javascript"></script>
+  <script src="{% static 'workflows/resource_workflows/spatial_dataset_mwv.js' %}" type="text/javascript"></script>
+  <script src="{% static 'workflows/resource_workflows/table_input_wv.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block styles %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'atcore/resource_workflows/spatial_dataset_mwv.css' %}">
-  <link rel="stylesheet" href="{% static 'atcore/resource_workflows/table_input_wv.css' %}">
+  <link rel="stylesheet" href="{% static 'workflows/resource_workflows/spatial_dataset_mwv.css' %}">
+  <link rel="stylesheet" href="{% static 'workflows/resource_workflows/table_input_wv.css' %}">
 {% endblock %}

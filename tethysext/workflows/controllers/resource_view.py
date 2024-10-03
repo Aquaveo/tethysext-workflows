@@ -73,8 +73,6 @@ class ResourceView(ResourceViewMixin):
             context.update({'nav_title': self.view_title})
 
         # Context hook
-        # T
-        #breakpoint()
         context = self.get_context(
             *args,
             request=request,

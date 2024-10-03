@@ -24,7 +24,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
     """
     Controller for a map workflow view requiring spatial input (drawing).
     """
-    template_name = 'atcore/resource_workflows/spatial_condor_job_mwv.html'
+    template_name = 'workflows/resource_workflows/spatial_condor_job_mwv.html'
     valid_step_classes = [SpatialCondorJobRWS]
     previous_steps_selectable = True
     jobs_table_refresh_interval = int(os.getenv('JOBS_TABLE_REFRESH_INTERVAL', 30000))  # ms
@@ -107,11 +107,6 @@ class SpatialCondorJobMWV(MapWorkflowView):
         app = self.get_app()
         job_manager = app.get_job_manager()
         step_job = job_manager.get_job(job_id=job_id)
-        app_user = self._AppUser.get_app_user_from_request(request, session)
-        show_job_table_actions = app_user.is_staff() or app_user.get_role() in [
-            self._AppUser.ROLES.APP_ADMIN,
-            self._AppUser.ROLES.ORG_ADMIN
-        ]
 
         jobs_table = JobsTable(
             jobs=[step_job],
@@ -122,7 +117,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
             show_status=True,
             show_detailed_status=True,
             actions=['logs'],
-            show_actions=show_job_table_actions,
+            show_actions=True, # TODO look at this
             refresh_interval=self.jobs_table_refresh_interval,
         )
 
@@ -150,7 +145,8 @@ class SpatialCondorJobMWV(MapWorkflowView):
             'finish_title': self.finish_title,
             'previous_title': self.previous_title,
             'back_url': self.back_url,
-            'nav_title': '{}: {}'.format(resource.name, workflow.name),
+            'nav_title': workflow.name,
+            # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO look at this
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'jobs_table': jobs_table,
             'can_run_workflows': can_run_workflows,
@@ -158,7 +154,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
             'base_template': self.base_template
         }
 
-        return render(request, 'atcore/resource_workflows/spatial_condor_jobs_table.html', context)
+        return render(request, 'workflows/resource_workflows/spatial_condor_jobs_table.html', context)
 
     def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
         """

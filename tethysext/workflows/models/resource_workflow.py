@@ -79,7 +79,6 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
     date_created = Column(DateTime, default=dt.datetime.utcnow)
     lock_when_finished = Column(Boolean, default=False)
     _attributes = Column(String)
-    _user_lock = Column(String)
 
     # resource = relationship('Resource', backref=backref('workflows', cascade='all,delete'))
 

@@ -7,7 +7,7 @@
 ********************************************************************************
 """
 import logging
-from ....models.resource_workflow_results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult
+from ....results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult
 from ..map_workflows.map_workflow_view import MapWorkflowView
 from ..workflow_results_view import WorkflowResultsView
 
@@ -162,8 +162,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             dict: modified context dictionary.
         """  # noqa: E501
         
-        # TODO delete this
-        #breakpoint()
+
         base_context = MapWorkflowView.get_context(
             self,
             *args,

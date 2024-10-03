@@ -218,8 +218,6 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
                 _ResourceWorkflowStep=self._ResourceWorkflowStep,
                 base_template=self.base_template
             )
-            # TODO delete this
-            # breakpoint()
 
             response = controller(
                 *args,

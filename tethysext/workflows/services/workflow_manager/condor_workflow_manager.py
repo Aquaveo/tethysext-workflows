@@ -49,16 +49,16 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
         self.resource_db_url = str(session.get_bind().url)
 
         # DB URL for database containing the model database
-        self.model_db_url = None
-        try:
-            database_id = resource.get_attribute('database_id', '99999999-9999-9999-9999-999999999999')
-            model_db = ModelDatabase(app, database_id=database_id)
-            self.model_db_url = model_db.db_url
-        except TethysAppSettingDoesNotExist:
-            log.warning(f'Could not find model database {database_id} for resource: {resource}.')
-        finally:
-            if not self.model_db_url:
-                log.warning('no model database provided')
+        # self.model_db_url = None
+        # try:
+        #     database_id = resource.get_attribute('database_id', '99999999-9999-9999-9999-999999999999')
+        #     model_db = ModelDatabase(app, database_id=database_id)
+        #     self.model_db_url = model_db.db_url
+        # except TethysAppSettingDoesNotExist:
+        #     log.warning(f'Could not find model database {database_id} for resource: {resource}.')
+        # finally:
+        #     if not self.model_db_url:
+        #         log.warning('no model database provided')
 
         # Serialize GeoServer Connection
         self.gs_private_url = ''
@@ -67,8 +67,8 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
             self.gs_private_url, self.gs_public_url = generate_geoserver_urls(gs_engine)
 
         # Important IDs
-        self.resource_id = str(resource_workflow_step.workflow.resource.id)
-        self.resource_name = resource_workflow_step.workflow.resource.name
+        # self.resource_id = str(resource_workflow_step.workflow.resource.id)
+        # self.resource_name = resource_workflow_step.workflow.resource.name
         self.resource_workflow = resource_workflow
         self.resource_workflow_id = str(resource_workflow_step.workflow.id)
         self.resource_workflow_name = resource_workflow_step.workflow.name
@@ -77,7 +77,7 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
         self.resource_workflow_step_name = resource_workflow_step.name
 
         # Get Path to Resource and Workflow Classes
-        self.resource_class = self._get_class_path(resource_workflow_step.workflow.resource)
+        # self.resource_class = self._get_class_path(resource_workflow_step.workflow.resource)
         self.workflow_class = self._get_class_path(resource_workflow_step.workflow)
 
         # Job Definition Variables
@@ -99,13 +99,13 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
         # Prepare standard arguments for all jobs
         self.job_args = [
             self.resource_db_url,
-            self.model_db_url,
-            self.resource_id,
+            # self.model_db_url,
+            # self.resource_id,
             self.resource_workflow_id,
             self.resource_workflow_step_id,
             self.gs_private_url,
             self.gs_public_url,
-            self.resource_class,
+            # self.resource_class,
             self.workflow_class
         ]
 
@@ -184,7 +184,7 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
             user=self.user,
             scheduler=scheduler,
             extended_properties={
-                'resource_id': self.resource_id,
+                # 'resource_id': self.resource_id,
                 'resource_workflow_id': self.resource_workflow_id,
                 'resource_workflow_step_id': self.resource_workflow_step_id,
             },

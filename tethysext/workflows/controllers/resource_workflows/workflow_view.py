@@ -30,7 +30,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
     """
     view_title = ''
     view_subtitle = ''
-    template_name = 'atcore/resource_workflows/resource_workflow_view.html'
+    template_name = 'workflows/resource_workflows/resource_workflow_view.html'
     previous_title = 'Previous'
     next_title = 'Next'
     finish_title = 'Finish'
@@ -172,39 +172,21 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             previous_url = reverse(step_url_name, args=(workflow.id, str(previous_step.id)))
 
         # User has active role?
-        user_has_active_role = self.user_has_active_role(request, step)
-        workflow_locked_for_user = self.workflow_locked_for_request_user(request, workflow)
 
         if 'reset-submit' in request.POST:
-            if user_has_active_role and not workflow_locked_for_user:
-                step.workflow.reset_next_steps(step, include_current=True)
-                step.workflow.release_user_lock(request)
-                resource.release_user_lock(request)
-                session.commit()
+            step.workflow.reset_next_steps(step, include_current=True)
+            session.commit()
             return redirect(current_url)
-
-        if user_has_active_role and not workflow_locked_for_user:
-            # Hook for processing step data when the user has the active role
-            response = self.process_step_data(
-                request=request,
-                session=session,
-                step=step,
-                resource=resource,
-                current_url=current_url,
-                previous_url=previous_url,
-                next_url=next_url
-            )
-
-        else:
-            # Hook for handling response when user does not have an active role
-            response = self.navigate_only(request, step, current_url, next_url, previous_url)
-
-        # Process lock options when the step is potentially complete
-        self.process_lock_options_after_submission(
+        
+        # Hook for processing step data when the user has the active role
+        response = self.process_step_data(
             request=request,
             session=session,
+            step=step,
             resource=resource,
-            step=step
+            current_url=current_url,
+            previous_url=previous_url,
+            next_url=next_url
         )
 
         return response
@@ -525,6 +507,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             lockable(UserLockMixin): Object on which to acquire a lock.
             for_all_users(bool): Lock for all users when True.
         """
+        #TODO delete this
         if not isinstance(lockable, UserLockMixin):
             raise ValueError('Argument "lockable" must implement UserLockMixin.')
 
@@ -551,6 +534,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             lockable(UserLockMixin): Object to on which to release a lock.
         """
+        # TODO delete this
         if not isinstance(lockable, UserLockMixin):
             raise ValueError('Argument "lockable" must implement UserLockMixin.')
 

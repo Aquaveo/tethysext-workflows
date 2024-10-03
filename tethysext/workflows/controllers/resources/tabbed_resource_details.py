@@ -34,14 +34,14 @@ class TabbedResourceDetails(ResourceDetails):
     """
     template_name = 'atcore/resources/tabbed_resource_details.html'
     css_requirements = [
-        'atcore/css/center.css',
+        'workflows/css/center.css',
         'atcore/app_users/css/app_users.css',
         'atcore/app_users/css/resource_details.css'
     ]
     js_requirements = [
-        'atcore/js/enable-tabs.js',
-        'atcore/js/csrf.js',
-        'atcore/js/lazy_load_tabs.js'
+        'workflows/js/enable-tabs.js',
+        'workflows/js/csrf.js',
+        'workflows/js/lazy_load_tabs.js'
     ]
     tabs = None
     http_method_names = ['get', 'post', 'delete']

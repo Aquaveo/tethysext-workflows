@@ -72,8 +72,6 @@ class MapView(ResourceView):
 
         resource_id = 1
         
-        # TODO DELETE THIS
-        # breakpoint()
         # Get Managers Hook
         map_manager = self.get_map_manager(
             *args,
@@ -418,7 +416,6 @@ class MapView(ResourceView):
         Returns:
             MapManager: MapManager instance.
         """
-        # breakpoint()
         if not getattr(self, '_map_manager', None):
             gs_engine = self._app.get_spatial_dataset_service(self.geoserver_name, as_engine=True)
             spatial_manager = self._SpatialManager(geoserver_engine=gs_engine)

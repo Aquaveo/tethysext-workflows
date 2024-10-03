@@ -48,14 +48,14 @@ class ResourceWorkflowsTab(ResourceTab):
     template_name = 'atcore/resources/tabs/workflows.html'
     http_method_names = ['get', 'post', 'delete']
     js_requirements = ResourceTab.js_requirements + [
-        'atcore/js/enable-tooltips.js',
-        'atcore/js/delete_row.js',
-        'atcore/resources/workflows_tab.js'
+        'workflows/js/enable-tooltips.js',
+        'workflows/js/delete_row.js',
+        'workflows/resources/workflows_tab.js'
     ]
     css_requirements = ResourceTab.css_requirements + [
-        'atcore/css/btn-fab.css',
-        'atcore/css/flat-modal.css',
-        'atcore/resource_workflows/workflows.css'
+        'workflows/css/btn-fab.css',
+        'workflows/css/flat-modal.css',
+        'workflows/resource_workflows/workflows.css'
     ]
     modal_templates = [
         'atcore/resources/tabs/new_workflow_modal.html',

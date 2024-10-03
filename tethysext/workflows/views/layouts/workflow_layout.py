@@ -54,7 +54,7 @@ class WorkflowLayout(TethysLayout):
         token = get_token(request)
         Session = self.get_sessionmaker()
         session = Session() 
-        workflows = self.get_workflows(request, session, context.get('resource'))
+        workflows = self.get_workflows(request, session)
 
         context['workflow_tab'] = WorkflowTab(workflows)
         context['new_workflow_modal'] = NewWorkflowModal(token, workflow_types=self.get_workflow_types())
@@ -71,11 +71,7 @@ class WorkflowLayout(TethysLayout):
         """
         return 'workflow_layout/workflow_layout.html'
     
-    def get_workflows(self, request, session, resource):
-        # resource_ids = [resource.id]
-        # for child in resource.children:
-        #     resource_ids.append(child.id)
-
+    def get_workflows(self, request, session):
         query = session.query(ResourceWorkflow)
         
         workflows = query.order_by(ResourceWorkflow.date_created.desc()).all()
@@ -131,19 +127,14 @@ class WorkflowLayout(TethysLayout):
                     'href': href
                 }
 
-            #is_creator = request.user.username == workflow.creator.username if workflow.creator else True
-
             workflow_cards.append({
                 'id': str(workflow.id),
                 'name': workflow.name,
                 'type': workflow.DISPLAY_TYPE_SINGULAR,
-                # 'creator': workflow.creator.username if workflow.creator else 'Unknown',
-                'creator': 'Unknown',
+                'creator': workflow.creator_name if workflow.creator_name else 'Unknown',
                 'date_created': workflow.date_created,
-                # 'resource': workflow.resource,
                 'status': statusdict,
                 'can_delete': True
-                # 'can_delete': has_permission(request, 'delete_any_workflow') or is_creator
             })
 
         return workflow_cards
@@ -177,15 +168,13 @@ class WorkflowLayout(TethysLayout):
                 return redirect(request.path)
 
             try:
-                # TODO delete this
-                #breakpoint()
                 workflow_model = all_workflow_types[workflow_type]
                 workflow = workflow_model.new(
                     app=self.app,
                     name=workflow_name,
                     creator_id = request.user.id,
                     creator_name = request.user.username,
-                    geoserver_name = "testing this name", 
+                    geoserver_name = self.app.GEOSERVER_NAME, 
                     map_manager= self.map_manager, 
                     spatial_manager=self.spatial_manager
                 )

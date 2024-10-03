@@ -1,4 +1,4 @@
-{% extends "atcore/resource_workflows/resource_workflow_view.html" %}
+{% extends "workflows/resource_workflows/resource_workflow_view.html" %}
 {% load tethys_gizmos static %}
 
 {% block app_content %}
@@ -19,7 +19,7 @@
 
 {% block content_dependent_styles %}
   {{ block.super }}
-  <link href="{% static 'atcore/css/messages.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/css/messages.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}

@@ -17,7 +17,7 @@ from ...utilities import clean_request, import_from_string
 from ...models import ResourceWorkflowStep
 # DO NOT REMOVE, need to import all the subclasses of ResourceWorkflowStep for the polymorphism to work.
 from ...steps import *  # noqa: F401, F403
-from ...models.resource_workflow_results import *  # noqa: F401, F403
+from ...results import *  # noqa: F401, F403
 # END DO NOT REMOVE
 
 
@@ -121,7 +121,6 @@ def workflow_step_job(job_func):
 
             # Session vars
             step = None
-            model_db_engine = None
             model_db_session = None
             resource_db_session = None
             ret_val = None
@@ -132,15 +131,9 @@ def workflow_step_job(job_func):
                 make_resource_db_session = sessionmaker(bind=resource_db_engine)
                 resource_db_session = make_resource_db_session()
 
-                try:
-                    model_db_engine = create_engine(args.model_db_url)
-                    make_model_db_session = sessionmaker(bind=model_db_engine)
-                    model_db_session = make_model_db_session()
-                except ArgumentError:
-                    sys.stderr.write(repr('invalid model_db_url'))
+                
 
                 # Import Resource and Workflow Classes
-                ResourceClass = import_from_string(args.resource_class)
                 WorkflowClass = import_from_string(args.workflow_class)
 
                 # Get the step
@@ -148,10 +141,6 @@ def workflow_step_job(job_func):
                 # errors with a subclass of the ResourceWorkflowStep. It could also be caused indirectly if the subclass
                 # has Pickle typed columns with values that import things.
                 step = resource_db_session.query(ResourceWorkflowStep).get(args.resource_workflow_step_id)
-
-                # IMPORTANT: External Resource classes need to be imported at the top of the job file to
-                # allow sqlalchemy to resolve the polymorphic identity.
-                resource = resource_db_session.query(ResourceClass).get(args.resource_id)
 
                 # Process parameters from workflow steps
                 with open(args.workflow_params_file, 'r') as p:
@@ -162,13 +151,10 @@ def workflow_step_job(job_func):
 
                 ret_val = job_func(
                     resource_db_session=resource_db_session,
-                    model_db_session=model_db_session,
-                    resource=resource,
                     workflow=step.workflow,
                     step=step,
                     gs_private_url=args.gs_private_url,
                     gs_public_url=args.gs_public_url,
-                    resource_class=ResourceClass,
                     workflow_class=WorkflowClass,
                     params_json=params_json,
                     params_file=args.workflow_params_file,

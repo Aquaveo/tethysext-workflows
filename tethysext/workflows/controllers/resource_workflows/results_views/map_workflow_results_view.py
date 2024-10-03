@@ -11,7 +11,7 @@ from django.http import JsonResponse
 import json
 
 from tethys_sdk.gizmos import SelectInput
-from ....models.resource_workflow_results.spatial_workflow_result import SpatialWorkflowResult
+from ....results import SpatialWorkflowResult
 from ..map_workflows import MapWorkflowView
 from ..workflow_results_view import WorkflowResultsView
 
@@ -23,7 +23,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
     """
     Map Result View controller.
     """
-    template_name = 'atcore/resource_workflows/map_workflow_results_view.html'
+    template_name = 'workflows/resource_workflows/map_workflow_results_view.html'
     valid_result_classes = [SpatialWorkflowResult]
     show_legends = True
 
