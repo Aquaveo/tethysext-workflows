@@ -30,7 +30,7 @@ function init_delete_row_buttons() {
       var data_params = $.param(data);
 
       // Show loading dots
-      $('#delete-modal .modal-footer').html('<img src="/static/atcore/images/loading-dots-small.gif">');
+      $('#delete-modal .modal-footer').html('<img src="/static/workflows/images/loading-dots-small.gif">');
 
       // Send DELETE request
       $.ajax({

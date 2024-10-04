@@ -45,7 +45,7 @@ class ResourceWorkflowsTab(ResourceTab):
         get_spatial_manager (optional): Return your app-specific SpatialManager. Required if your workflows use spatial steps.
         get_sds_setting_name (optional): Return the name of the SpatialDatasetService setting. Required if your workflows use spatial steps.
     """  # noqa: E501
-    template_name = 'atcore/resources/tabs/workflows.html'
+    template_name = 'workflows/resources/tabs/workflows.html'
     http_method_names = ['get', 'post', 'delete']
     js_requirements = ResourceTab.js_requirements + [
         'workflows/js/enable-tooltips.js',
@@ -58,8 +58,8 @@ class ResourceWorkflowsTab(ResourceTab):
         'workflows/resource_workflows/workflows.css'
     ]
     modal_templates = [
-        'atcore/resources/tabs/new_workflow_modal.html',
-        'atcore/resources/tabs/delete_workflow_modal.html'
+        'workflows/resources/tabs/new_workflow_modal.html',
+        'workflows/resources/tabs/delete_workflow_modal.html'
     ]
     post_load_callback = 'workflows_tab_loaded'
     show_all_workflows = True

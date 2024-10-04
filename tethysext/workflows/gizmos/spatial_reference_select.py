@@ -65,11 +65,11 @@ class SpatialReferenceSelect(TethysGizmoOptions):
         """
         JavaScript specific to gizmo.
         """
-        return ('atcore/gizmos/spatial_reference_select/spatial_reference_select.js',)
+        return ('workflows/gizmos/spatial_reference_select/spatial_reference_select.js',)
 
     @staticmethod
     def get_gizmo_css():
         """
         CSS specific to gizmo .
         """
-        return ('atcore/gizmos/spatial_reference_select/spatial_reference_select.css',)
+        return ('workflows/gizmos/spatial_reference_select/spatial_reference_select.css',)

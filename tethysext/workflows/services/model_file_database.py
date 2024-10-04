@@ -9,8 +9,8 @@
 import os
 import shutil
 
-from tethysext.atcore.services.model_file_database_connection import ModelFileDatabaseConnection
-from tethysext.atcore.services.model_database_base import ModelDatabaseBase
+from tethysext.workflows.services.model_file_database_connection import ModelFileDatabaseConnection
+from tethysext.workflows.services.model_database_base import ModelDatabaseBase
 
 
 class ModelFileDatabase(ModelDatabaseBase):

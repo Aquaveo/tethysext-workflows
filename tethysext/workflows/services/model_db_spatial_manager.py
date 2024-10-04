@@ -8,8 +8,8 @@
 ********************************************************************************
 """
 from abc import abstractmethod
-from tethysext.atcore.services.exceptions import UnitsNotFound, UnknownUnits
-from tethysext.atcore.services.base_spatial_manager import BaseSpatialManager
+from tethysext.workflows.services.exceptions import UnitsNotFound, UnknownUnits
+from tethysext.workflows.services.base_spatial_manager import BaseSpatialManager
 
 
 class ModelDBSpatialManager(BaseSpatialManager):

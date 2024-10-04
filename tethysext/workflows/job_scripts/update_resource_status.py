@@ -4,7 +4,7 @@ import traceback
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from tethysext.atcore.models.app_users import Resource
+from tethysext.workflows.models.app_users import Resource
 
 
 def run(resource_db_url: str, resource_id: str, resource_class_path: str, status_keys: list):

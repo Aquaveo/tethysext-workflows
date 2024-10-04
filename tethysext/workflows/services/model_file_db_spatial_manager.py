@@ -7,7 +7,7 @@
 ********************************************************************************
 """
 from abc import abstractmethod
-from tethysext.atcore.services.base_spatial_manager import BaseSpatialManager
+from tethysext.workflows.services.base_spatial_manager import BaseSpatialManager
 
 
 class ModelFileDBSpatialManager(BaseSpatialManager):

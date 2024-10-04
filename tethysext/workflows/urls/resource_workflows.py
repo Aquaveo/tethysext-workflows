@@ -21,7 +21,7 @@ DEFAULT_HANDLER = {
 
 
 def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_path='', custom_models=(),
-         custom_permissions_manager=None, base_template='atcore/base.html', handler=DEFAULT_HANDLER['handler'],
+         custom_permissions_manager=None, base_template='workflows/base.html', handler=DEFAULT_HANDLER['handler'],
          handler_type=DEFAULT_HANDLER['type']):
     """
     Generate UrlMap objects for each workflow model-controller pair provided. To link to pages provided by the app_users extension use the name of the url with your app namespace:

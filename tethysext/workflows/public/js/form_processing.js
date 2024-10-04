@@ -19,7 +19,7 @@ function add_processing_div() {
         document.body.appendChild(div_show);
         image_show.id = 'show-image';
         document.getElementById("show-background").appendChild(image_show);
-        elem.setAttribute("src", "/static/atcore/images/loading3.gif");
+        elem.setAttribute("src", "/static/workflows/images/loading3.gif");
         elem.setAttribute("alt", "Upload");
         document.getElementById("show-image").appendChild(elem);
     }

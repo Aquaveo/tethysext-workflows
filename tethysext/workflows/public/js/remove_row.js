@@ -31,7 +31,7 @@ function init_remove_row_buttons() {
       var data_params = $.param(data);
 
       // Show loading dots
-      $('#remove-modal .modal-footer').html('<img src="/static/atcore/images/loading-dots-small.gif">');
+      $('#remove-modal .modal-footer').html('<img src="/static/workflows/images/loading-dots-small.gif">');
 
       // Send DELETE request
       $.ajax({

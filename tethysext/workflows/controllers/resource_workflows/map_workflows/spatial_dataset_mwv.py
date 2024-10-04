@@ -24,7 +24,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
     """
     Controller for a map workflow view requiring spatial input (drawing).
     """
-    template_name = 'atcore/resource_workflows/spatial_dataset_mwv.html'
+    template_name = 'workflows/resource_workflows/spatial_dataset_mwv.html'
     valid_step_classes = [SpatialDatasetRWS]
 
     @workflow_step_controller(is_rest_controller=True)
@@ -83,7 +83,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
             'nodata_val': SPATIAL_DATASET_NODATA,
         }
 
-        return render(request, 'atcore/resource_workflows/components/spatial_dataset_form.html', context)
+        return render(request, 'workflows/resource_workflows/components/spatial_dataset_form.html', context)
 
     @workflow_step_controller(is_rest_controller=True)
     def save_spatial_data(self, request, session, resource, workflow, step, back_url, *args, **kwargs):

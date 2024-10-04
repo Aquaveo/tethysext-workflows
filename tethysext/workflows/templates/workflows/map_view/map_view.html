@@ -181,7 +181,7 @@
                     </li>
                     {% gizmo legend_select_input %}
                     <div id="color-ramp-component-{{ legend.legend_id }}">
-                      {% include "atcore/map_view/color_ramp_component.html" %}
+                      {% include "workflows/map_view/color_ramp_component.html" %}
                     </div>
                 </div>
               {% endfor %}
@@ -281,7 +281,7 @@
   <link href="{% static 'workflows/map_view/flat_map.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/map_view/atcore_map_view.css' %}" rel="stylesheet"/>
   {% if map_type == "cesium_map_view" %}
-  <link href="{% static 'atcore/map_view/atcore_cesium_map_view.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/map_view/atcore_cesium_map_view.css' %}" rel="stylesheet"/>
   {% endif %}
   <link href="{% static 'workflows/map_view/geocoder.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/css/messages.css' %}" rel="stylesheet"/>

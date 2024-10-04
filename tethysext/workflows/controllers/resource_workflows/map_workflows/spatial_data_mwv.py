@@ -15,7 +15,7 @@ class SpatialDataMWV(MapWorkflowView):
     """
     Abstract controller for a map workflow view data assigned to each feature.
     """
-    template_name = 'atcore/resource_workflows/spatial_data_mwv.html'
+    template_name = 'workflows/resource_workflows/spatial_data_mwv.html'
     valid_step_classes = [SpatialDatasetRWS, SpatialAttributesRWS]
 
     # Disable the properties popup so we can create a custom pop-up

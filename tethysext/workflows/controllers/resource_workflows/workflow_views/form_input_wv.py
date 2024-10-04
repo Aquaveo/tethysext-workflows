@@ -21,7 +21,7 @@ class FormInputWV(ResourceWorkflowView):
     """
     Controller for FormInputRWV.
     """
-    template_name = 'atcore/resource_workflows/form_input_wv.html'
+    template_name = 'workflows/resource_workflows/form_input_wv.html'
     valid_step_classes = [FormInputRWS]
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
@@ -40,6 +40,7 @@ class FormInputWV(ResourceWorkflowView):
         # Status style
         form_title = current_step.options.get('form_title', current_step.name) or current_step.name
 
+        
         package, p_class = current_step.options['param_class'].rsplit('.', 1)
         mod = __import__(package, fromlist=[p_class])
         ParamClass = getattr(mod, p_class)
@@ -54,7 +55,7 @@ class FormInputWV(ResourceWorkflowView):
             if hasattr(p, 'update_precedence'):
                 p.update_precedence()
             for k, v in current_step.get_parameter('form-values').items():
-                p.set_param(k, v)
+                p.param.set_param(k, v)
             form = generate_django_form(p, form_field_prefix='param-form-',
                                         read_only=self.is_read_only(request, current_step))()
 
@@ -121,7 +122,8 @@ class FormInputWV(ResourceWorkflowView):
                 except ValueError as e:
                     raise ValueError('Invalid input to form: {}'.format(e))
 
-            step.set_parameter('resource_name', step.workflow.resource.name)
+            # TODO look at this
+            # step.set_parameter('resource_name', "hello there")
             step.set_parameter('form-values', params)
 
         elif step.options['renderer'] == 'bokeh':

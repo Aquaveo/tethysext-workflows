@@ -32,11 +32,11 @@ class TabbedResourceDetails(ResourceDetails):
         js_requirements (list<str>): A list of JavaScript files to load with the view.
         tabs (iterable<dict<tab_slug, tab_title, tab_view>>): List of dictionaries defining the tabs for this view.
     """
-    template_name = 'atcore/resources/tabbed_resource_details.html'
+    template_name = 'workflows/resources/tabbed_resource_details.html'
     css_requirements = [
         'workflows/css/center.css',
-        'atcore/app_users/css/app_users.css',
-        'atcore/app_users/css/resource_details.css'
+        'workflows/app_users/css/app_users.css',
+        'workflows/app_users/css/resource_details.css'
     ]
     js_requirements = [
         'workflows/js/enable-tabs.js',

@@ -17,7 +17,7 @@ class SetStatusWV(ResourceWorkflowView):
     """
     Controller for SetStatusRWS.
     """
-    template_name = 'atcore/resource_workflows/set_status_wv.html'
+    template_name = 'workflows/resource_workflows/set_status_wv.html'
     valid_step_classes = [SetStatusRWS]
     default_status_label = 'Status'
 

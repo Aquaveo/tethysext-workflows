@@ -22,7 +22,7 @@ class TableInputWV(ResourceWorkflowView):
     """
     Controller for a workflow view for entering a 2D dataset in an spreadsheet-like table.
     """
-    template_name = 'atcore/resource_workflows/table_input_wv.html'
+    template_name = 'workflows/resource_workflows/table_input_wv.html'
     valid_step_classes = [TableInputRWS]
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):

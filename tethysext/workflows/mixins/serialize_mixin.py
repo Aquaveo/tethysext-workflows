@@ -33,7 +33,7 @@ class SerializeMixin:
         Returns:
             Serialized Resource dictionary.
         """
-        from tethysext.atcore.mixins import UserLockMixin, AttributesMixin, StatusMixin
+        from tethysext.workflows.mixins import UserLockMixin, AttributesMixin, StatusMixin
 
         d = {
             'id': self.id,

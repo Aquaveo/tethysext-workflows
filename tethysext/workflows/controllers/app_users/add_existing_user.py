@@ -16,8 +16,8 @@ class AddExistingUser(AppUsersViewMixin):
     POST: Handle form submission to add an existing a new user from the Django user database.
     """
     page_title = 'Add Existing User'
-    template_name = 'atcore/app_users/add_existing_user.html'
-    base_template = 'atcore/app_users/base.html'
+    template_name = 'workflows/app_users/add_existing_user.html'
+    base_template = 'workflows/app_users/base.html'
     http_method_names = ['get', 'post']
 
     def get(self, request, *args, **kwargs):

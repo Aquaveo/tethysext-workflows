@@ -11,7 +11,7 @@ import shutil
 import tempfile
 from filelock import FileLock
 
-from tethysext.atcore.services.model_database_connection_base import ModelDatabaseConnectionBase
+from tethysext.workflows.services.model_database_connection_base import ModelDatabaseConnectionBase
 
 
 class ModelFileDatabaseConnection(ModelDatabaseConnectionBase):

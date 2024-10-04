@@ -70,7 +70,6 @@ class AttributesMixin(object):
         Returns:
             dict: kwargs serialized into dictionary.
         """
-        # from tethysext.atcore.models.app_users import AppUsersBase
         from ..models.base import WorkflowsBase
         # Build attributes string for query
         attributes = {}
