@@ -44,7 +44,6 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         map_context = MapView.get_context(self, *args, request=request, session=session, resource=resource, context=context, 
                                           workflow_id=workflow_id, step_id=step_id, **kwargs)
 
-        breakpoint()
         workflow_context = ResourceWorkflowView.get_context(
             self,
             *args,
