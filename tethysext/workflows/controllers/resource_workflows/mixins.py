@@ -1,5 +1,5 @@
 from ..app_users.mixins import ResourceViewMixin
-from ...models import ResourceWorkflow, ResourceWorkflowStep, ResourceWorkflowResult
+from ...models import ResourceWorkflow, Step, ResourceWorkflowResult
 
 
 class WorkflowViewMixin(ResourceViewMixin):
@@ -7,13 +7,13 @@ class WorkflowViewMixin(ResourceViewMixin):
     Mixin for class-based views that adds convenience methods for working with resources and workflows.
     """
     _ResourceWorkflow = ResourceWorkflow
-    _ResourceWorkflowStep = ResourceWorkflowStep
+    _Step = Step
 
     def get_resource_workflow_model(self):
         return self._ResourceWorkflow
     
     def get_resource_workflow_step_model(self):
-        return self._ResourceWorkflowStep
+        return self._Step
 
     def get_workflow(self, request, workflow_id, session=None):
         """
@@ -59,7 +59,7 @@ class WorkflowViewMixin(ResourceViewMixin):
         Returns:
             ResourceWorkflow: the resource.
         """
-        _ResourceWorkflowStep = self.get_resource_workflow_step_model()
+        _Step = self.get_resource_workflow_step_model()
         manage_session = False
 
         if not session:
@@ -68,8 +68,8 @@ class WorkflowViewMixin(ResourceViewMixin):
             session = make_session()
 
         try:
-            step = session.query(_ResourceWorkflowStep). \
-                filter(_ResourceWorkflowStep.id == step_id). \
+            step = session.query(_Step). \
+                filter(_Step.id == step_id). \
                 one()
 
         finally:

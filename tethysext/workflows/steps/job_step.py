@@ -1,15 +1,15 @@
 """
 ********************************************************************************
-* Name: spatial_condor_job_rws.py
+* Name: job_step.py
 * Author: nswain
 * Created On: December 17, 2018
 * Copyright: (c) Aquaveo 2018
 ********************************************************************************
 """
-from .spatial_rws import SpatialResourceWorkflowStep
+from .spatial_step import SpatialStep
 
 
-class SpatialCondorJobRWS(SpatialResourceWorkflowStep):
+class JobStep(SpatialStep):
     """
     Workflow step used for reviewing previous step parameters and submitting processing jobs to Condor.
 
@@ -18,7 +18,7 @@ class SpatialCondorJobRWS(SpatialResourceWorkflowStep):
         jobs(list<dict>): A list of dictionaries, each containing the kwargs for a CondorWorkflowJobNode.
         workflow_kwargs(dict): Additional keyword arguments to pass to the CondorWorkflow.
     """  # noqa: #501
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.map_workflows.SpatialCondorJobMWV'
+    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.map_workflows.JobStepMWV'
     TYPE = 'spatial_condor_job_workflow_step'
 
     __mapper_args__ = {

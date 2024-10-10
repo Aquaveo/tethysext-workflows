@@ -12,13 +12,12 @@ from django.shortcuts import redirect, reverse
 from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.permissions import has_permission
-from ...mixins import UserLockMixin # TODO CHECK THIS IMPORT
 from ...utilities import grammatically_correct_join # TODO CHECK THIS IMPORT
 from ...services.resource_workflows.decorators import workflow_step_controller
 from ..resource_view import ResourceView
 from .mixins import WorkflowViewMixin
 from ..utilities import get_style_for_status
-from ...models import ResourceWorkflowStep
+from ...models import Step
 
 
 log = logging.getLogger('tethys.' + __name__)
@@ -34,7 +33,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
     previous_title = 'Previous'
     next_title = 'Next'
     finish_title = 'Finish'
-    valid_step_classes = [ResourceWorkflowStep]
+    valid_step_classes = [Step]
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, *args, **kwargs):
         """
@@ -149,7 +148,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
             workflow(ResourceWorkflow): the workflow.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 
         Returns:
@@ -396,7 +395,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
 
         Args:
             request(HttpRequest): The request.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
 
         Returns:
             bool: True if user has active role.
@@ -425,7 +424,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
 
         Args:
             request(HttpRequest): The request.
-            step(ResourceWorkflowStep): The step.
+            step(Step): The step.
 
         Returns:
             bool: True if the view should be rendered in read-only mode.
@@ -443,7 +442,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
         """
         user_has_active_role = self.user_has_active_role(request, step)
 
@@ -480,7 +479,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
         """
         # Only release locks at the end of a step if the step is complete
         if step.complete:
@@ -556,9 +555,9 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
 
         Raises:
             TypeError: if step is invalid.
@@ -606,9 +605,9 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             session(sqlalchemy.Session): the session.
             resource(Resource): the resource for this request.
             workflow(ResourceWorkflow): The current workflow.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
 
         Returns:
             None or HttpResponse: If an HttpResponse is returned, render that instead.
@@ -621,7 +620,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): The resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
@@ -647,7 +646,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
 
         Args:
             request(HttpRequest): The request.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
             next_url(str): URL to the next step.
@@ -705,9 +704,9 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
 
     def extend_step_cards(self, workflow_step, step_status):
@@ -715,7 +714,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Hook for extending step card attributes.
 
         Args:
-            workflow_step(ResourceWorkflowStep): The current step for which a card is being created.
+            workflow_step(Step): The current step for which a card is being created.
             step_status(str): Status of the workflow_step.
 
         Returns:
@@ -731,9 +730,9 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
            request(HttpRequest): The request.
            session(sqlalchemy.orm.Session): Session bound to the steps.
            context(dict): Context object for the map view template.
-           current_step(ResourceWorkflowStep): The current step to be rendered.
-           previous_step(ResourceWorkflowStep): The previous step.
-           next_step(ResourceWorkflowStep): The next step.
+           current_step(Step): The current step to be rendered.
+           previous_step(Step): The previous step.
+           next_step(Step): The next step.
 
         Returns:
             dict: key-value pairs to add to context.

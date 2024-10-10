@@ -1,15 +1,15 @@
 """
 ********************************************************************************
-* Name: set_status_rws.py
+* Name: set_status_step.py
 * Author: nswain
 * Created On: August 19, 2019
 * Copyright: (c) Aquaveo 2019
 ********************************************************************************
 """
-from ..models import ResourceWorkflowStep
+from ..models import Step
 
 
-class SetStatusRWS(ResourceWorkflowStep):
+class SetStatusStep(Step):
     """
     Workflow step that can be used to change the status of a workflow with the click of a button.
     
@@ -32,7 +32,7 @@ class SetStatusRWS(ResourceWorkflowStep):
             'form_title': None,
             'status_label': None,
             'statuses': [
-                {'status': SetStatusRWS.STATUS_COMPLETE,
+                {'status': SetStatusStep.STATUS_COMPLETE,
                  'label': None}
             ],
         })

@@ -12,7 +12,7 @@ from pandas.api.types import is_numeric_dtype
 from django.shortcuts import render
 from django.http import JsonResponse
 from .spatial_data_mwv import SpatialDataMWV
-from ....steps import SpatialDatasetRWS
+from ....steps import SpatialDatasetStep
 from ....services.resource_workflows.decorators import workflow_step_controller
 from ....utilities import strip_list
 
@@ -25,7 +25,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
     Controller for a map workflow view requiring spatial input (drawing).
     """
     template_name = 'workflows/resource_workflows/spatial_dataset_mwv.html'
-    valid_step_classes = [SpatialDatasetRWS]
+    valid_step_classes = [SpatialDatasetStep]
 
     @workflow_step_controller(is_rest_controller=True)
     def get_popup_form(self, request, session, resource, workflow, step, back_url, *args, **kwargs):
@@ -36,8 +36,9 @@ class SpatialDatasetMWV(SpatialDataMWV):
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
             workflow(ResourceWorkflow): the workflow.
-            step(ResourceWorkflowStep): the step.
-            args, kwargs: Additional arguments passed to the controller.
+            step(Step): the step.
+            args, kwargs: Additional arguments passed to the controller.9699
+
 
         Returns:
             HttpResponse: A Django response.
@@ -94,7 +95,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
             workflow(ResourceWorkflow): the workflow.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 
         Returns:
@@ -154,7 +155,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): The resource being updated.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.

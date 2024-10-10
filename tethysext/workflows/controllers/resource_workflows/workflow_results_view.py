@@ -1,6 +1,6 @@
 from tethys_apps.utilities import get_active_app
 from ...models import ResourceWorkflowResult
-from ...steps import ResultsResourceWorkflowStep
+from ...steps import ResultsStep
 from .workflow_view import ResourceWorkflowView 
 from .mixins import ResultViewMixin
 
@@ -10,7 +10,7 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
     Base class for result views.
     """
     template_name = 'workflows/resource_workflows/workflow_results_view.html'
-    valid_step_classes = [ResultsResourceWorkflowStep]
+    valid_step_classes = [ResultsStep]
     valid_result_classes = [ResourceWorkflowResult]
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
@@ -92,7 +92,7 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
         """
         Build cards used by template to render the list of steps for the workflow.
         Args:
-            step(ResourceWorkflowStep): the step to which the results belong.
+            step(Step): the step to which the results belong.
 
         Returns:
             list<dict>: one dictionary for each result in the step.
@@ -135,7 +135,7 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): The resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
@@ -171,8 +171,8 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         pass

@@ -1,16 +1,16 @@
 """
 ********************************************************************************
-* Name: table_input_rws.py
+* Name: table_input_step.py
 * Author: nswain
 * Created On: March 5, 2019
 * Copyright: (c) Aquaveo 2019
 ********************************************************************************
 """
 import pandas as pd
-from ..models import ResourceWorkflowStep
+from ..models import Step
 
 
-class TableInputRWS(ResourceWorkflowStep):
+class TableInputStep(Step):
     """
     Workflow step used for setting table of data.
 
@@ -24,7 +24,7 @@ class TableInputRWS(ResourceWorkflowStep):
     """  # noqa: #501
     CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_views.table_input_wv.TableInputWV'
 
-    TYPE = 'table_input_rws'
+    TYPE = 'table_input_step'
 
     __mapper_args__ = {
         'polymorphic_identity': TYPE

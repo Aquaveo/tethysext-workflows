@@ -13,19 +13,19 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from tethys_sdk.gizmos import JobsTable
 from .map_workflow_view import MapWorkflowView
-from ....steps import SpatialCondorJobRWS
+from ....steps import JobStep
 from ....services.workflow_manager.condor_workflow_manager import ResourceWorkflowCondorJobManager
 
 
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class SpatialCondorJobMWV(MapWorkflowView):
+class JobStepMWV(MapWorkflowView):
     """
     Controller for a map workflow view requiring spatial input (drawing).
     """
     template_name = 'workflows/resource_workflows/spatial_condor_job_mwv.html'
-    valid_step_classes = [SpatialCondorJobRWS]
+    valid_step_classes = [JobStep]
     previous_steps_selectable = True
     jobs_table_refresh_interval = int(os.getenv('JOBS_TABLE_REFRESH_INTERVAL', 30000))  # ms
 
@@ -38,9 +38,9 @@ class SpatialCondorJobMWV(MapWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Turn off feature selection on model layers
         map_view = context['map_view']
@@ -80,9 +80,9 @@ class SpatialCondorJobMWV(MapWorkflowView):
             session(sqlalchemy.Session): the session.
             resource(Resource): the resource for this request.
             workflow(ResourceWorkflow): The current workflow.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         Returns:
             None or HttpResponse: If an HttpResponse is returned, render that instead.
         """  # noqa: E501
@@ -99,7 +99,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
             session(sqlalchemy.Session): the session.
             resource(Resource): the resource for this request.
             workflow(ResourceWorkflow): The current workflow.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
+            current_step(Step): The current step to be rendered.
         Returns:
             HttpResponse: The condor job table view.
         """
@@ -163,7 +163,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): The resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
@@ -225,11 +225,11 @@ class SpatialCondorJobMWV(MapWorkflowView):
         # Get options
         scheduler_name = step.options.get('scheduler', None)
         if not scheduler_name:
-            raise RuntimeError('Improperly configured SpatialCondorJobRWS: no "scheduler" option supplied.')
+            raise RuntimeError('Improperly configured JobStep: no "scheduler" option supplied.')
 
         jobs = step.options.get('jobs', None)
         if not jobs:
-            raise RuntimeError('Improperly configured SpatialCondorJobRWS: no "jobs" option supplied.')
+            raise RuntimeError('Improperly configured JobStep: no "jobs" option supplied.')
 
         workflow_kwargs = step.options.get('workflow_kwargs', None)
 
@@ -303,7 +303,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
             request(HttpRequest): Django request instance.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
         """
         lock_workflow_on_submit = step.options.get('lock_workflow_on_job_submit', False)
         lock_resource_on_submit = step.options.get('lock_resource_on_job_submit', False)
@@ -311,11 +311,11 @@ class SpatialCondorJobMWV(MapWorkflowView):
         unlock_resource_on_submit = step.options.get('unlock_resource_on_job_submit', False)
 
         if lock_workflow_on_submit and unlock_workflow_on_submit:
-            raise RuntimeError('Improperly configured SpatialCondorJobRWS: lock_workflow_on_job_submit and '
+            raise RuntimeError('Improperly configured JobStep: lock_workflow_on_job_submit and '
                                'unlock_workflow_on_job_submit options are mutually exclusive.')
 
         if lock_resource_on_submit and unlock_resource_on_submit:
-            raise RuntimeError('Improperly configured SpatialCondorJobRWS: lock_resource_on_job_submit and '
+            raise RuntimeError('Improperly configured JobStep: lock_resource_on_job_submit and '
                                'unlock_resource_on_job_submit options are mutually exclusive.')
 
         if lock_resource_on_submit:
@@ -352,7 +352,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
         Serialize parameters from previous steps into a file for sending with the workflow.
 
         Args:
-            step(ResourceWorkflowStep): The current step.
+            step(Step): The current step.
 
         Returns:
             str: path to the file containing serialized parameters.
@@ -373,7 +373,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
         """
         user_has_active_role = self.user_has_active_role(request, step)
 
@@ -392,7 +392,7 @@ class SpatialCondorJobMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
         """
         if not step.options.get('unlock_resource_on_job_complete') \
                 and not step.options.get('unlock_workflow_on_job_complete'):

@@ -14,8 +14,8 @@ from django.contrib import messages
 from ...exceptions import ATCoreException
 from .helpers import set_step_status, parse_workflow_step_args
 from ...utilities import clean_request, import_from_string
-from ...models import ResourceWorkflowStep
-# DO NOT REMOVE, need to import all the subclasses of ResourceWorkflowStep for the polymorphism to work.
+from ...models import Step
+# DO NOT REMOVE, need to import all the subclasses of Step for the polymorphism to work.
 from ...steps import *  # noqa: F401, F403
 from ...results import *  # noqa: F401, F403
 # END DO NOT REMOVE
@@ -138,9 +138,9 @@ def workflow_step_job(job_func):
 
                 # Get the step
                 # NOTE: if you get an error related to polymorphic_identity not being found, it may be caused by import
-                # errors with a subclass of the ResourceWorkflowStep. It could also be caused indirectly if the subclass
+                # errors with a subclass of the Step. It could also be caused indirectly if the subclass
                 # has Pickle typed columns with values that import things.
-                step = resource_db_session.query(ResourceWorkflowStep).get(args.resource_workflow_step_id)
+                step = resource_db_session.query(Step).get(args.resource_workflow_step_id)
 
                 # Process parameters from workflow steps
                 with open(args.workflow_params_file, 'r') as p:

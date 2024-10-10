@@ -9,7 +9,7 @@
 from tethys_sdk.base import with_request
 from tethys_apps.utilities import get_active_app
 import panel as pn
-from .models import ResourceWorkflowStep
+from .models import Step
 
 
 @with_request
@@ -19,7 +19,7 @@ def panel_rws_handler(document):
     session = Session()
 
     current_step_id = document.request.url_route['kwargs']['step_id']
-    current_step = session.query(ResourceWorkflowStep).get(current_step_id)
+    current_step = session.query(Step).get(current_step_id)
 
     package, p_class = current_step.options['param_class'].rsplit('.', 1)
     mod = __import__(package, fromlist=[p_class])

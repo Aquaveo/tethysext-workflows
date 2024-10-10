@@ -20,10 +20,10 @@ from .associations import step_parent_child_association
 from .controller_metadata import ControllerMetadata
 from ..utilities import json_serializer
 
-__all__ = ['ResourceWorkflowStep']
+__all__ = ['Step']
 
 
-class ResourceWorkflowStep(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
+class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     """
     Data model for storing information about resource workflows.
 
@@ -81,7 +81,7 @@ class ResourceWorkflowStep(WorkflowsBase, StatusMixin, AttributesMixin, OptionsM
     )
 
     children = relationship(
-        'ResourceWorkflowStep',
+        'Step',
         secondary=step_parent_child_association,
         backref=backref('parents'),
         secondaryjoin=id == step_parent_child_association.c.child_id,
@@ -90,7 +90,7 @@ class ResourceWorkflowStep(WorkflowsBase, StatusMixin, AttributesMixin, OptionsM
     )
 
     result = relationship(
-        'ResultsResourceWorkflowStep',
+        'ResultsStep',
         backref=backref('source', uselist=False),
         foreign_keys=[result_id],
         remote_side=[id],
@@ -195,10 +195,10 @@ class ResourceWorkflowStep(WorkflowsBase, StatusMixin, AttributesMixin, OptionsM
 
     def to_dict(self):
         """
-        Serialize ResourceWorkflowStep into a dictionary.
+        Serialize Step into a dictionary.
 
         Returns:
-            dict: dictionary representation of ResourceWorkflowStep.
+            dict: dictionary representation of Step.
         """
         d = {}
 
@@ -218,10 +218,10 @@ class ResourceWorkflowStep(WorkflowsBase, StatusMixin, AttributesMixin, OptionsM
 
     def to_json(self):
         """
-        Serialize ResourceWorkflowStep, including parameters, to json.
+        Serialize Step, including parameters, to json.
 
         Returns:
-            str: JSON string representation of ResourceWorkflowStep.
+            str: JSON string representation of Step.
         """
         return json.dumps(self.to_dict(), default=json_serializer)
 

@@ -46,11 +46,11 @@ def main(resource_db_session, workflow, step, gs_private_url, gs_public_url,
             unlock_workflow_on_complete = step.options.get('unlock_workflow_on_job_complete', None)
 
             if lock_resource_on_complete and unlock_resource_on_complete:
-                raise RuntimeError('Improperly configured SpatialCondorJobRWS: lock_resource_on_job_complete and '
+                raise RuntimeError('Improperly configured JobStep: lock_resource_on_job_complete and '
                                    'unlock_resource_on_job_complete options are mutually exclusive.')
 
             if lock_workflow_on_complete and unlock_workflow_on_complete:
-                raise RuntimeError('Improperly configured SpatialCondorJobRWS: lock_workflow_on_job_complete and '
+                raise RuntimeError('Improperly configured JobStep: lock_workflow_on_job_complete and '
                                    'unlock_workflow_on_job_complete options are mutually exclusive.')
 
             if lock_resource_on_complete:
@@ -125,11 +125,11 @@ def main(resource_db_session, workflow, step, gs_private_url, gs_public_url,
 #             unlock_workflow_on_complete = step.options.get('unlock_workflow_on_job_complete', None)
 
 #             if lock_resource_on_complete and unlock_resource_on_complete:
-#                 raise RuntimeError('Improperly configured SpatialCondorJobRWS: lock_resource_on_job_complete and '
+#                 raise RuntimeError('Improperly configured JobStep: lock_resource_on_job_complete and '
 #                                    'unlock_resource_on_job_complete options are mutually exclusive.')
 
 #             if lock_workflow_on_complete and unlock_workflow_on_complete:
-#                 raise RuntimeError('Improperly configured SpatialCondorJobRWS: lock_workflow_on_job_complete and '
+#                 raise RuntimeError('Improperly configured JobStep: lock_workflow_on_job_complete and '
 #                                    'unlock_workflow_on_job_complete options are mutually exclusive.')
 
 #             if lock_resource_on_complete:

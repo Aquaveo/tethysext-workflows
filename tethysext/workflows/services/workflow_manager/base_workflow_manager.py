@@ -19,7 +19,7 @@ class BaseWorkflowManager(object):
         Args:
             session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the resource workflow.
             model_db(ModelDatabase): ModelDatabase instance bound to model database.
-            resource_workflow_step(atcore.models.app_users.ResourceWorkflowStep): Instance of ResourceWorkflowStep. Note: Must have active session (i.e. not closed).
+            resource_workflow_step(atcore.models.app_users.Step): Instance of Step. Note: Must have active session (i.e. not closed).
             user(auth.User): The Django user submitting the job.
             working_directory(str): Path to users's workspace.
             app(TethysAppBase): Class or instance of an app.

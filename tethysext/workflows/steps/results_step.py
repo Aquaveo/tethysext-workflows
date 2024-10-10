@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: results_rws.py
+* Name: results_step.py
 * Author: nswain
 * Created On: March 28, 2019
 * Copyright: (c) Aquaveo 2019
@@ -8,10 +8,10 @@
 """
 from sqlalchemy.orm import relationship
 from ..mixins import ResultsMixin, AttributesMixin
-from ..models import ResourceWorkflowStep, step_result_association
+from ..models import Step, step_result_association
 
 
-class ResultsResourceWorkflowStep(ResourceWorkflowStep, AttributesMixin, ResultsMixin):
+class ResultsStep(Step, AttributesMixin, ResultsMixin):
     """
     Abstract base class of all Results Resource Workflow Steps.
     """  # noqa: E501

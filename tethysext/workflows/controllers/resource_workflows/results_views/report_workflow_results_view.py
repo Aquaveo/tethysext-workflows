@@ -38,9 +38,9 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Turn off feature selection on model layers
         map_view = context['map_view']

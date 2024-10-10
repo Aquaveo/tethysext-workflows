@@ -20,8 +20,8 @@ from .guid import GUID
 
 from ..mixins import AttributesMixin, ResultsMixin, SerializeMixin
 from .base import WorkflowsBase
-from .resource_workflow_step import ResourceWorkflowStep
-from ..steps import FormInputRWS, ResultsResourceWorkflowStep
+from .resource_workflow_step import Step
+from ..steps import FormInputStep, ResultsStep
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -53,21 +53,21 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
     DISPLAY_TYPE_SINGULAR = 'Generic Workflow'
     DISPLAY_TYPE_PLURAL = 'Generic Workflows'
 
-    STATUS_PENDING = ResourceWorkflowStep.STATUS_PENDING
-    STATUS_CONTINUE = ResourceWorkflowStep.STATUS_CONTINUE
-    STATUS_WORKING = ResourceWorkflowStep.STATUS_WORKING
-    STATUS_COMPLETE = ResourceWorkflowStep.STATUS_COMPLETE
-    STATUS_FAILED = ResourceWorkflowStep.STATUS_FAILED
-    STATUS_ERROR = ResourceWorkflowStep.STATUS_ERROR
+    STATUS_PENDING = Step.STATUS_PENDING
+    STATUS_CONTINUE = Step.STATUS_CONTINUE
+    STATUS_WORKING = Step.STATUS_WORKING
+    STATUS_COMPLETE = Step.STATUS_COMPLETE
+    STATUS_FAILED = Step.STATUS_FAILED
+    STATUS_ERROR = Step.STATUS_ERROR
 
-    STATUS_SUBMITTED = ResourceWorkflowStep.STATUS_SUBMITTED
-    STATUS_UNDER_REVIEW = ResourceWorkflowStep.STATUS_UNDER_REVIEW
-    STATUS_APPROVED = ResourceWorkflowStep.STATUS_APPROVED
-    STATUS_REJECTED = ResourceWorkflowStep.STATUS_REJECTED
-    STATUS_CHANGES_REQUESTED = ResourceWorkflowStep.STATUS_CHANGES_REQUESTED
-    STATUS_REVIEWED = ResourceWorkflowStep.STATUS_REVIEWED
+    STATUS_SUBMITTED = Step.STATUS_SUBMITTED
+    STATUS_UNDER_REVIEW = Step.STATUS_UNDER_REVIEW
+    STATUS_APPROVED = Step.STATUS_APPROVED
+    STATUS_REJECTED = Step.STATUS_REJECTED
+    STATUS_CHANGES_REQUESTED = Step.STATUS_CHANGES_REQUESTED
+    STATUS_REVIEWED = Step.STATUS_REVIEWED
 
-    COMPLETE_STATUSES = ResourceWorkflowStep.COMPLETE_STATUSES
+    COMPLETE_STATUSES = Step.COMPLETE_STATUSES
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
     #resource_id = Column(GUID, ForeignKey('app_users_resources.id'))
@@ -82,7 +82,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
 
     # resource = relationship('Resource', backref=backref('workflows', cascade='all,delete'))
 
-    steps = relationship('ResourceWorkflowStep', order_by='ResourceWorkflowStep.order', backref='workflow',
+    steps = relationship('Step', order_by='Step.order', backref='workflow',
                          cascade='all,delete')
     results = relationship('ResourceWorkflowResult', order_by='ResourceWorkflowResult.order', backref='workflow',
                            cascade='all,delete')
@@ -104,7 +104,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         Return the next step object, based on the status of the steps.
 
         Returns:
-            int, ResourceWorkflowStep: the index of the next step and the next step.
+            int, Step: the index of the next step and the next step.
         """
         idx = 0
         step = None
@@ -121,15 +121,15 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         Returns the status of the next workflow step.
 
         Returns:
-            ResourceWorkflowStep.STATUS_X: status of the next step.
+            Step.STATUS_X: status of the next step.
         """
         index, next_step = self.get_next_step()
         # TODO: Handle when next step is None or all complete = show results
-        status = next_step.get_status(ResourceWorkflowStep.ROOT_STATUS_KEY) \
-            if next_step else ResourceWorkflowStep.STATUS_NONE
+        status = next_step.get_status(Step.ROOT_STATUS_KEY) \
+            if next_step else Step.STATUS_NONE
 
         # If we are not on the first step and the status is pending, workflow status is continue
-        if status == ResourceWorkflowStep.STATUS_PENDING and index > 0:
+        if status == Step.STATUS_PENDING and index > 0:
             return self.STATUS_CONTINUE
 
         return status
@@ -142,7 +142,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
             name(str): The name of the step you want to get.
 
         Returns:
-            ResourceWorkflowStep: the step with matching name or None if not found.
+            Step: the step with matching name or None if not found.
         """
         for step in self.steps:
             if step.name == name:
@@ -153,10 +153,10 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         Get the adjacent steps to the given step.
 
         Args:
-            step(ResourceWorkflowStep): A step belonging to this workflow.
+            step(Step): A step belonging to this workflow.
 
         Returns:
-            ResourceWorkflowStep, ResourceWorkflowStep: previous and next steps, respectively.
+            Step, Step: previous and next steps, respectively.
         """
         if step not in self.steps:
             raise ValueError('Step {} does not belong to this workflow.'.format(step))
@@ -174,10 +174,10 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         Get all previous steps to the given step.
 
         Args:
-           step(ResourceWorkflowStep): A step belonging to this workflow.
+           step(Step): A step belonging to this workflow.
 
         Returns:
-            list<ResourceWorkflowStep>: a list of steps previous to this one.
+            list<Step>: a list of steps previous to this one.
         """
         if step not in self.steps:
             raise ValueError('Step {} does not belong to this workflow.'.format(step))
@@ -191,7 +191,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         Get all tabular data for previous steps based on the given step.
 
         Args:
-            step(ResourceWorkflowStep): A step belonging to this workflow.
+            step(Step): A step belonging to this workflow.
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             resource(Resource): the resource for this request.
@@ -204,7 +204,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
 
         previous_steps = self.get_previous_steps(step)
         steps_to_skip = set()
-        mappable_tabular_step_types = (FormInputRWS,)
+        mappable_tabular_step_types = (FormInputStep,)
         step_data = {}
         for step in previous_steps:
             # skip non form steps
@@ -245,10 +245,10 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         """
         Get all steps following the given step.
         Args:
-            step(ResourceWorkflowStep): A step belonging to this workflow.
+            step(Step): A step belonging to this workflow.
 
         Returns:
-            list<ResourceWorkflowStep>: a list of steps following this one.
+            list<Step>: a list of steps following this one.
         """
         if step not in self.steps:
             raise ValueError('Step {} does not belong to this workflow.'.format(step))
@@ -261,7 +261,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         """
         Reset all steps following the given step that are not PENDING.
         Args:
-            step(ResourceWorkflowStep): A step belonging to this workflow.
+            step(Step): A step belonging to this workflow.
             include_current(bool): Reset current step
         """
         if step not in self.steps:
@@ -312,7 +312,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
         """
         results = [r.serialize(format='dict') for r in self.results]
         for step in self.steps:
-            if isinstance(step, ResultsResourceWorkflowStep):
+            if isinstance(step, ResultsStep):
                 results.extend([r.serialize(format='dict') for r in step.results])
 
         d.update({

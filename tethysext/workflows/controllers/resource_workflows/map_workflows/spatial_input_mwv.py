@@ -21,7 +21,7 @@ from django.http import JsonResponse
 from tethys_sdk.gizmos import MVDraw
 from ....forms.widgets.param_widgets import generate_django_form
 from .map_workflow_view import MapWorkflowView
-from ....steps import SpatialInputRWS
+from ....steps import SpatialInputStep
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -32,7 +32,7 @@ class SpatialInputMWV(MapWorkflowView):
     Controller for a map workflow view requiring spatial input (drawing).
     """
     template_name = 'workflows/resource_workflows/spatial_input_mwv.html'
-    valid_step_classes = [SpatialInputRWS]
+    valid_step_classes = [SpatialInputStep]
 
     def get_step_specific_context(self, request, session, context, current_step, previous_step, next_step):
         """
@@ -42,9 +42,9 @@ class SpatialInputMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
 
         Returns:
             dict: key-value pairs to add to context.
@@ -74,9 +74,9 @@ class SpatialInputMWV(MapWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Prepare attributes form
         attributes = current_step.options.get('attributes', None)
@@ -196,7 +196,7 @@ class SpatialInputMWV(MapWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): the resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
@@ -555,7 +555,7 @@ class SpatialInputMWV(MapWorkflowView):
 
         Args:
             request(HttpRequest): The request.
-            step(ResourceWorkflowStep): The workflow step.
+            step(Step): The workflow step.
             in_memory_file(InMemoryUploadedFile): A GeoTiff image that has been uploaded.
 
         Returns:

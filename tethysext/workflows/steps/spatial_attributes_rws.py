@@ -1,14 +1,14 @@
 """
 ********************************************************************************
-* Name: spatial_attributes_rws.py
+* Name: spatial_attributes_step.py
 * Author: nswain
 * Created On: December 17, 2018
 * Copyright: (c) Aquaveo 2018
 ********************************************************************************
 """
-from .spatial_rws import SpatialResourceWorkflowStep
+from .spatial_step import SpatialStep
 
-class SpatialAttributesRWS(SpatialResourceWorkflowStep):
+class SpatialAttributesRWS(SpatialStep):
     """
     Workflow step used for setting simple valued attributes on features.
 

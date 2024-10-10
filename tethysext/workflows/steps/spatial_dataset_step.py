@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: spatial_dataset_rws.py
+* Name: spatial_dataset_step.py
 * Author: nswain
 * Created On: March 5, 2019
 * Copyright: (c) Aquaveo 2019
@@ -8,10 +8,10 @@
 """
 import json
 import pandas as pd
-from .spatial_rws import SpatialResourceWorkflowStep
+from .spatial_step import SpatialStep
 
 
-class SpatialDatasetRWS(SpatialResourceWorkflowStep):
+class SpatialDatasetStep(SpatialStep):
     """
     Workflow step used for setting dataset attributes on features.
 
@@ -101,10 +101,10 @@ class SpatialDatasetRWS(SpatialResourceWorkflowStep):
 
     def to_dict(self):
         """
-        Serialize ResourceWorkflowStep into a dictionary.
+        Serialize Step into a dictionary.
 
         Returns:
-            dict: dictionary representation of ResourceWorkflowStep.
+            dict: dictionary representation of Step.
         """
         # Get default dict representation
         d = super().to_dict()
@@ -122,13 +122,13 @@ class SpatialDatasetRWS(SpatialResourceWorkflowStep):
 
     def to_geojson(self, as_str=False):
         """
-        Serialize SpatialResourceWorkflowStep to GeoJSON.
+        Serialize SpatialStep to GeoJSON.
 
         Args:
             as_str(bool): Returns GeoJSON string if True, otherwise returns dict equivalent.
 
         Returns:
-            str or dict: GeoJSON string or dict equivalent representation of the spatial portions of a SpatialResourceWorkflowStep.
+            str or dict: GeoJSON string or dict equivalent representation of the spatial portions of a SpatialStep.
         """  # noqa: E501
         # Get geometry from parent step
         geojson_dict = self.resolve_option('geometry_source')

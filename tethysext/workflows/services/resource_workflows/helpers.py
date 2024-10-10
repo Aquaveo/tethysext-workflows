@@ -6,7 +6,7 @@ def set_step_status(resource_db_session, step, status):
     Sets the status on the provided step to the provided status.
     Args:
         resource_db_session(sqlalchemy.orm.Session): Session bound to the step.
-        step(ResourceWorkflowStep): The step to modify
+        step(Step): The step to modify
         status(str): The status to set.
     """
     resource_db_session.refresh(step)
@@ -41,7 +41,7 @@ def parse_workflow_step_args():
     )
     parser.add_argument(
         'resource_workflow_step_id',
-        help='ID of the ResourceWorkflowStep this job is associated with.'
+        help='ID of the Step this job is associated with.'
     )
     parser.add_argument(
         'gs_private_url',

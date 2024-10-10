@@ -7,7 +7,7 @@
 ********************************************************************************
 """
 from .map_workflow_view import MapWorkflowView
-from ....steps import SpatialDatasetRWS, SpatialAttributesRWS
+from ....steps import SpatialDatasetStep, SpatialAttributesRWS
 from ....services.resource_workflows.decorators import workflow_step_controller
 
 
@@ -16,7 +16,7 @@ class SpatialDataMWV(MapWorkflowView):
     Abstract controller for a map workflow view data assigned to each feature.
     """
     template_name = 'workflows/resource_workflows/spatial_data_mwv.html'
-    valid_step_classes = [SpatialDatasetRWS, SpatialAttributesRWS]
+    valid_step_classes = [SpatialDatasetStep, SpatialAttributesRWS]
 
     # Disable the properties popup so we can create a custom pop-up
     properties_popup_enabled = False
@@ -30,9 +30,9 @@ class SpatialDataMWV(MapWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         if not current_step.options['geometry_source']:
             raise RuntimeError('The geometry option is required.')
@@ -106,7 +106,7 @@ class SpatialDataMWV(MapWorkflowView):
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
             workflow(ResourceWorkflow): the workflow.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 
         Returns:
@@ -123,7 +123,7 @@ class SpatialDataMWV(MapWorkflowView):
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
             workflow(ResourceWorkflow): the workflow.
-            step(ResourceWorkflowStep): the step.
+            step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 
         Returns:

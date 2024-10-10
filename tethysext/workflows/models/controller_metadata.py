@@ -58,7 +58,7 @@ z
             # Call with all but workflow kwargs if ResourceView
             elif issubclass(controller, ResourceViewMixin):
                 kwargs.pop('_ResourceWorkflow', None)
-                kwargs.pop('_ResourceWorkflowStep', None)
+                kwargs.pop('_Step', None)
                 kwargs.update(self.kwargs)
                 controller = controller.as_controller(**kwargs)
 

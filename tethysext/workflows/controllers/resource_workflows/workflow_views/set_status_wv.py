@@ -9,16 +9,16 @@
 import logging
 
 from ..workflow_view import ResourceWorkflowView
-from ....steps import SetStatusRWS 
+from ....steps import SetStatusStep
 log = logging.getLogger(f'tethys.{__name__}')
 
 
 class SetStatusWV(ResourceWorkflowView):
     """
-    Controller for SetStatusRWS.
+    Controller for SetStatusStep.
     """
     template_name = 'workflows/resource_workflows/set_status_wv.html'
-    valid_step_classes = [SetStatusRWS]
+    valid_step_classes = [SetStatusStep]
     default_status_label = 'Status'
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
@@ -30,9 +30,9 @@ class SetStatusWV(ResourceWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Validate the statuses option
         current_step.validate_statuses()
@@ -61,7 +61,7 @@ class SetStatusWV(ResourceWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): the resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.

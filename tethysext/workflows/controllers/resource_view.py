@@ -22,7 +22,7 @@ class ResourceView(ResourceViewMixin):
     view_title = ''
     view_subtitle = ''
     template_name = ''
-    base_template = 'atcore/base.html'
+    base_template = 'workflows/base.html'
 
     @active_user_required()
     @resource_controller()

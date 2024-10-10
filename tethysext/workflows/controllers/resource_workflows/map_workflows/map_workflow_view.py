@@ -8,10 +8,10 @@
 """
 import logging
 
-from ....steps import SpatialInputRWS, SpatialResourceWorkflowStep
+from ....steps import SpatialInputStep, SpatialStep
 from ..workflow_view import ResourceWorkflowView
 from ...map_view import MapView
-from ....models import ResourceWorkflowStep
+from ....models import Step
 
 log = logging.getLogger(f'tethys.{__name__}')
 
@@ -21,7 +21,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
     Controller for a map view with workflows integration.
     """
     template_name = 'workflows/resource_workflows/map_workflow_view.html'
-    valid_step_classes = [ResourceWorkflowStep]
+    valid_step_classes = [Step]
     previous_steps_selectable = False
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, *args, **kwargs):
@@ -83,9 +83,9 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Get Map View and Layer Groups
         map_view = context['map_view']
@@ -114,7 +114,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         Args:
             request(HttpRequest): The request.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
+            current_step(Step): The current step to be rendered.
             map_view(MapView): The Tethys MapView object.
             layer_groups(list<dict>): List of layer group dictionaries for new layers to add.
             selectable(bool): Layers generated for previous steps are selectable when True.
@@ -126,7 +126,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         previous_steps = current_step.workflow.get_previous_steps(current_step)
         workflow_layers = []
         steps_to_skip = set()
-        mappable_step_types = (SpatialInputRWS,)
+        mappable_step_types = (SpatialInputStep,)
 
         # Get managers
         map_manager = self.get_map_manager(
@@ -147,15 +147,15 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
             geometry = None
             if not step.children:
                 # Get the geometry of the step if no children exist
-                if isinstance(step, SpatialResourceWorkflowStep):
+                if isinstance(step, SpatialStep):
                     geometry = step.to_geojson()
             else:
                 for child in step.children:
                     # If step has a child, get geojson from the child,
                     # which will include the properties added by the child
                     if child is not None:
-                        # Child step must be a SpatialResourceWorkflowStep
-                        if not isinstance(child, SpatialResourceWorkflowStep):
+                        # Child step must be a SpatialStep
+                        if not isinstance(child, SpatialStep):
                             continue
 
                         # Child geojson should include properties it adds to the features
@@ -205,7 +205,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         Build an MVLayer object given a step and a GeoJSON formatted geometry.
 
         Args:
-            step(SpatialResourceWorkflowStep): The step the geometry is associated with.
+            step(SpatialStep): The step the geometry is associated with.
             geojson(dict): GeoJSON Python equivalent.
             map_manager(MapManagerBase): The map manager for this MapView.
             selectable(bool): Layer built is selectable when True.

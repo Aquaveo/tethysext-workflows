@@ -118,7 +118,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
             if legend:
                 legend_input_options = [(color_ramp, color_ramp) for color_ramp in legend['color_list']]
-                legend_attrs = {"onchange": f"ATCORE_MAP_VIEW.reload_legend( this, {legend['min_value']}, "
+                legend_attrs = {"onchange": f"ATCORE_MAP_VIEW.reload_legend( this, {legend['min_value']}, " #TODO check this out
                                             f"{legend['max_value']}, '{legend['prefix']}', '{legend['color_prefix']}', "
                                             f"{legend['first_division']}, '{legend['layer_id']}' )"}
 

@@ -1,16 +1,16 @@
 """
 ********************************************************************************
-* Name: spatial_rws.py
+* Name: spatial_step.py
 * Author: nswain
 * Created On: March 28, 2019
 * Copyright: (c) Aquaveo 2019
 ********************************************************************************
 """
 import json
-from ..models import ResourceWorkflowStep
+from ..models import Step
 
 
-class SpatialResourceWorkflowStep(ResourceWorkflowStep):
+class SpatialStep(Step):
     """
     Abstract base class of all Spatial Resource Workflow Steps.
     """  # noqa: #501
@@ -47,13 +47,13 @@ class SpatialResourceWorkflowStep(ResourceWorkflowStep):
 
     def to_geojson(self, as_str=False):
         """
-        Serialize SpatialResourceWorkflowStep to GeoJSON.
+        Serialize SpatialStep to GeoJSON.
 
         Args:
             as_str(bool): Returns GeoJSON string if True, otherwise returns dict equivalent.
 
         Returns:
-            str or dict: GeoJSON string or dict equivalent representation of the spatial portions of a SpatialResourceWorkflowStep.
+            str or dict: GeoJSON string or dict equivalent representation of the spatial portions of a SpatialStep.
         """  # noqa: E501
         geojson_dict = self.get_parameter('geometry')
 

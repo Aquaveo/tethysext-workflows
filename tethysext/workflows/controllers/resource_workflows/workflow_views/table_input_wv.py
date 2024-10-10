@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 from pandas.api.types import is_numeric_dtype
 from ..workflow_view import ResourceWorkflowView
-from ....steps import TableInputRWS
+from ....steps import TableInputStep
 from ....utilities import strip_list
 
 
@@ -23,7 +23,7 @@ class TableInputWV(ResourceWorkflowView):
     Controller for a workflow view for entering a 2D dataset in an spreadsheet-like table.
     """
     template_name = 'workflows/resource_workflows/table_input_wv.html'
-    valid_step_classes = [TableInputRWS]
+    valid_step_classes = [TableInputStep]
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
         """
@@ -34,9 +34,9 @@ class TableInputWV(ResourceWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Get previously saved dataset, if there is one
         dataset = current_step.get_parameter('dataset')
@@ -88,7 +88,7 @@ class TableInputWV(ResourceWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): The resource being updated.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.

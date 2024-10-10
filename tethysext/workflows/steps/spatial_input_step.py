@@ -1,16 +1,16 @@
 """
 ********************************************************************************
-* Name: spatial_input_rws.py
+* Name: spatial_input_step.py
 * Author: nswain
 * Created On: December 17, 2018
 * Copyright: (c) Aquaveo 2018
 ********************************************************************************
 """
 import param
-from .spatial_rws import SpatialResourceWorkflowStep
+from .spatial_step import SpatialStep
 
 
-class SpatialInputRWS(SpatialResourceWorkflowStep):
+class SpatialInputStep(SpatialStep):
     """
     Workflow step used for retrieving simple spatial user input (points, lines, polygons).
 

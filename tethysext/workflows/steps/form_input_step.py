@@ -1,15 +1,15 @@
 """
 ********************************************************************************
-* Name: form_input_rws.py
+* Name: form_input_step.py
 * Author: glarsen, mlebaron
 * Created On: October 17, 2019
 * Copyright: (c) Aquaveo 2019
 ********************************************************************************
 """
-from ..models import ResourceWorkflowStep
+from ..models import Step
 
 
-class FormInputRWS(ResourceWorkflowStep):
+class FormInputStep(Step):
     """
     Workflow step that can be used to get form input from a user.
 

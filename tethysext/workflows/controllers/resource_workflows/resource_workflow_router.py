@@ -14,7 +14,7 @@ from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from ...exceptions import ATCoreException
 from .mixins import WorkflowViewMixin
-from ...steps import ResultsResourceWorkflowStep # TODO ADD THIS IMPORT
+from ...steps import ResultsStep # TODO ADD THIS IMPORT
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -70,7 +70,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
                 step = self.get_step(request, step_id, session)
 
             # Determine if step is result step
-            is_result_step = isinstance(step, ResultsResourceWorkflowStep)
+            is_result_step = isinstance(step, ResultsStep)
 
             # Handle result steps
             if is_result_step and not result_id_given:
@@ -215,7 +215,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
                 _ResourceWorkflow=self._ResourceWorkflow,
-                _ResourceWorkflowStep=self._ResourceWorkflowStep,
+                _Step=self._Step,
                 base_template=self.base_template
             )
 
@@ -264,9 +264,9 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             session = make_session()
             step = self.get_step(request, step_id, session=session)
 
-            # Check if step is ResultsResourceWorkflowStep
-            if not isinstance(step, ResultsResourceWorkflowStep):
-                raise RuntimeError('Step must be a ResultsResourceWorkflowStep.')
+            # Check if step is ResultsStep
+            if not isinstance(step, ResultsStep):
+                raise RuntimeError('Step must be a ResultsStep.')
 
             # Get the result from the step
             result = step.get_result(result_id=result_id)
@@ -287,7 +287,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
                 _ResourceWorkflow=self._ResourceWorkflow,
-                _ResourceWorkflowStep=self._ResourceWorkflowStep,
+                _Step=self._Step,
                 base_template=self.base_template
             )
 

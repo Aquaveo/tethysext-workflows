@@ -9,7 +9,7 @@
 import logging
 
 from ..workflow_view import ResourceWorkflowView
-from ....steps import FormInputRWS
+from ....steps import FormInputStep
 from ....forms.widgets.param_widgets import generate_django_form
 
 from bokeh.embed import server_document
@@ -22,7 +22,7 @@ class FormInputWV(ResourceWorkflowView):
     Controller for FormInputRWV.
     """
     template_name = 'workflows/resource_workflows/form_input_wv.html'
-    valid_step_classes = [FormInputRWS]
+    valid_step_classes = [FormInputStep]
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
         """
@@ -33,9 +33,9 @@ class FormInputWV(ResourceWorkflowView):
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
             resource(Resource): the resource for this request.
-            current_step(ResourceWorkflowStep): The current step to be rendered.
-            previous_step(ResourceWorkflowStep): The previous step.
-            next_step(ResourceWorkflowStep): The next step.
+            current_step(Step): The current step to be rendered.
+            previous_step(Step): The previous step.
+            next_step(Step): The next step.
         """
         # Status style
         form_title = current_step.options.get('form_title', current_step.name) or current_step.name
@@ -82,7 +82,7 @@ class FormInputWV(ResourceWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            step(ResourceWorkflowStep): The step to be updated.
+            step(Step): The step to be updated.
             resource(Resource): the resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
