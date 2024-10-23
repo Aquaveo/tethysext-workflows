@@ -8,12 +8,12 @@
 """
 import copy
 import pandas as pd
-from ..models import ResourceWorkflowResult
+from ..models import Result
 
 __all__ = ['DatasetWorkflowResult']
 
 
-class DatasetWorkflowResult(ResourceWorkflowResult):
+class DatasetWorkflowResult(Result):
     """
     Data model for storing spatial information about resource workflow results.
     """

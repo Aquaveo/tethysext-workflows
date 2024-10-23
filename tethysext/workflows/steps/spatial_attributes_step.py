@@ -8,6 +8,7 @@
 """
 from .spatial_step import SpatialStep
 
+# TODO rename this and this file
 class SpatialAttributesRWS(SpatialStep):
     """
     Workflow step used for setting simple valued attributes on features.

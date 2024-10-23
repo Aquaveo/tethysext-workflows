@@ -1,4 +1,4 @@
-{% extends "workflows/resource_workflows/workflow_results_view.html" %}
+{% extends "workflows/workflows/workflow_results_view.html" %}
 {% load static tethys_gizmos %}
 
 {% block content_dependent_styles %}
@@ -51,5 +51,5 @@
 {% block styles %}
   {{ block.super }}
   <link href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css" rel="stylesheet"/>
-  <link href="{% static 'workflows/resource_workflows/dataset_workflow_results.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/workflows/dataset_workflow_results.css' %}" rel="stylesheet"/>
 {% endblock %}

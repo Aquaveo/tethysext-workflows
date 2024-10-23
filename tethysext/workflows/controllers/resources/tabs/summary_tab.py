@@ -27,10 +27,10 @@ class ResourceSummaryTab(ResourceTab):
         get_summary_tab_info (required): Override this method to define the attributes that are shown in this tab.
         get_preview_image_url (optional): Override this method to define the URL for the preview image to use.
     """  # noqa: E501
-    template_name = 'atcore/resources/tabs/summary_tab.html'
+    template_name = 'workflows/resources/tabs/summary_tab.html'
     post_load_callback = 'summary_tab_loaded'
     js_requirements = ResourceTab.js_requirements + [
-        'atcore/resources/summary_tab.js'
+        'workflows/resources/summary_tab.js'
     ]
     has_preview_image = False
     preview_image_title = 'Preview'
@@ -119,4 +119,4 @@ class ResourceSummaryTab(ResourceTab):
             'preview_title': self.preview_image_title,
             'preview_map_url': preview_map_url
         }
-        return render(request, 'atcore/resources/tabs/summary_preview_image.html', context)
+        return render(request, 'workflows/resources/tabs/summary_preview_image.html', context)

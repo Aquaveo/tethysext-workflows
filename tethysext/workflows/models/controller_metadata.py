@@ -40,7 +40,7 @@ z
         """  # noqa: E501
         from tethys_sdk.base import TethysController
         from ..controllers.app_users.mixins import ResourceViewMixin 
-        from ..controllers.resource_workflows.workflow_view import ResourceWorkflowView
+        from ..controllers.resource_workflows.workflow_view import WorkflowView
 
         try:
             controller = import_from_string(self.path)
@@ -50,14 +50,14 @@ z
 
         # Get entry point for class based views
         if inspect.isclass(controller) and issubclass(controller, TethysController):
-            # Call with all kwargs if is instance of an ResourceWorkflowView
-            if issubclass(controller, ResourceWorkflowView):
+            # Call with all kwargs if is instance of an WorkflowView
+            if issubclass(controller, WorkflowView):
                 kwargs.update(self.kwargs)
                 controller = controller.as_controller(**kwargs)
 
             # Call with all but workflow kwargs if ResourceView
             elif issubclass(controller, ResourceViewMixin):
-                kwargs.pop('_ResourceWorkflow', None)
+                kwargs.pop('_Workflow', None)
                 kwargs.pop('_Step', None)
                 kwargs.update(self.kwargs)
                 controller = controller.as_controller(**kwargs)

@@ -18,15 +18,16 @@ from tethys_apps.exceptions import TethysAppSettingDoesNotExist
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
+class WorkflowCondorJobManager(BaseWorkflowManager):
     """
     Helper class that prepares and submits condor workflows/jobs for resource workflows.
     """
     ATCORE_EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
                                          'resources', 'resource_workflows')
 
-    def __init__(self, session, resource, resource_workflow_step, user, working_directory, app, scheduler_name,
-                 jobs=None, input_files=None, gs_engine=None, resource_workflow=None, workflow_kwargs=None, *args):
+    def __init__(self, session, resource, workflow_step, user, working_directory, app, scheduler_name,
+                 jobs=None, input_files=None, gs_engine=None, 9699
+                 workflow=None, workflow_kwargs=None, *args):
         """
         Constructor.
 
@@ -40,7 +41,7 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
             scheduler_name(str): Name of the condor scheduler to use.
             jobs(list<CondorWorkflowJobNode or dict>): List of CondorWorkflowJobNodes to run.
             input_files(list<str>): List of paths to files to sends as inputs to every job. Optional.
-            resource_workflow(ResourceWorkflow): The workflow.
+            resource_workflow(TethysWorkflow): The workflow.
             workflow_kwargs(dict): Optional keyword arguments to pass to the CondorWorkflow.
         """  # noqa: E501
         self.validate_jobs(jobs)
@@ -318,7 +319,6 @@ class ResourceWorkflowCondorJobManager(BaseWorkflowManager):
         Returns:
             str: UUID of the CondorWorkflow.
         """
-        breakpoint()
         # Prepare
         if not self.prepared:
             self.prepare()

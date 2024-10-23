@@ -19,7 +19,7 @@ class PlotWorkflowResultView(WorkflowResultsView):
     """
     Plot Result View Controller
     """
-    template_name = 'workflows/resource_workflows/plot_workflow_results_view.html'
+    template_name = 'workflows/workflows/plot_workflow_results_view.html'
     valid_result_classes = [PlotWorkflowResult]
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,

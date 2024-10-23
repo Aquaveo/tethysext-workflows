@@ -32,18 +32,18 @@ class ResourceFilesTab(ResourceTab):
     Methods:
         get_file_collections (required): Override this method to define a list of FileCollections that are shown in this tab.
     """  # noqa: E501
-    template_name = 'atcore/resources/tabs/files_tab.html'
+    template_name = 'workflows/resources/tabs/files_tab.html'
     post_load_callback = 'files_tab_loaded'
 
     js_requirements = ResourceTab.js_requirements + [
         x for x in gizmo_datatable_view.DataTableView.get_vendor_js()
     ] + [
-        'atcore/resources/files_tab.js',
+        'workflows/resources/files_tab.js',
     ]
     css_requirements = ResourceTab.css_requirements + [
         x for x in gizmo_datatable_view.DataTableView.get_vendor_css()
     ] + [
-        'atcore/resources/files_tab.css'
+        'workflows/resources/files_tab.css'
     ]
 
     file_hide_patterns = [r'__meta__.json']

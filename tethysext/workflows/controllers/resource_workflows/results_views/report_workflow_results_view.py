@@ -24,7 +24,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
     """
     Report Result View controller.
     """
-    template_name = 'workflows/resource_workflows/report_workflow_results_view.html'
+    template_name = 'workflows/workflows/report_workflow_results_view.html'
     valid_result_classes = [ReportWorkflowResult]
 
     previous_steps_selectable = True

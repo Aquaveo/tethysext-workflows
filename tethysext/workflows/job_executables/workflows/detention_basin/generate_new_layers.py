@@ -10,9 +10,9 @@
 import os
 from tethys_dataset_services.engines.geoserver_engine import GeoServerSpatialDatasetEngine
 from gsshapyorm.orm import ProjectFile
-from tethysext.atcore.services.resource_workflows.decorators import workflow_step_job
-from tethysext.atcore.services.model_database import ModelDatabaseConnection
-from tethysext.atcore.utilities import parse_url
+from tethysext.workflows.services.resource_workflows.decorators import workflow_step_job
+from tethysext.workflows.services.model_database import ModelDatabaseConnection
+from tethysext.workflowss.utilities import parse_url
 from gssha_adapter.services.gssha_spatial_manager import GsshaSpatialManager
 
 

@@ -4,7 +4,7 @@ Include to add the workflow tab content. Also include the workflow_tab.html to g
 
 Required Context Variables:
   resource(Resource): the resource the workflow belongs to/acts on.
-  workflow(ResourceWorkflow): the workflow containing the steps that will be rendered.
+  workflow(TethysWorkflow): the workflow containing the steps that will be rendered.
   steps(list<dicts>): list of dictionaries containing metadata about each step in the given workflow.
   current_step(Step): the current step.
   step_url_name(str): the name of the url pattern for the current step.
@@ -12,7 +12,7 @@ Required Context Variables:
 Required CSS:
   <link href="{% static 'workflows/css/nav_tabs.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/app_users/css/resource_details.css' %}" rel="stylesheet" >
-  <link href="{% static 'workflows/resource_workflows/workflows.css' %}" rel="stylesheet" >
+  <link href="{% static 'workflows/workflows/workflows.css' %}" rel="stylesheet" >
 {% endcomment %}
 
 {% block workflow_tab_content %}
@@ -24,7 +24,7 @@ Required CSS:
          title="{{ step.status|title }}"
          {% if step.link %}href="{% url step_url_name workflow.id step.id %}"{% endif %}>
         {% with lower_status=step.status.lower %}
-          {% include "workflows/resource_workflows/components/status_icons.html" %}
+          {% include "workflows/workflows/components/status_icons.html" %}
         {% endwith %}
         <span class="workflow-step-title">{{ step.name }}</span>
         {% if step.show_lock %}

@@ -2,7 +2,7 @@ import argparse
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import Session
 # from epanet_adapter.orm import EpanetBase, EpanetProject
-from models import WorkflowsBase, ResourceWorkflow
+from models import WorkflowsBase
 
 import logging
 

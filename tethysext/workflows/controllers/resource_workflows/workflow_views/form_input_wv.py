@@ -8,7 +8,7 @@
 """
 import logging
 
-from ..workflow_view import ResourceWorkflowView
+from ..workflow_view import WorkflowView
 from ....steps import FormInputStep
 from ....forms.widgets.param_widgets import generate_django_form
 
@@ -17,11 +17,11 @@ from bokeh.embed import server_document
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class FormInputWV(ResourceWorkflowView):
+class FormInputWV(WorkflowView):
     """
     Controller for FormInputRWV.
     """
-    template_name = 'workflows/resource_workflows/form_input_wv.html'
+    template_name = 'workflows/workflows/form_input_wv.html'
     valid_step_classes = [FormInputStep]
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):

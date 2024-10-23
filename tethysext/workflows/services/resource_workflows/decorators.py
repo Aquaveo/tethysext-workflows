@@ -28,7 +28,7 @@ def workflow_step_controller(is_rest_controller=False):
     def decorator(controller_func):
         def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, resource_id=None,
                                 resource=None, session=None, *args, **kwargs):
-            _ResourceWorkflow = self.get_resource_workflow_model()
+            _Workflow = self.get_resource_workflow_model()
             # Defer to outer scope if session is given
             manage_session = session is None
             current_step = None
@@ -55,7 +55,7 @@ def workflow_step_controller(is_rest_controller=False):
 
             except (StatementError, NoResultFound) as e:
                 messages.warning(request, 'The {} could not be found.'.format(
-                    _ResourceWorkflow.DISPLAY_TYPE_SINGULAR.lower()
+                    _Workflow.DISPLAY_TYPE_SINGULAR.lower()
                 ))
                 if not is_rest_controller:
                     return redirect(self.back_url)
@@ -131,8 +131,11 @@ def workflow_step_job(job_func):
                 make_resource_db_session = sessionmaker(bind=resource_db_engine)
                 resource_db_session = make_resource_db_session()
 
-                
-
+                # TODO remove
+                # model_db_engine = create_engine(args.model_db_url)
+                # make_model_db_session = sessionmaker(bind=model_db_engine)
+                # model_db_session = make_model_db_session()
+        
                 # Import Resource and Workflow Classes
                 WorkflowClass = import_from_string(args.workflow_class)
 
@@ -176,7 +179,8 @@ def workflow_step_job(job_func):
 
             finally:
                 print('Closing sessions...')
-                model_db_session and model_db_session.close()
+                # TODO remove
+                #model_db_session and model_db_session.close()
                 resource_db_session and resource_db_session.close()
 
             print('Processing Complete')

@@ -1,0 +1,15 @@
+{% extends "workflows/workflows/map_workflow_view.html" %}
+{% load static %}
+
+{% block app_content %}
+  <div style="height: 100%;">
+  {{ block.super }}
+  </div>
+  {% include "workflows/workflows/components/workflow_results_tabs.html" %}
+{% endblock %}
+
+{% block content_dependent_styles %}
+  {{ block.super }}
+  <link href="{% static 'workflows/workflows/workflow_results_tabs.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/workflows/map_workflow_results.css' %}" rel="stylesheet"/>
+{% endblock %}

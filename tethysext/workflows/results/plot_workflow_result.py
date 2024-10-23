@@ -13,12 +13,12 @@ from bokeh.models import ColumnDataSource
 from bokeh.palettes import Category10
 import plotly.graph_objs as go
 
-from ..models.resource_workflow_result import ResourceWorkflowResult
+from ..models.resource_workflow_result import Result
 
 __all__ = ['PlotWorkflowResult']
 
 
-class PlotWorkflowResult(ResourceWorkflowResult):
+class PlotWorkflowResult(Result):
     """
     Data model for storing spatial information about resource workflow results.
 

@@ -9,18 +9,18 @@
 import logging
 
 from ....steps import SpatialInputStep, SpatialStep
-from ..workflow_view import ResourceWorkflowView
+from ..workflow_view import WorkflowView
 from ...map_view import MapView
 from ....models import Step
 
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class MapWorkflowView(MapView, ResourceWorkflowView):
+class MapWorkflowView(MapView, WorkflowView):
     """
     Controller for a map view with workflows integration.
     """
-    template_name = 'workflows/resource_workflows/map_workflow_view.html'
+    template_name = 'workflows/workflows/map_workflow_view.html'
     valid_step_classes = [Step]
     previous_steps_selectable = False
 
@@ -44,7 +44,7 @@ class MapWorkflowView(MapView, ResourceWorkflowView):
         map_context = MapView.get_context(self, *args, request=request, session=session, resource=resource, context=context, 
                                           workflow_id=workflow_id, step_id=step_id, **kwargs)
 
-        workflow_context = ResourceWorkflowView.get_context(
+        workflow_context = WorkflowView.get_context(
             self,
             *args,
             request=request,

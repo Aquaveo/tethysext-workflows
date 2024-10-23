@@ -23,7 +23,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
     """
     Map Result View controller.
     """
-    template_name = 'workflows/resource_workflows/map_workflow_results_view.html'
+    template_name = 'workflows/workflows/map_workflow_results_view.html'
     valid_result_classes = [SpatialWorkflowResult]
     show_legends = True
 

@@ -16,10 +16,10 @@ from ..base import WorkflowsBase
 import ControllerMetadata
 
 
-__all__ = ['ResourceWorkflowResult']
+__all__ = ['Result']
 
-
-class ResourceWorkflowResult(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
+# TODO this file may need to be deleted
+class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
     """
     Data model for storing information about resource workflow results.
     """

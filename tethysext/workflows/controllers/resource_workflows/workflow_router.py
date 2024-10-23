@@ -20,7 +20,7 @@ from ...steps import ResultsStep # TODO ADD THIS IMPORT
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class ResourceWorkflowRouter(WorkflowViewMixin):
+class WorkflowRouter(WorkflowViewMixin):
     """
     Router for resource workflow views. Routes to appropriate step controller.
     """
@@ -50,7 +50,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         step_id_given = step_id is not None
         result_id_given = result_id is not None
 
-        _ResourceWorkflow = self.get_resource_workflow_model()
+        _Workflow = self.get_workflow_model()
         session = None
 
         try:
@@ -87,18 +87,18 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
             url_kwargs = {'workflow_id': workflow_id, 'step_id': step_id}
             if is_result_step and not result_id_given:
                 # Redirect to the result page
-                url_name = '{}:{}_workflow_step_result'.format(app_namespace, _ResourceWorkflow.TYPE)
+                url_name = '{}:{}_workflow_step_result'.format(app_namespace, _Workflow.TYPE)
                 url_kwargs.update({'result_id': result_id})
                 return redirect(reverse(url_name, kwargs=url_kwargs))
 
             elif not is_result_step and not step_id_given:
                 # Redirect to next step page
-                url_name = '{}:{}_workflow_step'.format(app_namespace, _ResourceWorkflow.TYPE)
+                url_name = '{}:{}_workflow_step'.format(app_namespace, _Workflow.TYPE)
                 return redirect(reverse(url_name, kwargs=url_kwargs))
 
         except (StatementError, NoResultFound):
             messages.warning(request, 'The {} could not be found.'.format(
-                _ResourceWorkflow.DISPLAY_TYPE_SINGULAR.lower()
+                _Workflow.DISPLAY_TYPE_SINGULAR.lower()
             ))
             return redirect(self.back_url)
         except ATCoreException as e:
@@ -196,7 +196,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         """
         
        
-        _ResourceWorkflow = self.get_resource_workflow_model()
+        _Workflow = self.get_workflow_model()
         session = None
 
         try:
@@ -214,7 +214,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
                 _Organization=self._Organization,
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
-                _ResourceWorkflow=self._ResourceWorkflow,
+                _ResourceWorkflow=self._Workflow, # TODO look into changing this in the controller
                 _Step=self._Step,
                 base_template=self.base_template
             )
@@ -232,7 +232,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
 
         except (StatementError, NoResultFound):
             messages.warning(request, 'Invalid step for workflow: {}.'.format(
-                _ResourceWorkflow.DISPLAY_TYPE_SINGULAR.lower()
+                _Workflow.DISPLAY_TYPE_SINGULAR.lower()
             ))
             return redirect(self.back_url)
         except ATCoreException as e:
@@ -256,7 +256,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
         Returns:
             HttpResponse: A Django response.
         """
-        _ResourceWorkflow = self.get_resource_workflow_model()
+        _Workflow = self.get_workflow_model()
         session = None
 
         try:
@@ -286,7 +286,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
                 _Resource=self._Resource,
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
-                _ResourceWorkflow=self._ResourceWorkflow,
+                _ResourceWorkflow=self._Workflow,
                 _Step=self._Step,
                 base_template=self.base_template
             )
@@ -305,7 +305,7 @@ class ResourceWorkflowRouter(WorkflowViewMixin):
 
         except (StatementError, NoResultFound):
             messages.warning(request, 'Invalid step for workflow: {}.'.format(
-                _ResourceWorkflow.DISPLAY_TYPE_SINGULAR.lower()
+                _Workflow.DISPLAY_TYPE_SINGULAR.lower()
             ))
             return redirect(self.back_url)
         except ATCoreException as e:

@@ -14,7 +14,7 @@ from django.shortcuts import render, redirect
 from tethys_sdk.gizmos import JobsTable
 from .map_workflow_view import MapWorkflowView
 from ....steps import JobStep
-from ....services.workflow_manager.condor_workflow_manager import ResourceWorkflowCondorJobManager
+from ....services.workflow_manager.condor_workflow_manager import WorkflowCondorJobManager
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -24,7 +24,7 @@ class JobStepMWV(MapWorkflowView):
     """
     Controller for a map workflow view requiring spatial input (drawing).
     """
-    template_name = 'workflows/resource_workflows/spatial_condor_job_mwv.html'
+    template_name = 'workflows/workflows/spatial_condor_job_mwv.html'
     valid_step_classes = [JobStep]
     previous_steps_selectable = True
     jobs_table_refresh_interval = int(os.getenv('JOBS_TABLE_REFRESH_INTERVAL', 30000))  # ms
@@ -79,7 +79,7 @@ class JobStepMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
             resource(Resource): the resource for this request.
-            workflow(ResourceWorkflow): The current workflow.
+            workflow(TethysWorkflow): The current workflow.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.
@@ -98,7 +98,7 @@ class JobStepMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
             resource(Resource): the resource for this request.
-            workflow(ResourceWorkflow): The current workflow.
+            workflow(TethysWorkflow): The current workflow.
             current_step(Step): The current step to be rendered.
         Returns:
             HttpResponse: The condor job table view.
@@ -154,7 +154,7 @@ class JobStepMWV(MapWorkflowView):
             'base_template': self.base_template
         }
 
-        return render(request, 'workflows/resource_workflows/spatial_condor_jobs_table.html', context)
+        return render(request, 'workflows/workflows/spatial_condor_jobs_table.html', context)
 
     def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
         """
@@ -244,17 +244,17 @@ class JobStepMWV(MapWorkflowView):
         working_directory = self.get_working_directory(request, app)
 
         # Setup the Condor Workflow
-        condor_job_manager = ResourceWorkflowCondorJobManager(
+        condor_job_manager = WorkflowCondorJobManager(
             session=session,
             resource=resource,
-            resource_workflow_step=step,
+            workflow_step=step,
             jobs=jobs,
             user=request.user,
             working_directory=working_directory,
             app=app,
             scheduler_name=scheduler_name,
             gs_engine=gs_engine,
-            resource_workflow=workflow,
+            workflow=workflow,
             workflow_kwargs=workflow_kwargs,
         )
 

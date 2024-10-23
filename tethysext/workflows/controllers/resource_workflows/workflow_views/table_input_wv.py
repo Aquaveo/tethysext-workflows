@@ -10,7 +10,7 @@ import inspect
 import pandas as pd
 import numpy as np
 from pandas.api.types import is_numeric_dtype
-from ..workflow_view import ResourceWorkflowView
+from ..workflow_view import WorkflowView
 from ....steps import TableInputStep
 from ....utilities import strip_list
 
@@ -18,11 +18,11 @@ from ....utilities import strip_list
 TABLE_DATASET_NODATA = -99999.9
 
 
-class TableInputWV(ResourceWorkflowView):
+class TableInputWV(WorkflowView):
     """
     Controller for a workflow view for entering a 2D dataset in an spreadsheet-like table.
     """
-    template_name = 'workflows/resource_workflows/table_input_wv.html'
+    template_name = 'workflows/workflows/table_input_wv.html'
     valid_step_classes = [TableInputStep]
 
     def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):

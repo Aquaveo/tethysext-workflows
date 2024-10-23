@@ -8,16 +8,16 @@
 """
 import logging
 
-from ..workflow_view import ResourceWorkflowView
+from ..workflow_view import WorkflowView
 from ....steps import SetStatusStep
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class SetStatusWV(ResourceWorkflowView):
+class SetStatusWV(WorkflowView):
     """
     Controller for SetStatusStep.
     """
-    template_name = 'workflows/resource_workflows/set_status_wv.html'
+    template_name = 'workflows/workflows/set_status_wv.html'
     valid_step_classes = [SetStatusStep]
     default_status_label = 'Status'
 

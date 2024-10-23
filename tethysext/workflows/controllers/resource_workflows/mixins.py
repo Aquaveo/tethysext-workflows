@@ -1,18 +1,18 @@
 from ..app_users.mixins import ResourceViewMixin
-from ...models import ResourceWorkflow, Step, ResourceWorkflowResult
+from ...models import TethysWorkflow, Step, Result
 
 
 class WorkflowViewMixin(ResourceViewMixin):
     """
     Mixin for class-based views that adds convenience methods for working with resources and workflows.
     """
-    _ResourceWorkflow = ResourceWorkflow
+    _TethysWorkflow = TethysWorkflow
     _Step = Step
 
-    def get_resource_workflow_model(self):
-        return self._ResourceWorkflow
+    def get_workflow_model(self):
+        return self._TethysWorkflow
     
-    def get_resource_workflow_step_model(self):
+    def get_workflow_step_model(self):
         return self._Step
 
     def get_workflow(self, request, workflow_id, session=None):
@@ -25,10 +25,10 @@ class WorkflowViewMixin(ResourceViewMixin):
             session: SQLAlchemy session. Optional
 
         Returns:
-            ResourceWorkflow: the resource.
+            TethysWorkflow: the resource.
         """
         # Setup
-        _ResourceWorkflow = self.get_resource_workflow_model()
+        _TethysWorkflow = self.get_workflow_model()
         manage_session = False
 
         if not session:
@@ -37,8 +37,8 @@ class WorkflowViewMixin(ResourceViewMixin):
             session = make_session()
 
         try:
-            workflow = session.query(_ResourceWorkflow). \
-                filter(_ResourceWorkflow.id == workflow_id). \
+            workflow = session.query(_TethysWorkflow). \
+                filter(_TethysWorkflow.id == workflow_id). \
                 one()
 
         finally:
@@ -57,9 +57,9 @@ class WorkflowViewMixin(ResourceViewMixin):
             session: SQLAlchemy session.
 
         Returns:
-            ResourceWorkflow: the resource.
+            TethysWorkflow: the resource.
         """
-        _Step = self.get_resource_workflow_step_model()
+        _Step = self.get_workflow_step_model()
         manage_session = False
 
         if not session:
@@ -83,10 +83,10 @@ class ResultViewMixin(ResourceViewMixin):
     """
     Mixin for class-based views that adds convenience methods for working with resources, workflows, and results.
     """
-    _ResourceWorkflowResult = ResourceWorkflowResult
+    _Result = Result
 
-    def get_resource_workflow_result_model(self):
-        return self._ResourceWorkflowResult
+    def get_workflow_result_model(self):
+        return self._Result
 
     def get_result(self, request, result_id, session=None):
         """
@@ -98,10 +98,10 @@ class ResultViewMixin(ResourceViewMixin):
             session: SQLAlchemy session. Optional
 
         Returns:
-            ResourceWorkflow: the resource.
+            TethysWorkflow: the resource result. # TODO review this
         """
         # Setup
-        _ResourceWorkflowResult = self.get_resource_workflow_result_model()
+        _Result = self.get_workflow_result_model()
         manage_session = False
 
         if not session:
@@ -110,8 +110,8 @@ class ResultViewMixin(ResourceViewMixin):
             session = make_session()
 
         try:
-            workflow = session.query(_ResourceWorkflowResult). \
-                filter(_ResourceWorkflowResult.id == result_id). \
+            workflow = session.query(_Result). \
+                filter(_Result.id == result_id). \
                 one()
 
         finally:

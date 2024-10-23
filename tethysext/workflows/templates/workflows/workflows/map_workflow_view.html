@@ -7,17 +7,17 @@
 
 {% block after_nav_header %}
   {# WORKFLOW LOCKED STATUS #}
-  {% include 'workflows/resource_workflows/components/workflow_locked_status.html' %}
+  {% include 'workflows/workflows/components/workflow_locked_status.html' %}
 {% endblock %}
 
 {% block custom_map_tabs %}
   {# WORKFLOW TAB #}
-  {% include 'workflows/resource_workflows/components/workflow_tab.html' %}
+  {% include 'workflows/workflows/components/workflow_tab.html' %}
 {% endblock %}
 
 {% block custom_map_tab_panels %}
   {# WORKFLOW TAB PANEL #}
-  {% include 'workflows/resource_workflows/components/workflow_tab_content.html' %}
+  {% include 'workflows/workflows/components/workflow_tab_content.html' %}
 {% endblock %}
 
 {% block map %}
@@ -32,13 +32,13 @@
 {% endblock %}
 
 {% block app_actions %}
-  {% include 'workflows/resource_workflows/components/workflow_actions.html' %}
+  {% include 'workflows/workflows/components/workflow_actions.html' %}
   {{ block.super }}
 {% endblock %}
 
 {% block content_dependent_styles %}
   {{ block.super }}
-  <link href="{% static 'workflows/resource_workflows/workflow_steps.css' %}" rel="stylesheet"/>
-  <link href="{% static 'workflows/resource_workflows/atcore_map_workflow.css' %}" rel="stylesheet"/>
-  <link href="{% static 'workflows/resource_workflows/workflow_locked_status.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/workflows/workflow_steps.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/workflows/atcore_map_workflow.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/workflows/workflow_locked_status.css' %}" rel="stylesheet"/>
 {% endblock %}

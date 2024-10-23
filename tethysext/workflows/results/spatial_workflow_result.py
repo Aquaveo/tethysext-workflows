@@ -7,13 +7,13 @@
 ********************************************************************************
 """
 import copy
-from ..models.resource_workflow_result import ResourceWorkflowResult
+from ..models.resource_workflow_result import Result
 
 
 __all__ = ['SpatialWorkflowResult']
 
 
-class SpatialWorkflowResult(ResourceWorkflowResult):
+class SpatialWorkflowResult(Result):
     """
     Data model for storing spatial information about resource workflow results.
     """

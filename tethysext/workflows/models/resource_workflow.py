@@ -25,10 +25,10 @@ from ..steps import FormInputStep, ResultsStep
 
 
 log = logging.getLogger(f'tethys.{__name__}')
-__all__ = ['ResourceWorkflow']
+__all__ = ['TethysWorkflow']
 
 
-class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixin):
+class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixin):
     """
     Data model for storing information about resource workflows.
 
@@ -47,7 +47,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
     3b. STATUS_REJECTED = Changes disapproved.
     3c. STATUS_CHANGES_REQUESTED = Changes required and resubmit
     """  # noqa: E501
-    __tablename__ = 'resource_workflows'
+    __tablename__ = 'tethys_workflows'
 
     TYPE = 'generic_workflow'
     DISPLAY_TYPE_SINGULAR = 'Generic Workflow'
@@ -84,7 +84,7 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
 
     steps = relationship('Step', order_by='Step.order', backref='workflow',
                          cascade='all,delete')
-    results = relationship('ResourceWorkflowResult', order_by='ResourceWorkflowResult.order', backref='workflow',
+    results = relationship('Result', order_by='Result.order', backref='workflow',
                            cascade='all,delete')
 
     __mapper_args__ = {
@@ -329,5 +329,5 @@ class ResourceWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMi
             url = self.get_url()
             d['url'] = url
         except NotImplementedError:
-            log.warning('get_url_name() not implemented for ResourceWorkflow subclass. URL will be None.')
+            log.warning('get_url_name() not implemented for TethysWorkflow subclass. URL will be None.')
         return d

@@ -13,7 +13,7 @@ from .models import Step
 
 
 @with_request
-def panel_rws_handler(document):
+def panel_step_handler(document):
     app = get_active_app(document.request, get_class=True)
     Session = app.get_persistent_store_database('primary_db', as_sessionmaker=True)
     session = Session()

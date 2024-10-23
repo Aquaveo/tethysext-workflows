@@ -19,7 +19,7 @@ class ResultsMixin(object):
             result_id(str or uuid): id of the result.
 
         Returns:
-            ResourceWorkflowResult: the result or None if not found.
+            Result: the result or None if not found.
         """
         for result in self.results:
             if str(result.id) == str(result_id):
@@ -34,7 +34,7 @@ class ResultsMixin(object):
             codename(str): codename of the result.
 
         Returns:
-            ResourceWorkflowResult: the result or None if not found.
+            Result: the result or None if not found.
         """
         for result in self.results:
             if str(result.codename) == str(codename):
@@ -47,7 +47,7 @@ class ResultsMixin(object):
         Get the result which was last viewed by the user.
 
         Returns:
-            ResourceWorkflowResult: the last result or None if not found.
+            Result: the last result or None if not found.
         """
         try:
             last_result_id = self.get_attribute(self.ATTR_LAST_RESULT)
@@ -69,7 +69,7 @@ class ResultsMixin(object):
         Set the id of the last result viewed by the user.
 
         Args:
-           result(ResourceWorkflowResult): The result to mark as being last viewed.
+           result(Result): The result to mark as being last viewed.
 
         """
         if result not in self.results:
@@ -81,10 +81,10 @@ class ResultsMixin(object):
         Get the adjacent results the given result.
 
         Args:
-            result(ResourceWorkflowResult): A result belonging to this workflow.
+            result(Result): A result belonging to this workflow.
 
         Returns:
-            ResourceWorkflowResult, ResourceWorkflowResult: previous and next results, respectively.
+            Result, Result: previous and next results, respectively.
         """
         if result not in self.results:
             raise ValueError('Result {} does not belong to this object.'.format(result))

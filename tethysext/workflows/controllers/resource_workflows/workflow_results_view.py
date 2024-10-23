@@ -1,17 +1,17 @@
 from tethys_apps.utilities import get_active_app
-from ...models import ResourceWorkflowResult
+from ...models import Result
 from ...steps import ResultsStep
-from .workflow_view import ResourceWorkflowView 
+from .workflow_view import WorkflowView 
 from .mixins import ResultViewMixin
 
 
-class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
+class WorkflowResultsView(WorkflowView, ResultViewMixin):
     """
     Base class for result views.
     """
-    template_name = 'workflows/resource_workflows/workflow_results_view.html'
+    template_name = 'workflows/workflows/workflow_results_view.html'
     valid_step_classes = [ResultsStep]
-    valid_result_classes = [ResourceWorkflowResult]
+    valid_result_classes = [Result]
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
                     **kwargs):
@@ -79,7 +79,7 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
         Derive url map name for the given result view.
         Args:
             request(HttpRequest): The request.
-            workflow(ResourceWorkflow): The current workflow.
+            workflow(TethysWorkflow): The current workflow.
 
         Returns:
             str: name of the url pattern for the given workflow step views.
@@ -116,7 +116,7 @@ class WorkflowResultsView(ResourceWorkflowView, ResultViewMixin):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            result(ResourceWorkflowResult): The result to be rendered.
+            result(Result): The result to be rendered.
 
         Raises:
             TypeError: if step is invalid.

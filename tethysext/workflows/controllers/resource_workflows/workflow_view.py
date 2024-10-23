@@ -23,13 +23,13 @@ from ...models import Step
 log = logging.getLogger('tethys.' + __name__)
 
 
-class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
+class WorkflowView(ResourceView, WorkflowViewMixin):
     """
     Base class for workflow views.
     """
     view_title = ''
     view_subtitle = ''
-    template_name = 'workflows/resource_workflows/resource_workflow_view.html'
+    template_name = 'workflows/workflows/resource_workflow_view.html'
     previous_title = 'Previous'
     next_title = 'Next'
     finish_title = 'Finish'
@@ -147,7 +147,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            workflow(ResourceWorkflow): the workflow.
+            workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 
@@ -196,7 +196,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
 
         Args:
             request (HttpRequest): The request.
-            workflow(ResourceWorkflow): the workflow with the steps to render.
+            workflow(TethysWorkflow): the workflow with the steps to render.
 
         Returns:
             list<dict>: one dictionary for each step in the workflow.
@@ -268,7 +268,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Derive url map name for the given workflow step views.
         Args:
             request(HttpRequest): The request.
-            workflow(ResourceWorkflow): The current workflow.
+            workflow(TethysWorkflow): The current workflow.
 
         Returns:
             str: name of the url pattern for the given workflow step views.
@@ -283,7 +283,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Derive url map name for the given workflow view.
         Args:
             request(HttpRequest): The request.
-            workflow(ResourceWorkflow): The current workflow.
+            workflow(TethysWorkflow): The current workflow.
 
         Returns:
             str: name of the url pattern for the given workflow views.
@@ -298,7 +298,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
         Build an object with the workflow lock indicator display options.
         Args:
             request(HttpRequest): The request.
-            workflow(ResourceWorkflow): the workflow.
+            workflow(TethysWorkflow): the workflow.
 
         Returns:
             dict<style,message,show>: Dictionary containing the display options for the workflow lock indicator.
@@ -378,7 +378,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
 
         Args:
             request(HttpRequest): The request.
-            workflow(ResourceWorkflow): the workflow.
+            workflow(): the workflow.
 
         Returns:
             bool: True if the workflow is locked.
@@ -604,7 +604,7 @@ class ResourceWorkflowView(ResourceView, WorkflowViewMixin):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
             resource(Resource): the resource for this request.
-            workflow(ResourceWorkflow): The current workflow.
+            workflow(TethysWorkflow): The current workflow.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.

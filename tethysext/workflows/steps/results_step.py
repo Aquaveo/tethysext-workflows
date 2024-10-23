@@ -22,9 +22,9 @@ class ResultsStep(Step, AttributesMixin, ResultsMixin):
     }
 
     results = relationship(
-        'ResourceWorkflowResult',
+        'Result',
         secondary=step_result_association,
-        order_by='ResourceWorkflowResult.order',
+        order_by='Result.order',
         cascade='all,delete',
         backref='steps'
     )

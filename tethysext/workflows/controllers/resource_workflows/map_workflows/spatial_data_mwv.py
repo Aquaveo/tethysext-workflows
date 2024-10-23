@@ -15,7 +15,7 @@ class SpatialDataMWV(MapWorkflowView):
     """
     Abstract controller for a map workflow view data assigned to each feature.
     """
-    template_name = 'workflows/resource_workflows/spatial_data_mwv.html'
+    template_name = 'workflows/workflows/spatial_data_mwv.html'
     valid_step_classes = [SpatialDatasetStep, SpatialAttributesRWS]
 
     # Disable the properties popup so we can create a custom pop-up
@@ -105,7 +105,7 @@ class SpatialDataMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            workflow(ResourceWorkflow): the workflow.
+            workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 
@@ -122,7 +122,7 @@ class SpatialDataMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
             resource(Resource): the resource this workflow applies to.
-            workflow(ResourceWorkflow): the workflow.
+            workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
 

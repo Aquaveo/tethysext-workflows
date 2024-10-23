@@ -14,7 +14,7 @@ from django.shortcuts import reverse, redirect
 from django.contrib import messages
 from tethys_sdk.permissions import has_permission
 
-from ....models import ResourceWorkflow
+from ....models import TethysWorkflow
 from ...utilities import get_style_for_status
 from ....services.app_users.roles import Roles
 from ....services.map_manager import MapManagerBase
@@ -38,7 +38,7 @@ class ResourceWorkflowsTab(ResourceTab):
         show_all_workflows_roles list<Roles>: List of user Roles that are allowed to see all workflows when show_all_workflows is False. Defaults to: [Roles.APP_ADMIN, Roles.DEVELOPER, Roles.ORG_ADMIN, Roles.ORG_REVIEWER].
 
     Class Methods:
-        get_workflow_types (required): Return a dictionary mapping of ResourceWorkflow.TYPE to ResourceWorkflow classes (e.g. {MyResourceWorkflow.TYPE: MyResourceWorkflow} ). The list of available workflows in the New Workflow dialog is derived from this object.
+        get_workflow_types (required): Return a dictionary mapping of TethysWorkflow.TYPE to TethysWorkflow classes (e.g. {MyWorkflow.TYPE: MyWorkflow} ). The list of available workflows in the New Workflow dialog is derived from this object.
 
     Methods:
         get_map_manager (optional): Return your app-specific MapManager. Required if your workflows use spatial steps.
@@ -55,7 +55,7 @@ class ResourceWorkflowsTab(ResourceTab):
     css_requirements = ResourceTab.css_requirements + [
         'workflows/css/btn-fab.css',
         'workflows/css/flat-modal.css',
-        'workflows/resource_workflows/workflows.css'
+        'workflows/workflows/workflows.css'
     ]
     modal_templates = [
         'workflows/resources/tabs/new_workflow_modal.html',
@@ -75,7 +75,7 @@ class ResourceWorkflowsTab(ResourceTab):
         context (dict): The context dictionary, optional.
 
         Returns:
-            dict: mapping of ResourceWorkflow.TYPE to ResourceWorkflow classes (e.g. {MyResourceWorkflow.TYPE: MyResourceWorkflow} ).
+            dict: mapping of TethysWorkflow.TYPE to TethysWorkflow classes (e.g. {MyWorkflow.TYPE: MyWorkflow} ).
         """  # noqa: E501
         return {}
 
@@ -128,9 +128,9 @@ class ResourceWorkflowsTab(ResourceTab):
         )
 
         if not self.show_all_workflows and app_user_role not in self.show_all_workflows_roles:
-            workflows_query = workflows_query.filter(ResourceWorkflow.creator_id == app_user.id)
+            workflows_query = workflows_query.filter(TethysWorkflow.creator_id == app_user.id)
 
-        workflows = workflows_query.order_by(ResourceWorkflow.date_created.desc()).all()
+        workflows = workflows_query.order_by(TethysWorkflow.date_created.desc()).all()
 
         # Build up workflow cards for workflows table
         workflow_cards = []
@@ -272,7 +272,7 @@ class ResourceWorkflowsTab(ResourceTab):
             session = make_session()
 
             # Get the workflow
-            workflow = session.query(ResourceWorkflow).get(workflow_id)
+            workflow = session.query(TethysWorkflow).get(workflow_id)
 
             # Delete the workflow
             session.delete(workflow)
@@ -304,6 +304,6 @@ class ResourceWorkflowsTab(ResourceTab):
         for child in resource.children:
             resource_ids.append(child.id)
 
-        workflows_query = session.query(ResourceWorkflow) \
-            .filter(ResourceWorkflow.resource_id.in_(resource_ids))
+        workflows_query = session.query(TethysWorkflow) \
+            .filter(TethysWorkflow.resource_id.in_(resource_ids))
         return workflows_query

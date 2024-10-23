@@ -8,14 +8,14 @@
 """
 import inspect
 from django.utils.text import slugify
-from ..controllers.resource_workflows import ResourceWorkflowRouter
+from ..controllers.resource_workflows import WorkflowRouter
 from ..models.app_users import AppUser, Organization, Resource
-from ..models import ResourceWorkflow
+from ..models import TethysWorkflow
 from ..services.app_users.permissions_manager import AppPermissionsManager
-from ..handlers import panel_rws_handler
+from ..handlers import panel_step_handler
 
 DEFAULT_HANDLER = {
-    'handler': panel_rws_handler,
+    'handler': panel_step_handler,
     'type': 'bokeh'
 }
 
@@ -38,7 +38,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
         url_map_maker(UrlMap): UrlMap class bound to app root url.
         app(TethysAppBase): instance of Tethys app class.
         persistent_store_name(str): name of persistent store database setting the controllers should use to create sessions.
-        workflow_pairs(2-tuple<ResourceWorkflow, ResourceWorkflowRouter>): Pairs of ResourceWorkflow models and ResourceWorkFlow views.
+        workflow_pairs(2-tuple<TethysWorkflow, WorkflowRouter>): Pairs of TethysWorkflow models and TethysWorkFlow views.
         base_url_path(str): url path to prepend to all app_user urls (e.g.: 'foo/bar').
         custom_models(list<cls>): custom subclasses of AppUser, Organization, or Resource models.
         custom_permissions_manager(cls): Custom AppPermissionsManager class. Defaults to AppPermissionsManager.
@@ -88,21 +88,21 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
 
     url_maps = []
 
-    for _ResourceWorkflow, _ResourceWorkflowRouter in workflow_pairs:
-        if not _ResourceWorkflow or not inspect.isclass(_ResourceWorkflow) \
-           or not issubclass(_ResourceWorkflow, ResourceWorkflow):
-            raise ValueError('Must provide a valid ResourceWorkflow model as the first item in the '
+    for _TethysWorkflow, _WorkflowRouter in workflow_pairs:
+        if not _TethysWorkflow or not inspect.isclass(_TethysWorkflow) \
+           or not issubclass(_TethysWorkflow, TethysWorkflow):
+            raise ValueError('Must provide a valid TethysWorkflow model as the first item in the '
                              'workflow_pairs argument.')
 
-        if not _ResourceWorkflowRouter or not inspect.isclass(_ResourceWorkflowRouter) \
-           or not issubclass(_ResourceWorkflowRouter, ResourceWorkflowRouter):
-            raise ValueError('Must provide a valid ResourceWorkflowRouter controller as the second item in the '
+        if not _WorkflowRouter or not inspect.isclass(_WorkflowRouter) \
+           or not issubclass(_WorkflowRouter, WorkflowRouter):
+            raise ValueError('Must provide a valid WorkflowRouter controller as the second item in the '
                              'workflow_pairs argument.')
 
-        slugged_name = slugify(_ResourceWorkflow.TYPE)
-        workflow_name = '{}_workflow'.format(_ResourceWorkflow.TYPE)
-        workflow_step_name = '{}_workflow_step'.format(_ResourceWorkflow.TYPE)
-        workflow_step_result_name = '{}_workflow_step_result'.format(_ResourceWorkflow.TYPE)
+        slugged_name = slugify(_TethysWorkflow.TYPE)
+        workflow_name = '{}_workflow'.format(_TethysWorkflow.TYPE)
+        workflow_step_name = '{}_workflow_step'.format(_TethysWorkflow.TYPE)
+        workflow_step_result_name = '{}_workflow_step_result'.format(_TethysWorkflow.TYPE)
 
         # Url Patterns
         workflow_url = slugged_name + '/{workflow_id}'  # noqa: E222, E501
@@ -113,28 +113,28 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
             url_map_maker(
                 name=workflow_name,
                 url='/'.join([base_url_path, workflow_url]) if base_url_path else workflow_url,
-                controller=_ResourceWorkflowRouter.as_controller(
+                controller=_WorkflowRouter.as_controller(
                     _app=app,
                     _persistent_store_name=persistent_store_name,
                     _AppUser=_AppUser,
                     _Organization=_Organization,
                     _Resource=_Resource,
                     _PermissionsManager=_PermissionsManager,
-                    _ResourceWorkflow=_ResourceWorkflow,
+                    _ResourceWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
             ),
             url_map_maker(
                 name=workflow_step_name,
                 url='/'.join([base_url_path, workflow_step_url]) if base_url_path else workflow_step_url,
-                controller=_ResourceWorkflowRouter.as_controller(
+                controller=_WorkflowRouter.as_controller(
                     _app=app,
                     _persistent_store_name=persistent_store_name,
                     _AppUser=_AppUser,
                     _Organization=_Organization,
                     _Resource=_Resource,
                     _PermissionsManager=_PermissionsManager,
-                    _ResourceWorkflow=_ResourceWorkflow,
+                    _ResourceWorkflow=_TethysWorkflow,
                     base_template=base_template
                 ),
                 handler=handler,
@@ -144,14 +144,14 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
             url_map_maker(
                 name=workflow_step_result_name,
                 url='/'.join([base_url_path, workflow_step_result_url]) if base_url_path else workflow_step_result_url,
-                controller=_ResourceWorkflowRouter.as_controller(
+                controller=_WorkflowRouter.as_controller(
                     _app=app,
                     _persistent_store_name=persistent_store_name,
                     _AppUser=_AppUser,
                     _Organization=_Organization,
                     _Resource=_Resource,
                     _PermissionsManager=_PermissionsManager,
-                    _ResourceWorkflow=_ResourceWorkflow,
+                    _ResourceWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
             )

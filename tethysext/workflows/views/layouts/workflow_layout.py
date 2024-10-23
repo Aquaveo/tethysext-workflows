@@ -8,7 +8,7 @@
 """
 from tethys_layouts.views.tethys_layout import TethysLayout
 from ...gizmos.workflow_tab import WorkflowTab, NewWorkflowModal, DeleteWorkflowModal
-from ...models import ResourceWorkflow
+from ...models import TethysWorkflow
 from ...controllers.utilities import get_style_for_status
 from django.middleware.csrf import get_token
 
@@ -72,9 +72,9 @@ class WorkflowLayout(TethysLayout):
         return 'workflow_layout/workflow_layout.html'
     
     def get_workflows(self, request, session):
-        query = session.query(ResourceWorkflow)
+        query = session.query(TethysWorkflow)
         
-        workflows = query.order_by(ResourceWorkflow.date_created.desc()).all()
+        workflows = query.order_by(TethysWorkflow.date_created.desc()).all()
 
         workflow_cards = []
         for workflow in workflows:
@@ -211,7 +211,7 @@ class WorkflowLayout(TethysLayout):
             session = Session()
 
             # Get the workflow
-            workflow = session.query(ResourceWorkflow).get(workflow_id)
+            workflow = session.query(TethysWorkflow).get(workflow_id)
 
             # Delete the workflow
             session.delete(workflow)
@@ -249,12 +249,12 @@ class WorkflowLayout(TethysLayout):
     @abstractmethod
     def get_workflow_types(cls, request=None, context=None):
         """
-        A hook that must be used to define a the ResourceWorkflows supported by this tab view. The list of available workflows in the New Workflow dialog is derived from this object.
+        A hook that must be used to define a the TethysWorkflows supported by this tab view. The list of available workflows in the New Workflow dialog is derived from this object.
 
         request (HttpRequest): The requestion, optional.
         context (dict): The context dictionary, optional.
 
         Returns:
-            dict: mapping of ResourceWorkflow.TYPE to ResourceWorkflow classes (e.g. {MyResourceWorkflow.TYPE: MyResourceWorkflow} ).
+            dict: mapping of TethysWorkflow.TYPE to TethysWorkflow classes (e.g. {MyWorkflow.TYPE: MyWorkflow} ).
         """
         return {}

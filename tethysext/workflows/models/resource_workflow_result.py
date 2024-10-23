@@ -16,14 +16,14 @@ from .base import WorkflowsBase
 from .controller_metadata import ControllerMetadata
 
 
-__all__ = ['ResourceWorkflowResult']
+__all__ = ['Result']
 
 
-class ResourceWorkflowResult(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
+class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
     """
     Data model for storing information about resource workflow results.
     """
-    __tablename__ = 'resource_workflow_results'
+    __tablename__ = 'results'
     CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_results_view.WorkflowResultsView'
     TYPE = 'generic_workflow_result'
 

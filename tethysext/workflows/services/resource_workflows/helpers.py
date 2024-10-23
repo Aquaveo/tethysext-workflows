@@ -16,7 +16,7 @@ def set_step_status(resource_db_session, step, status):
     resource_db_session.commit()
 
 
-def parse_workflow_step_args():
+def  parse_workflow_step_args():
     """
     Parses and validates command line arguments for workflow_step_job.
     Returns:
@@ -37,7 +37,7 @@ def parse_workflow_step_args():
     # )
     parser.add_argument(
         'resource_workflow_id',
-        help='ID of the ResourceWorkflow this job is associated with.'
+        help='ID of the TethysWorkflow this job is associated with.'
     )
     parser.add_argument(
         'resource_workflow_step_id',

@@ -21,7 +21,7 @@ class DatasetWorkflowResultView(WorkflowResultsView):
     """
     Dataset Result View Controller
     """
-    template_name = 'workflows/resource_workflows/dataset_workflow_results_view.html'
+    template_name = 'workflows/workflows/dataset_workflow_results_view.html'
     valid_result_classes = [DatasetWorkflowResult]
 
     def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
