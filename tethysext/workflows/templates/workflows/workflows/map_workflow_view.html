@@ -6,8 +6,6 @@
 {% block disable_default_tab_panel %}{% endblock %}
 
 {% block after_nav_header %}
-  {# WORKFLOW LOCKED STATUS #}
-  {% include 'workflows/workflows/components/workflow_locked_status.html' %}
 {% endblock %}
 
 {% block custom_map_tabs %}
@@ -40,5 +38,4 @@
   {{ block.super }}
   <link href="{% static 'workflows/workflows/workflow_steps.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/workflows/atcore_map_workflow.css' %}" rel="stylesheet"/>
-  <link href="{% static 'workflows/workflows/workflow_locked_status.css' %}" rel="stylesheet"/>
 {% endblock %}

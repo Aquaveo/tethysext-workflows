@@ -149,7 +149,7 @@ widget_converter = {
 }
 
 
-def generate_django_form(parameterized_obj, form_field_prefix=None, read_only=False):
+def generate_django_form(parameterized_obj, form_field_prefix=None):
     """
     Create a Django form from a Parameterized object.
 
@@ -187,9 +187,6 @@ def generate_django_form(parameterized_obj, form_field_prefix=None, read_only=Fa
 
         # Set label with param label if set, otherwise derive from parameter name
         form_class.base_fields[p_name].label = p.name.replace("_", " ").title() if not p.label else p.label
-
-        # If form is read-only, set disabled attribute
-        form_class.base_fields[p_name].widget.attrs.update({'disabled': read_only})
 
         # Help text displayed on hover over field
         if p.doc:

@@ -81,7 +81,7 @@ class TableInputWV(WorkflowView):
             'nodata_val': TABLE_DATASET_NODATA,
         })
 
-    def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
+    def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
         Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
@@ -105,7 +105,7 @@ class TableInputWV(WorkflowView):
         data = {}
         template_dataset = step.options.get('template_dataset')
         if inspect.isfunction(template_dataset):
-            template_dataset = template_dataset(request, session, resource, step)
+            template_dataset = template_dataset(request, session, step)
         columns = template_dataset.columns
 
         row_count = 0
@@ -148,7 +148,6 @@ class TableInputWV(WorkflowView):
             request=request,
             session=session,
             step=step,
-            resource=resource,
             current_url=current_url,
             previous_url=previous_url,
             next_url=next_url

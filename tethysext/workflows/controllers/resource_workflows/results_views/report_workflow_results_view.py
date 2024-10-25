@@ -46,9 +46,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         map_view = context['map_view']
         self.set_feature_selection(map_view=map_view, enabled=False)
 
-        # Can run workflows if not readonly
-        can_run_workflows = not self.is_read_only(request, current_step)
-
         # get tabular data if any
         tabular_data = current_step.workflow.get_tabular_data_for_previous_steps(current_step, request, session)
         has_tabular_data = len(tabular_data) > 0
@@ -125,7 +122,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
         # Save changes to map view and layer groups
         context.update({
-            'can_run_workflows': can_run_workflows,
             'has_tabular_data': has_tabular_data,
             'tabular_data': tabular_data,
             'report_results': results,

@@ -28,7 +28,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
     valid_step_classes = [SpatialDatasetStep]
 
     @workflow_step_controller(is_rest_controller=True)
-    def get_popup_form(self, request, session, resource, workflow, step, back_url, *args, **kwargs):
+    def get_popup_form(self, request, session, workflow, step, back_url, *args, **kwargs):
         """
         Handle GET requests with method get-attributes-form.
         Args:
@@ -87,7 +87,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
         return render(request, 'workflows/workflows/components/spatial_dataset_form.html', context)
 
     @workflow_step_controller(is_rest_controller=True)
-    def save_spatial_data(self, request, session, resource, workflow, step, back_url, *args, **kwargs):
+    def save_spatial_data(self, request, session, workflow, step, back_url, *args, **kwargs):
         """
         Handle GET requests with method get-attributes-form.
         Args:
@@ -101,11 +101,6 @@ class SpatialDatasetMWV(SpatialDataMWV):
         Returns:
             HttpResponse: A Django response.
         """
-        if self.is_read_only(request, step):
-            return JsonResponse({
-                'success': False,
-                'error': 'You do not have permission to save changes on this step.'
-            })
 
         # Post process the dataset
         data = {}
@@ -148,7 +143,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
 
         return JsonResponse({'success': True})
 
-    def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
+    def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
         Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
@@ -181,7 +176,6 @@ class SpatialDatasetMWV(SpatialDataMWV):
             request=request,
             session=session,
             step=step,
-            resource=resource,
             current_url=current_url,
             previous_url=previous_url,
             next_url=next_url

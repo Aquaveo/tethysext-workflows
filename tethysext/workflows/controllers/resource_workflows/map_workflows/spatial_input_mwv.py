@@ -49,17 +49,10 @@ class SpatialInputMWV(MapWorkflowView):
         Returns:
             dict: key-value pairs to add to context.
         """
-        # Determine if user has an active role
-        is_read_only = self.is_read_only(request, current_step)
-
-        if is_read_only:
-            allow_shapefile_uploads = False
-            allow_edit_attributes = False
-            allow_image_uploads = False
-        else:
-            allow_shapefile_uploads = current_step.options.get('allow_shapefile')
-            allow_edit_attributes = True
-            allow_image_uploads = current_step.options.get('allow_image')
+        
+        allow_shapefile_uploads = current_step.options.get('allow_shapefile')
+        allow_edit_attributes = True
+        allow_image_uploads = current_step.options.get('allow_image')
 
         return {'allow_shapefile': allow_shapefile_uploads,
                 'allow_edit_attributes': allow_edit_attributes,
@@ -94,30 +87,25 @@ class SpatialInputMWV(MapWorkflowView):
         # Get Map View
         map_view = context['map_view']
 
-        # Determine if user has an active role
-        is_read_only = self.is_read_only(request, current_step)
-
         # Turn off feature selection
         self.set_feature_selection(map_view=map_view, enabled=False)
 
-        if not is_read_only:
-            enabled_controls = ['Modify', 'Delete', 'Move', 'Pan']
+        
+        enabled_controls = ['Modify', 'Delete', 'Move', 'Pan']
 
-            # Add layer for current geometry
-            if current_step.options['allow_drawing']:
-                for elem in current_step.options['shapes']:
-                    if elem == 'points':
-                        enabled_controls.append('Point')
-                    elif elem == 'lines':
-                        enabled_controls.append('LineString')
-                    elif elem == 'polygons':
-                        enabled_controls.append('Polygon')
-                    elif elem == 'extents':
-                        enabled_controls.append('Box')
-                    else:
-                        raise RuntimeError('Invalid shapes defined: {}.'.format(elem))
-        else:
-            enabled_controls = ['Pan']
+        # Add layer for current geometry
+        if current_step.options['allow_drawing']:
+            for elem in current_step.options['shapes']:
+                if elem == 'points':
+                    enabled_controls.append('Point')
+                elif elem == 'lines':
+                    enabled_controls.append('LineString')
+                elif elem == 'polygons':
+                    enabled_controls.append('Polygon')
+                elif elem == 'extents':
+                    enabled_controls.append('Box')
+                else:
+                    raise RuntimeError('Invalid shapes defined: {}.'.format(elem))
 
         # Load the currently saved geometry, if any.
         current_geometry = current_step.get_parameter('geometry')
@@ -187,7 +175,7 @@ class SpatialInputMWV(MapWorkflowView):
             next_step=next_step
         )
 
-    def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
+    def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
         Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
@@ -266,7 +254,6 @@ class SpatialInputMWV(MapWorkflowView):
                 request=request,
                 session=session,
                 step=step,
-                resource=resource,
                 current_url=current_url,
                 previous_url=previous_url,
                 next_url=next_url

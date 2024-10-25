@@ -45,7 +45,7 @@ class SetStatusWV(WorkflowView):
 
         # Save changes to map view and layer groups
         context.update({
-            'read_only': self.is_read_only(request, current_step),
+            # 'read_only': self.is_read_only(request, current_step), # TODO remove this from templates
             'form_title': form_title,
             'status_label': status_label,
             'statuses': current_step.options.get('statuses', []),
@@ -54,7 +54,7 @@ class SetStatusWV(WorkflowView):
             'status_style': status_style
         })
 
-    def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
+    def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
         Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs. Only called if the user has an active role.
 
@@ -100,7 +100,6 @@ class SetStatusWV(WorkflowView):
             request=request,
             session=session,
             step=step,
-            resource=resource,
             current_url=current_url,
             previous_url=previous_url,
             next_url=next_url

@@ -46,16 +46,12 @@ class JobStepMWV(MapWorkflowView):
         map_view = context['map_view']
         self.set_feature_selection(map_view=map_view, enabled=False)
 
-        # Can run workflows if not readonly
-        can_run_workflows = not self.is_read_only(request, current_step)
-
         # get tabular data if any
         tabular_data = current_step.workflow.get_tabular_data_for_previous_steps(current_step, request, session)
 
         has_tabular_data = len(tabular_data) > 0
         # Save changes to map view and layer groups
-        context.update({
-            'can_run_workflows': can_run_workflows,
+        context.update({ 
             'has_tabular_data': has_tabular_data,
             'tabular_data': tabular_data,
         })
@@ -125,12 +121,6 @@ class JobStepMWV(MapWorkflowView):
         # Get the current app
         step_url_name = self.get_step_url_name(request, workflow)
 
-        # Can run workflows if not readonly
-        can_run_workflows = not self.is_read_only(request, current_step)
-
-        # Configure workflow lock display
-        lock_display_options = self.build_lock_display_options(request, workflow)
-
         context = {
             #'resource': resource, # TODO look at this in the templates
             'workflow': workflow,
@@ -147,14 +137,13 @@ class JobStepMWV(MapWorkflowView):
             # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO look at this
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'jobs_table': jobs_table,
-            'can_run_workflows': can_run_workflows,
-            'lock_display_options': lock_display_options,
+            # 'lock_display_options': lock_display_options, # TODO remove this from the template
             'base_template': self.base_template
         }
 
         return render(request, 'workflows/workflows/spatial_condor_jobs_table.html', context)
 
-    def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
+    def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
         Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
@@ -201,7 +190,7 @@ class JobStepMWV(MapWorkflowView):
 
                 return redirect(request.path)
 
-        return super().process_step_data(request, session, step, resource, current_url, previous_url, next_url)
+        return super().process_step_data(request, session, step, current_url, previous_url, next_url)
 
     def run_job(self, request, session, workflow_id, step_id, *args, **kwargs):
         """
@@ -215,10 +204,6 @@ class JobStepMWV(MapWorkflowView):
 
         # Validate data if going to next step
         step = self.get_step(request, step_id, session)
-
-        if self.is_read_only(request, step):
-            messages.warning(request, 'You do not have permission to run this workflow.')
-            return redirect(request.path)
 
         # Get options
         scheduler_name = step.options.get('scheduler', None)
@@ -270,9 +255,7 @@ class JobStepMWV(MapWorkflowView):
         job_id = condor_job_manager.prepare()
 
         # Deal with locking
-        # TODO remove this
-        self.handle_on_submit_locking(request, session, step)
-
+        
         # Submit job
         condor_job_manager.run_job()
 

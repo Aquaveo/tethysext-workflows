@@ -56,12 +56,11 @@ class FormInputWV(WorkflowView):
                 p.update_precedence()
             for k, v in current_step.get_parameter('form-values').items():
                 p.param.set_param(k, v)
-            form = generate_django_form(p, form_field_prefix='param-form-',
-                                        read_only=self.is_read_only(request, current_step))()
+            form = generate_django_form(p, form_field_prefix='param-form-')()
 
             # Save changes to map view and layer groups
             context.update({
-                'read_only': self.is_read_only(request, current_step),
+                # 'read_only': self.is_read_only(request, current_step), # TODO remove this from templates
                 'form_title': form_title,
                 'form': form,
             })
@@ -70,12 +69,12 @@ class FormInputWV(WorkflowView):
         elif renderer == 'bokeh':
             script = server_document(request.build_absolute_uri())
             context.update({
-                'read_only': self.is_read_only(request, current_step),
+                # 'read_only': self.is_read_only(request, current_step), # TODO remove this from template
                 'form_title': form_title,
                 'script': script
             })
 
-    def process_step_data(self, request, session, step, resource, current_url, previous_url, next_url):
+    def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
         Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs. Only called if the user has an active role.
 
@@ -95,7 +94,7 @@ class FormInputWV(WorkflowView):
         mod = __import__(package, fromlist=[p_class])
         ParamClass = getattr(mod, p_class)
         if step.options['renderer'] == 'django':
-            param_class_for_form = ParamClass(request=request, session=session, resource=resource)
+            param_class_for_form = ParamClass(request=request, session=session)
             form = generate_django_form(param_class_for_form, form_field_prefix='param-form-')(request.POST)
             params = {}
 
@@ -114,7 +113,7 @@ class FormInputWV(WorkflowView):
 
             # Get the param class and save the data from the form
             # for the next time the form is loaded
-            param_class = ParamClass(request=request, session=session, resource=resource)
+            param_class = ParamClass(request=request, session=session)
             param_values = dict(param_class.param.get_param_values())
             for k, v in params.items():
                 try:
@@ -138,7 +137,7 @@ class FormInputWV(WorkflowView):
                     except ValueError as e:
                         raise RuntimeError('error setting param data: {}'.format(e))
 
-            param_class = ParamClass(request=request, session=session, resource=resource)
+            param_class = ParamClass(request=request, session=session)
             param_values = dict(param_class.get_param_values())
             for k, v in params.items():
                 try:
@@ -163,7 +162,6 @@ class FormInputWV(WorkflowView):
             request=request,
             session=session,
             step=step,
-            resource=resource,
             current_url=current_url,
             previous_url=previous_url,
             next_url=next_url

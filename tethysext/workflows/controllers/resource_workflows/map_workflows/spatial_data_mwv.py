@@ -75,14 +75,13 @@ class SpatialDataMWV(MapWorkflowView):
 
         map_view.layers.insert(0, geometry_layer)
 
-        # Disable the default properties popup for users that can edit
-        enable_readonly_properties = self.is_read_only(request, current_step)
+        
 
         # Save changes to map view
         context.update({
             'map_view': map_view,
-            'enable_properties_popup': enable_readonly_properties,
-            'enable_spatial_data_popup': not enable_readonly_properties
+            # 'enable_properties_popup': enable_readonly_properties,
+            # 'enable_spatial_data_popup': not enable_readonly_properties # TODO fix these in templates
         })
 
         # Note: new layer created by super().process_step_options will have feature selection enabled by default
@@ -96,7 +95,7 @@ class SpatialDataMWV(MapWorkflowView):
         )
 
     @workflow_step_controller(is_rest_controller=True)
-    def get_popup_form(self, request, session, resource, workflow, step, back_url, *args, **kwargs):
+    def get_popup_form(self, request, session, workflow, step, back_url, *args, **kwargs):
         """
         Handle GET requests with method get-attributes-form.
         Args:
@@ -113,7 +112,7 @@ class SpatialDataMWV(MapWorkflowView):
         pass
 
     @workflow_step_controller(is_rest_controller=True)
-    def save_spatial_data(self, request, session, resource, workflow, step, back_url, *args, **kwargs):
+    def save_spatial_data(self, request, session, workflow, step, back_url, *args, **kwargs):
         """
         Handle GET requests with method get-attributes-form.
         Args:

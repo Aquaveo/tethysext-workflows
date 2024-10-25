@@ -26,8 +26,7 @@ log = logging.getLogger(f'tethys.{__name__}')
 
 def workflow_step_controller(is_rest_controller=False):
     def decorator(controller_func):
-        def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, resource_id=None,
-                                resource=None, session=None, *args, **kwargs):
+        def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, resource_id=None, session=None, *args, **kwargs):
             _Workflow = self.get_workflow_model()
             # Defer to outer scope if session is given
             manage_session = session is None
@@ -38,19 +37,12 @@ def workflow_step_controller(is_rest_controller=False):
                     make_session = self.get_sessionmaker()
                     session = make_session()
 
-                # Assign the resource id if resource given
-                if resource and not resource_id:
-                    resource_id = resource.id
-
-                # Handle case when resource is not given but resource_id is
-                if not resource and resource_id:
-                    resource = self.get_resource(request, resource_id=resource_id, session=session)
 
                 workflow = self.get_workflow(request, workflow_id=workflow_id, session=session)
                 current_step = self.get_step(request, step_id=step_id, session=session)
 
                 # Call the Controller
-                return controller_func(self, request, session, resource, workflow, current_step, back_url,
+                return controller_func(self, request, session, workflow, current_step, back_url,
                                        *args, **kwargs)
 
             except (StatementError, NoResultFound) as e:
@@ -121,21 +113,15 @@ def workflow_step_job(job_func):
 
             # Session vars
             step = None
-            model_db_session = None
             resource_db_session = None
             ret_val = None
 
             try:
-                # Get the resource database session
+                # Get the resource database session 
                 resource_db_engine = create_engine(args.resource_db_url)
                 make_resource_db_session = sessionmaker(bind=resource_db_engine)
                 resource_db_session = make_resource_db_session()
 
-                # TODO remove
-                # model_db_engine = create_engine(args.model_db_url)
-                # make_model_db_session = sessionmaker(bind=model_db_engine)
-                # model_db_session = make_model_db_session()
-        
                 # Import Resource and Workflow Classes
                 WorkflowClass = import_from_string(args.workflow_class)
 
@@ -178,9 +164,7 @@ def workflow_step_job(job_func):
                 sys.stderr.write(str(e))
 
             finally:
-                print('Closing sessions...')
-                # TODO remove
-                #model_db_session and model_db_session.close()
+                print('Closing session...')
                 resource_db_session and resource_db_session.close()
 
             print('Processing Complete')
