@@ -37,7 +37,6 @@ class JobStepMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.
@@ -72,7 +71,6 @@ class JobStepMWV(MapWorkflowView):
         Hook that is called at the beginning of the get request for a workflow step, before any other controller logic occurs.
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
-            resource(Resource): the resource for this request.
             workflow(TethysWorkflow): The current workflow.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
@@ -91,7 +89,6 @@ class JobStepMWV(MapWorkflowView):
         Render a condor jobs table showing the status of the current job that is processing.
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
-            resource(Resource): the resource for this request.
             workflow(TethysWorkflow): The current workflow.
             current_step(Step): The current step to be rendered.
         Returns:
@@ -151,7 +148,6 @@ class JobStepMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             step(Step): The step to be updated.
-            resource(Resource): The resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
             next_url(str): URL to the next step.
@@ -276,42 +272,7 @@ class JobStepMWV(MapWorkflowView):
 
         return redirect(request.path)
 
-    def handle_on_submit_locking(self, request, session, step):
-        """
-        Acquires or releases the workflow or resource lock based on the step options.
-
-        Args:
-            request(HttpRequest): Django request instance.
-            session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
-            step(Step): the step.
-        """
-        lock_workflow_on_submit = step.options.get('lock_workflow_on_job_submit', False)
-        lock_resource_on_submit = step.options.get('lock_resource_on_job_submit', False)
-        unlock_workflow_on_submit = step.options.get('unlock_workflow_on_job_submit', False)
-        unlock_resource_on_submit = step.options.get('unlock_resource_on_job_submit', False)
-
-        if lock_workflow_on_submit and unlock_workflow_on_submit:
-            raise RuntimeError('Improperly configured JobStep: lock_workflow_on_job_submit and '
-                               'unlock_workflow_on_job_submit options are mutually exclusive.')
-
-        if lock_resource_on_submit and unlock_resource_on_submit:
-            raise RuntimeError('Improperly configured JobStep: lock_resource_on_job_submit and '
-                               'unlock_resource_on_job_submit options are mutually exclusive.')
-
-        # TODO look into deleting all of these locks
-        if lock_resource_on_submit:
-            self.acquire_lock_and_log(request, session)
-
-        if lock_workflow_on_submit:
-            self.acquire_lock_and_log(request, session, step.workflow)
-
-        if unlock_resource_on_submit:
-            self.release_lock_and_log(request, session)
-
-        if unlock_workflow_on_submit:
-            self.release_lock_and_log(request, session, step.workflow)
-
+    
     @staticmethod
     def get_working_directory(request, app):
         """
@@ -347,35 +308,3 @@ class JobStepMWV(MapWorkflowView):
 
         return json.dumps(parameters)
 
-    def process_lock_options_on_init(self, request, session, step):
-        """
-        Process lock options when the view initializes.
-
-        Args:
-            request(HttpRequest): The request.
-            session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
-            step(Step): the step.
-        """
-        user_has_active_role = self.user_has_active_role(request, step)
-
-        # Process lock options - only active users or permitted users can acquire user locks
-        if user_has_active_role:
-            # Bypass locking when view loads if lock on submit is requested
-            if not step.options.get('lock_resource_on_job_submit') \
-                    and not step.options.get('lock_workflow_on_job_submit'):
-                super().process_lock_options_on_init(request, session, step)
-
-    def process_lock_options_after_submission(self, request, session, resource, step):
-        """
-        Process lock options after the step has been submitted and processed.
-
-        Args:
-            request(HttpRequest): The request.
-            session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
-            step(Step): the step.
-        """
-        if not step.options.get('unlock_resource_on_job_complete') \
-                and not step.options.get('unlock_workflow_on_job_complete'):
-            super().process_lock_options_after_submission(request, session, resource, step)

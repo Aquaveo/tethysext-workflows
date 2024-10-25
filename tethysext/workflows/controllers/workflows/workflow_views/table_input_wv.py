@@ -33,7 +33,6 @@ class TableInputWV(WorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.
@@ -89,7 +88,6 @@ class TableInputWV(WorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             step(Step): The step to be updated.
-            resource(Resource): The resource being updated.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
             next_url(str): URL to the next step.

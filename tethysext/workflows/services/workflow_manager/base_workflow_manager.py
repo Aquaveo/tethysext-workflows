@@ -32,14 +32,7 @@ class BaseWorkflowManager(object):
                              'or equivalent dictionary.')
 
         # DB url for database containing the resource
-        self.resource_db_url = str(session.get_bind().url)
-
-        # DB URL for database containing the model database
-        if model_db:
-            self.model_db_url = model_db.db_url
-        else:
-            log.warning('no model database provided')
-            self.model_db_url = None
+        self.db_url = str(session.get_bind().url)
 
         # Serialize GeoServer Connection
         self.gs_private_url = ''
@@ -48,8 +41,8 @@ class BaseWorkflowManager(object):
             self.gs_private_url, self.gs_public_url = generate_geoserver_urls(gs_engine)
 
         # Important IDs
-        self.resource_id = str(resource_workflow_step.workflow.resource.id)
-        self.resource_name = resource_workflow_step.workflow.resource.name
+        self.resource_id = str(workflow_step.workflow.resource.id)
+        self.resource_name = workflow_step.workflow.resource.name
         self.workflow_id = str(workflow_step.workflow.id)
         self.workflow_name = workflow_step.workflow.name
         self.workflow_type = workflow_step.workflow.DISPLAY_TYPE_SINGULAR
@@ -75,8 +68,7 @@ class BaseWorkflowManager(object):
 
         # Prepare standard arguments for all jobs
         self.job_args = [
-            self.resource_db_url,
-            self.model_db_url,
+            self.db_url,
             self.resource_id,
             self.workflow_id,
             self.workflow_step_id,

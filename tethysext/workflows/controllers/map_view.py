@@ -57,7 +57,6 @@ class MapView(ResourceView):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
 
         Returns:
@@ -69,8 +68,6 @@ class MapView(ResourceView):
 
         # If "scenario-id" is passed in via the GET parameters, use that instead of the one given by the resource
         scenario_id = request.GET.get('scenario-id', scenario_id)
-
-        resource_id = 1
         
         # Get Managers Hook
         map_manager = self.get_map_manager(
@@ -83,7 +80,6 @@ class MapView(ResourceView):
         map_view, model_extent, layer_groups = map_manager.compose_map(
             *args,
             request=request,
-            resource_id=resource_id,
             scenario_id=scenario_id,
             **kwargs
         )
@@ -173,10 +169,8 @@ class MapView(ResourceView):
             'show_legends': self.show_legends,
         })
 
-        # if resource:
-        #     context.update({'nav_title': self.map_title or resource.name})
-        # else:
-        #     context.update({'nav_title': self.map_title})
+        
+        context.update({'nav_title': self.map_title})
 
         # open_portal_mode = getattr(settings, 'ENABLE_OPEN_PORTAL', False)
         show_rename = has_permission(request, 'rename_layers')
@@ -221,7 +215,6 @@ class MapView(ResourceView):
         Args:
             request (HttpRequest): The request.
             permissions (dict): The permissions dictionary with boolean values.
-            resource (Resource): The resource.
 
         Returns:
             dict: modified permissions dictionary.
@@ -248,13 +241,12 @@ class MapView(ResourceView):
                 cesium_primitives.append(layer)
         return cesium_layers, cesium_entities, cesium_models, cesium_primitives
 
-    def save_custom_layers(self, request, session, resource, *args, **kwargs):
+    def save_custom_layers(self, request, session, *args, **kwargs):
         """
         Persist custom layers added to map by user.
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): The database session.
-            resource(Resource): The resource.
 
         Returns:
             JsonResponse: success.
@@ -267,21 +259,18 @@ class MapView(ResourceView):
         # TODO: Should use map_manager._build_mv_layer or at the very least MVLayer
         custom_layer = [{'layer_id': layer_uuid, 'display_name': display_name, 'service_link': service_link,
                          'service_type': service_type, 'service_layer_name': service_layer_name}]
-        custom_layers = resource.get_attribute('custom_layers')
         if custom_layers is None:
             custom_layers = []
         custom_layers.extend(custom_layer)
-        resource.set_attribute('custom_layers', custom_layers)
         session.commit()
         return JsonResponse({'success': True})
 
-    def remove_custom_layer(self, request, session, resource, *args, **kwargs):
+    def remove_custom_layer(self, request, session, *args, **kwargs):
         """
         Remove custom layers removed by user.
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): The database session.
-            resource(Resource): The resource.
 
         Returns:
             JsonResponse: success.
@@ -289,17 +278,16 @@ class MapView(ResourceView):
         layer_id = request.POST.get('layer_id', '')
         layer_group_type = request.POST.get('layer_group_type', '')
         if layer_group_type == 'custom_layers':
-            custom_layers = resource.get_attribute(layer_group_type)
+            custom_layers = []
             if custom_layers is not None:
                 new_custom_layers = []
                 for custom_layer in custom_layers:
                     if custom_layer['layer_id'] != layer_id:
                         new_custom_layers.append(custom_layer)
-                resource.set_attribute(layer_group_type, new_custom_layers)
         session.commit()
         return JsonResponse({'success': True})
 
-    def build_legend_item(self, request, session, resource, *args, **kwargs):
+    def build_legend_item(self, request, session, *args, **kwargs):
         """
         Render the HTML for a legend.
         """
@@ -307,7 +295,6 @@ class MapView(ResourceView):
         map_manager = self.get_map_manager(
             *args,
             request=request,
-            resource=resource,
             **kwargs
         )
         legend_div_id = json.loads(request.POST.get('div_id'))
@@ -346,7 +333,7 @@ class MapView(ResourceView):
         return JsonResponse({'success': True, 'response': response, 'div_id': legend_div_id, 'color_ramp': color_ramp,
                              'division_string': division_string, 'layer_id': layer_id})
 
-    def build_layer_group_tree_item(self, request, session, resource, *args, **kwargs):
+    def build_layer_group_tree_item(self, request, session, *args, **kwargs):
         """
         Render the HTML for a layer group tree item.
 
@@ -357,7 +344,6 @@ class MapView(ResourceView):
         map_manager = self.get_map_manager(
             *args,
             request=request,
-            resource=resource,
             **kwargs
         )
         status = request.POST.get('status', 'create')
@@ -391,13 +377,12 @@ class MapView(ResourceView):
         response = str(html.content, 'utf-8')
         return JsonResponse({'success': True, 'response': response})
 
-    def should_disable_basemap(self, request, resource, map_manager):
+    def should_disable_basemap(self, request, map_manager):
         """
         Hook to override disabling the basemap.
 
         Args:
             request (HttpRequest): The request.
-            resource (Resource): Resource instance or None.
             map_manager (MapManager): MapManager instance associated with this request.
 
         Returns:
@@ -411,7 +396,6 @@ class MapView(ResourceView):
 
         Args:
             request (HttpRequest): The request.
-            resource (Resource): Resource instance or None.
 
         Returns:
             MapManager: MapManager instance.
@@ -422,29 +406,22 @@ class MapView(ResourceView):
             self._map_manager = self._MapManager(spatial_manager=spatial_manager)
         return self._map_manager
 
-    def get_plot_data(self, request, session, resource, *args, **kwargs):
+    def get_plot_data(self, request, session, *args, **kwargs):
         """
         Load plot from given parameters.
 
         Args:
             request (HttpRequest): The request.
             session(sqlalchemy.Session): The database session.
-            resource(Resource): The resource.
 
         Returns:
             JsonResponse: title, data, and layout options for the plot.
         """
-        # Get Resource
         layer_name = request.POST.get('layer_name', '')
         feature_id = request.POST.get('feature_id', '')
-        database_id = resource.get_attribute('database_id') if resource else None
-
-        if not database_id:
-            messages.error(request, 'An unexpected error occurred. Please try again.')
-            return redirect(self.back_url)
 
         # Initialize MapManager
-        map_manager = self.get_map_manager(request, resource, *args, **kwargs)
+        map_manager = self.get_map_manager(request, *args, **kwargs)
         title, data, layout = map_manager.get_plot_for_layer_feature(layer_name, feature_id)
 
         return JsonResponse({'title': title, 'data': data, 'layout': layout})
@@ -456,7 +433,6 @@ class MapView(ResourceView):
 
         Args:
             request(HttpRequest): The request.
-            resource_id(str): UUID of the resource being mapped.
         """
         query = request.POST.get('q', None)
         extent = request.POST.get('extent', None)
@@ -537,7 +513,6 @@ class MapView(ResourceView):
 
         Args:
             request(HttpRequest): The request.
-            resource_id(str): UUID of the resource being mapped.
         """
         query = request.POST.get('q', None)
         # location = request.POST.get('l', None)
@@ -608,14 +583,13 @@ class MapView(ResourceView):
 
         return JsonResponse(json)
 
-    def convert_geojson_to_shapefile(self, request, session, resource, *args, **kwargs):
+    def convert_geojson_to_shapefile(self, request, session, *args, **kwargs):
         """
         credit to:
         https://github.com/TipsForGIS/geoJSONToShpFile/blob/master/geoJ.py
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): The database session.
-            resource(Resource): The resource.
 
         Returns:
             JsonResponse: success.

@@ -3,7 +3,6 @@
 Include to add the workflow tab content. Also include the workflow_tab.html to get the tab link.
 
 Required Context Variables:
-  resource(Resource): the resource the workflow belongs to/acts on.
   workflow(TethysWorkflow): the workflow containing the steps that will be rendered.
   steps(list<dicts>): list of dictionaries containing metadata about each step in the given workflow.
   current_step(Step): the current step.
@@ -11,7 +10,6 @@ Required Context Variables:
 
 Required CSS:
   <link href="{% static 'workflows/css/nav_tabs.css' %}" rel="stylesheet"/>
-  <link href="{% static 'workflows/app_users/css/resource_details.css' %}" rel="stylesheet" >
   <link href="{% static 'workflows/workflows/workflows.css' %}" rel="stylesheet" >
 {% endcomment %}
 

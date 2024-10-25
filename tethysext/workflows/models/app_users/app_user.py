@@ -496,22 +496,4 @@ class AppUser(WorkflowsBase):
         if commit:
             session.commit()
 
-    def can_view(self, session, request, resource):
-        """
-        Check whether this user can view the given resource.
-        Args:
-            session(sqlalchemy.session): SQLAlchemy session object
-            request(django.request): Django request object
-            resource(Resource): resource to test.
-
-        Returns:
-            bool: True if user can view the resource, else False.
-        """
-        organizations = self.get_organizations(session, request)
-
-        for organization in organizations:
-            for r in organization.resources:
-                if r.id == resource.id:
-                    return True
-
-        return False
+    

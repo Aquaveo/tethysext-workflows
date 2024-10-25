@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: resource_workflow_view.py
+* Name: workflow_router.py
 * Author: nswain
 * Created On: November 19, 2018
 * Copyright: (c) Aquaveo 2018
@@ -12,7 +12,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from django.shortcuts import redirect, reverse
 from django.contrib import messages
 from tethys_apps.utilities import get_active_app
-from ...exceptions import ATCoreException
+from ...exceptions import TethysWorkflowsException
 from .mixins import WorkflowViewMixin
 from ...steps import ResultsStep # TODO ADD THIS IMPORT
 
@@ -22,7 +22,7 @@ log = logging.getLogger(f'tethys.{__name__}')
 
 class WorkflowRouter(WorkflowViewMixin):
     """
-    Router for resource workflow views. Routes to appropriate step controller.
+    Router for workflow views. Routes to appropriate step controller.
     """
     base_template = 'atcore/app_users/base.html'
     http_method_names = ['get', 'post', 'delete']
@@ -101,7 +101,7 @@ class WorkflowRouter(WorkflowViewMixin):
                 _Workflow.DISPLAY_TYPE_SINGULAR.lower()
             ))
             return redirect(self.back_url)
-        except ATCoreException as e:
+        except TethysWorkflowsException as e:
             error_message = str(e)
             messages.warning(request, error_message)
             return redirect(self.back_url)
@@ -235,7 +235,7 @@ class WorkflowRouter(WorkflowViewMixin):
                 _Workflow.DISPLAY_TYPE_SINGULAR.lower()
             ))
             return redirect(self.back_url)
-        except ATCoreException as e:
+        except TethysWorkflowsException as e:
             error_message = str(e)
             messages.warning(request, error_message)
             return redirect(self.back_url)
@@ -308,7 +308,7 @@ class WorkflowRouter(WorkflowViewMixin):
                 _Workflow.DISPLAY_TYPE_SINGULAR.lower()
             ))
             return redirect(self.back_url)
-        except ATCoreException as e:
+        except TethysWorkflowsException as e:
             error_message = str(e)
             messages.warning(request, error_message)
             return redirect(self.back_url)

@@ -17,7 +17,7 @@ class SpatialWorkflowResult(Result):
     """
     Data model for storing spatial information about resource workflow results.
     """
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.results_views.map_workflow_results_view.MapWorkflowResultsView'  # noqa: E501
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.results_views.map_workflow_results_view.MapWorkflowResultsView'  # noqa: E501
     TYPE = 'spatial_workflow_result'
 
     __mapper_args__ = {

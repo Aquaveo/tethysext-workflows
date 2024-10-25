@@ -8,7 +8,7 @@
 """
 import inspect
 from django.utils.text import slugify
-from ..controllers.resource_workflows import WorkflowRouter
+from ..controllers.workflows import WorkflowRouter
 from ..models.app_users import AppUser, Organization, Resource
 from ..models import TethysWorkflow
 from ..services.app_users.permissions_manager import AppPermissionsManager

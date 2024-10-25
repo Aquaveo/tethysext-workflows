@@ -12,9 +12,9 @@ from ..models import Step
 
 class SpatialStep(Step):
     """
-    Abstract base class of all Spatial Resource Workflow Steps.
+    Abstract base class of all Spatial Workflow Steps.
     """  # noqa: #501
-    TYPE = 'spatial_resource_workflow_step'
+    TYPE = 'spatial_workflow_step'
 
     __mapper_args__ = {
         'polymorphic_identity': TYPE

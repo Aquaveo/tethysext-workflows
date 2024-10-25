@@ -13,7 +13,7 @@ from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.permissions import has_permission
 from ...utilities import grammatically_correct_join # TODO CHECK THIS IMPORT
-from ...services.resource_workflows.decorators import workflow_step_controller
+from ...services.workflows.decorators import workflow_step_controller
 from ..resource_view import ResourceView
 from .mixins import WorkflowViewMixin
 from ..utilities import get_style_for_status
@@ -29,7 +29,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
     """
     view_title = ''
     view_subtitle = ''
-    template_name = 'workflows/workflows/resource_workflow_view.html'
+    template_name = 'workflows/workflows/workflow_view.html'
     previous_title = 'Previous'
     next_title = 'Next'
     finish_title = 'Finish'
@@ -42,7 +42,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
             workflow_id (str): The id of the workflow.
             step_id (str): The id of the step.
@@ -129,7 +128,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
@@ -361,7 +359,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
 
         Returns:
             None or HttpResponse: If an HttpResponse is returned, render that instead.
@@ -388,7 +385,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
-            resource(Resource): the resource for this request.
             workflow(TethysWorkflow): The current workflow.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
@@ -406,7 +402,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             step(Step): The step to be updated.
-            resource(Resource): The resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
             next_url(str): URL to the next step.
@@ -474,7 +469,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.

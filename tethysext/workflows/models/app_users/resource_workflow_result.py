@@ -24,7 +24,7 @@ class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, Serializ
     Data model for storing information about resource workflow results.
     """
     __tablename__ = 'app_users_resource_workflow_results'
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_results_view.WorkflowResultsView'
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.workflow_results_view.WorkflowResultsView'
     TYPE = 'generic_workflow_result'
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)

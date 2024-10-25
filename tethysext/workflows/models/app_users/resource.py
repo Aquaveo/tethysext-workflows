@@ -6,7 +6,7 @@ from django.utils.functional import classproperty
 from sqlalchemy import Column, Boolean, DateTime, String
 from sqlalchemy.orm import relationship, backref
 from ...models import GUID
-from ...mixins import StatusMixin, AttributesMixin, UserLockMixin, SerializeMixin
+from ...mixins import StatusMixin, AttributesMixin, SerializeMixin
 
 # from .app_user import AppUsersBase # TODO LOOK AT THIS
 from ..base import WorkflowsBase
@@ -15,7 +15,7 @@ from ..base import WorkflowsBase
 __all__ = ['Resource']
 
 # class Resource(StatusMixin, AttributesMixin, UserLockMixin, SerializeMixin, AppUsersBase):
-class Resource(StatusMixin, AttributesMixin, UserLockMixin, SerializeMixin, WorkflowsBase):
+class Resource(StatusMixin, AttributesMixin, SerializeMixin, WorkflowsBase):
     """
     Definition for the resources table.
     """

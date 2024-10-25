@@ -16,7 +16,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils.functional import wraps
 from django.conf import settings
-from ...exceptions import ATCoreException
+from ...exceptions import TethysWorkflowsException
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -86,7 +86,7 @@ def resource_controller(is_rest_controller=False):
                 else:
                     return JsonResponse({'success': False, 'error': str(e)})
 
-            except ATCoreException as e:
+            except TethysWorkflowsException as e:
                 error_message = str(e)
                 messages.warning(request, error_message)
                 if not is_rest_controller:

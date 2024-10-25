@@ -155,14 +155,14 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         })
         return base_context
 
-    def get_plot_data(self, request, session, resource, result_id, *args, **kwargs):
+    def get_plot_data(self, request, session, result_id, *args, **kwargs):
         """
         Load plot from given parameters.
 
         Args:
             request (HttpRequest): The request.
             session(sqlalchemy.Session): The database session.
-            resource(Resource): The resource.
+            
 
         Returns:
             JsonResponse: title, data, and layout options for the plot.
@@ -185,7 +185,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             title, data, layout = self.get_plot_for_geojson(layer, feature_id)
 
         elif layer_type == 'wms':
-            title, data, layout = super().get_plot_data(request, session, resource)
+            title, data, layout = super().get_plot_data(request, session)
 
         return JsonResponse({'title': title, 'data': data, 'layout': layout})
 

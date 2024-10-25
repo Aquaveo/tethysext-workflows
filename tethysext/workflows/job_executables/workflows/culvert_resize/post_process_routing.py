@@ -14,7 +14,7 @@ import re
 import pandas as pd
 from pprint import pprint
 from gssha_adapter.utilities import safe_str
-from tethysext.atcore.services.resource_workflows.decorators import workflow_step_job
+from tethysext.atcore.services.workflows.decorators import workflow_step_job
 
 
 @workflow_step_job

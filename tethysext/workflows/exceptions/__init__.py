@@ -8,11 +8,11 @@
 """
 
 
-class ATCoreException(Exception):
+class TethysWorkflowsException(Exception):
     pass
 
 
-class ModelDatabaseError(ATCoreException):
+class ModelDatabaseError(TethysWorkflowsException):
     pass
 
 
@@ -51,7 +51,7 @@ class FileCollectionItemAlreadyExistsError(Exception):
 class InvalidSpatialResourceExtentTypeError(Exception):
     pass
 
-__all__ = [ATCoreException, ModelDatabaseError, ModelDatabaseInitializationError, ModelFileDatabaseInitializationError,
+__all__ = [TethysWorkflowsException, ModelDatabaseError, ModelDatabaseInitializationError, ModelFileDatabaseInitializationError,
            UnboundFileCollectionError, UnboundFileDatabaseError, FileCollectionNotFoundError,
            FileCollectionItemNotFoundError, FileDatabaseNotFoundError, FileCollectionItemAlreadyExistsError,
            InvalidSpatialResourceExtentTypeError]

@@ -193,7 +193,6 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
             step(Step): A step belonging to this workflow.
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            resource(Resource): the resource for this request.
 
         Returns:
             dict: a dictionary with tabular data per step.

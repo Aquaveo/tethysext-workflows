@@ -17,7 +17,7 @@ def urls(url_map_maker, app, persistent_store_name, base_url_path='', custom_con
         url_map_maker(UrlMap): UrlMap class bound to app root url.
         app(TethysAppBase): instance of Tethys app class.
         persistent_store_name(str): name of persistent store database setting the controllers should use to create sessions.
-        base_template(str): relative path to base template (e.g.: 'my_first_app/base.html'). Useful to add navigation to ManageUsers, ManageOrganizations, ManageResources, and UserAccount views.
+        base_template(str): relative path to base template (e.g.: 'my_first_app/base.html').
         custom_controllers(list<TethysController>): Any number of TethysController subclasses to override default controller classes.
         custom_services(cls): custom subclasses of SpatialRefereceService service.
 

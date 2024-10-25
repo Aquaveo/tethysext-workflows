@@ -17,7 +17,7 @@ class SpatialAttributesRWS(SpatialStep):
         geometry_source(varies): Geometry or parent to retrieve the geometry from. For passing geometry, use GeoJSON string.
         attributes(dict): Dictionary of param instances defining the attributes to be defined for each feature.
     """  # noqa: #501
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.map_workflows.SpatialAttributesMWV'
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.map_workflows.SpatialAttributesMWV'
     TYPE = 'spatial_attributes_workflow_step'
 
     __mapper_args__ = {

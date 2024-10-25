@@ -37,7 +37,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.

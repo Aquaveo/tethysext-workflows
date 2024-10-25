@@ -25,7 +25,7 @@ class SpatialInputStep(SpatialStep):
         snapping_options(dict): Supported options include edge, vertex, pixelTolerance. See: https://openlayers.org/en/latest/apidoc/module-ol_interaction_Snap.html
         allow_image(bool): Allow reference image upload as spatial input.  Defaults to False.
     """  # noqa: #501
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.map_workflows.SpatialInputMWV'
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.map_workflows.SpatialInputMWV'
     TYPE = 'spatial_input_workflow_step'
 
     __mapper_args__ = {

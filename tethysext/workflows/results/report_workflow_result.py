@@ -16,7 +16,7 @@ class ReportWorkflowResult(Result):
     """
     Data model for storing spatial information about resource workflow results.
     """
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.results_views.report_workflow_results_view.ReportWorkflowResultsView'  # noqa: E501
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.results_views.report_workflow_results_view.ReportWorkflowResultsView'  # noqa: E501
     TYPE = 'report_workflow_result'
 
     __mapper_args__ = {

@@ -40,7 +40,7 @@ z
         """  # noqa: E501
         from tethys_sdk.base import TethysController
         from ..controllers.app_users.mixins import ResourceViewMixin 
-        from ..controllers.resource_workflows.workflow_view import WorkflowView
+        from ..controllers.workflows.workflow_view import WorkflowView
 
         try:
             controller = import_from_string(self.path)

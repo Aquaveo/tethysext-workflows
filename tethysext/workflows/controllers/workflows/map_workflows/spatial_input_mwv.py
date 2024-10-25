@@ -66,7 +66,6 @@ class SpatialInputMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.
@@ -183,7 +182,6 @@ class SpatialInputMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             step(Step): The step to be updated.
-            resource(Resource): the resource for this request.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
             next_url(str): URL to the next step.
@@ -267,7 +265,6 @@ class SpatialInputMWV(MapWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
-            resource(Resource): the resource for this request.
             step_id(str): ID of the step to render.
 
         Returns:

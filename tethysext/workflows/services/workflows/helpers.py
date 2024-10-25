@@ -1,19 +1,19 @@
 import argparse
 
 
-def set_step_status(resource_db_session, step, status):
+def set_step_status(db_session, step, status):
     """
     Sets the status on the provided step to the provided status.
     Args:
-        resource_db_session(sqlalchemy.orm.Session): Session bound to the step.
+        db_session(sqlalchemy.orm.Session): Session bound to the step.
         step(Step): The step to modify
         status(str): The status to set.
     """
-    resource_db_session.refresh(step)
+    db_session.refresh(step)
     step_statuses = step.get_attribute('condor_job_statuses')
     step_statuses.append(status)
     step.set_attribute('condor_job_statuses', step_statuses)
-    resource_db_session.commit()
+    db_session.commit()
 
 
 def  parse_workflow_step_args():
@@ -24,17 +24,9 @@ def  parse_workflow_step_args():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'resource_db_url',
+        'db_url',
         help='SQLAlchemy URL to the database containing the Resource and Workflow data.'
     )
-    # parser.add_argument(
-    #     'model_db_url',
-    #     help='SQLAlchemy URL to the database containing the GSSHA model.'
-    # )
-    # parser.add_argument(
-    #     'resource_id',
-    #     help='ID of the Resource this job is associated with.'
-    # )
     parser.add_argument(
         'workflow_id',
         help='ID of the TethysWorkflow this job is associated with.'
@@ -51,10 +43,6 @@ def  parse_workflow_step_args():
         'gs_public_url',
         help='Public url to GeoServer.'
     )
-    # parser.add_argument(
-    #     'resource_class',
-    #     help='Dot path to resource class.'
-    # )
     parser.add_argument(
         'workflow_class',
         help='Dot path to workflow class.'

@@ -21,7 +21,7 @@ from sqlalchemy.orm import sessionmaker
 from gssha_adapter.workflows.detention_basin.grid import Grid
 from gssha_adapter.workflows.disable_upstream_cells import DisableUpstreamCells
 from gssha_adapter.workflows.gssha_helpers import reproject_point
-from tethysext.atcore.services.resource_workflows.decorators import workflow_step_job
+from tethysext.atcore.services.workflows.decorators import workflow_step_job
 
 
 @workflow_step_job

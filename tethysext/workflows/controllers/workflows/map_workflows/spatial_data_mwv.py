@@ -8,7 +8,7 @@
 """
 from .map_workflow_view import MapWorkflowView
 from ....steps import SpatialDatasetStep, SpatialAttributesRWS
-from ....services.resource_workflows.decorators import workflow_step_controller
+from ....services.workflows.decorators import workflow_step_controller
 
 
 class SpatialDataMWV(MapWorkflowView):
@@ -29,7 +29,6 @@ class SpatialDataMWV(MapWorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.
@@ -101,7 +100,6 @@ class SpatialDataMWV(MapWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
@@ -118,7 +116,6 @@ class SpatialDataMWV(MapWorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.

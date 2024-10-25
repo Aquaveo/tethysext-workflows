@@ -18,7 +18,7 @@ from gssha_adapter.workflows.detention_basin.grid import Grid
 from gssha_adapter.workflows.detention_basin.modifier import Modifier
 from gssha_adapter.workflows.gssha_helpers import find_ohl_link_nodes_for_stream_cell, get_stream_cell_nodes, \
     run_gssha, reproject_point, read_ohl_to_series, add_num_threads_to_prj
-from tethysext.atcore.services.resource_workflows.decorators import workflow_step_job
+from tethysext.atcore.services.workflows.decorators import workflow_step_job
 
 
 @workflow_step_job

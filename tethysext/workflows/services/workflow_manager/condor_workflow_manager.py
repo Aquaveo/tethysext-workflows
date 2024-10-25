@@ -33,7 +33,6 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
 
         Args:
             session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the resource workflow.
-            resource(Resource): The resource being processed.
             resource_workflow_step(atcore.models.app_users.Step): Instance of Step. Note: Must have active session (i.e. not closed).
             user(auth.User): The Django user submitting the job.
             working_directory(str): Path to users's workspace.
@@ -47,7 +46,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         self.validate_jobs(jobs)
 
         # DB url for database containing the resource
-        self.resource_db_url = str(session.get_bind().url)
+        self.db_url = str(session.get_bind().url)
 
         # DB URL for database containing the model database
         # self.model_db_url = None
@@ -99,7 +98,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
 
         # Prepare standard arguments for all jobs
         self.job_args = [
-            self.resource_db_url,
+            self.db_url,
             # self.model_db_url, # TODO delete this
             # self.resource_id,
             self.tethys_workflow_id,

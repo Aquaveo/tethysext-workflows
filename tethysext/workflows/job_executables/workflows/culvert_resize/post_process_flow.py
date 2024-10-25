@@ -11,7 +11,7 @@ import json
 import math
 import pandas as pd
 from pprint import pprint
-from tethysext.atcore.services.resource_workflows.decorators import workflow_step_job
+from tethysext.atcore.services.workflows.decorators import workflow_step_job
 
 
 @workflow_step_job

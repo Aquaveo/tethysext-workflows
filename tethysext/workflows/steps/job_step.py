@@ -18,8 +18,8 @@ class JobStep(SpatialStep):
         jobs(list<dict>): A list of dictionaries, each containing the kwargs for a CondorWorkflowJobNode.
         workflow_kwargs(dict): Additional keyword arguments to pass to the CondorWorkflow.
     """  # noqa: #501
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.map_workflows.JobStepMWV'
-    TYPE = 'spatial_condor_job_workflow_step'
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.map_workflows.JobStepMWV'
+    TYPE = 'job_workflow_step'
 
     __mapper_args__ = {
         'polymorphic_identity': TYPE

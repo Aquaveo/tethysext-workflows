@@ -31,7 +31,6 @@ class MapWorkflowView(MapView, WorkflowView):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): the session.
-            resource(Resource): the resource for this request.
             context(dict): The context dictionary.
             workflow_id(str): The id of the workflow.
             step_id(str): The id of the step.
@@ -81,7 +80,6 @@ class MapWorkflowView(MapView, WorkflowView):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             context(dict): Context object for the map view template.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             previous_step(Step): The previous step.
             next_step(Step): The next step.
@@ -111,7 +109,6 @@ class MapWorkflowView(MapView, WorkflowView):
         Create layers for previous steps that have a spatial component to them for review of the previous steps.
         Args:
             request(HttpRequest): The request.
-            resource(Resource): the resource for this request.
             current_step(Step): The current step to be rendered.
             map_view(MapView): The Tethys MapView object.
             layer_groups(list<dict>): List of layer group dictionaries for new layers to add.

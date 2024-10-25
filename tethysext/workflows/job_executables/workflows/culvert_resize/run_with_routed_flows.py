@@ -21,7 +21,7 @@ from shapely.geometry import LineString
 from gssha_adapter.workflows.gssha_helpers import run_gssha, get_link_node_for_point, \
     read_ohl_to_series, add_num_threads_to_prj, reproject_point
 from gssha_adapter.workflows.detention_basin.modified_puls import ModifiedPuls
-from tethysext.atcore.services.resource_workflows.decorators import workflow_step_job
+from tethysext.atcore.services.workflows.decorators import workflow_step_job
 from gssha_adapter.workflows.detention_basin.modifier_culvert import ModifierCulvert
 
 

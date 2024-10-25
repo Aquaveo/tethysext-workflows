@@ -13,7 +13,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .spatial_data_mwv import SpatialDataMWV
 from ....steps import SpatialDatasetStep
-from ....services.resource_workflows.decorators import workflow_step_controller
+from ....services.workflows.decorators import workflow_step_controller
 from ....utilities import strip_list
 
 
@@ -34,7 +34,6 @@ class SpatialDatasetMWV(SpatialDataMWV):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
@@ -93,7 +92,6 @@ class SpatialDatasetMWV(SpatialDataMWV):
         Args:
             request(HttpRequest): The request.
             session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
-            resource(Resource): the resource this workflow applies to.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
@@ -151,7 +149,6 @@ class SpatialDatasetMWV(SpatialDataMWV):
             request(HttpRequest): The request.
             session(sqlalchemy.orm.Session): Session bound to the steps.
             step(Step): The step to be updated.
-            resource(Resource): The resource being updated.
             current_url(str): URL to step.
             previous_url(str): URL to the previous step.
             next_url(str): URL to the next step.

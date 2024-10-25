@@ -20,8 +20,8 @@ class FormInputStep(Step):
         renderer(str): Renderer option. Available values are 'django' and 'bokeh'. Defauls to 'django'. 
     """  # noqa: #501
 
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_views.FormInputWV'
-    TYPE = 'form_input_resource_workflow_step'
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.workflow_views.FormInputWV'
+    TYPE = 'form_input_workflow_step'
 
     __mapper_args__ = {
         'polymorphic_identity': TYPE

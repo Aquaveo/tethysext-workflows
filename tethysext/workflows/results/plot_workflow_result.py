@@ -30,7 +30,7 @@ class PlotWorkflowResult(Result):
         line_shape (str): Only for plotly. You can select from on of these options: linear, spline, vhv, hvh, vh, hv
         x_axis_type (str): type of x axis. Available options are 'linear' or 'datetime'
     """
-    CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.results_views.plot_workflow_results_view.PlotWorkflowResultView'  # noqa: E501
+    CONTROLLER = 'tethysext.workflows.controllers.workflows.results_views.plot_workflow_results_view.PlotWorkflowResultView'  # noqa: E501
     TYPE = 'plot_workflow_result'
 
     __mapper_args__ = {

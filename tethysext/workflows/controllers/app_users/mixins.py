@@ -11,10 +11,10 @@ from django.conf import settings
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.base import TethysController
 from tethys_sdk.permissions import has_permission
-from ...exceptions import ATCoreException
+from ...exceptions import TethysWorkflowsException
 from ...models.app_users import AppUser, Organization, Resource # TODO will need to upate here
 from ...services.app_users.permissions_manager import AppPermissionsManager
-
+# TODO need to come in and remove all of this
 
 class AppUsersViewMixin(TethysController):
     """
@@ -52,13 +52,12 @@ class AppUsersViewMixin(TethysController):
 
 
 class ResourceBackUrlViewMixin(AppUsersViewMixin):
-    def get_resource(self, request, resource_id, session=None):
+    def get_resource(self, request, session=None):
         """
         Get the resource and check permissions.
 
         Args:
             request: Django HttpRequest.
-            resource_id: ID of the resource.
             session: SQLAlchemy session. Optional.
 
         Returns:
@@ -140,12 +139,7 @@ class ResourceViewMixin(ResourceBackUrlViewMixin):
         try:
             resource = session.query(_Resource).get(resource_id)
 
-            # TODO: Let the apps check permissions so anonymous user only has access to app specific resources?
-            if not getattr(settings, 'ENABLE_OPEN_PORTAL', False):
-                if resource and not request_app_user.can_view(session, request, resource):
-                    raise ATCoreException('You are not allowed to access this {}'.format(
-                        _Resource.DISPLAY_TYPE_SINGULAR.lower()
-                    ))
+
         finally:
             if manage_session:
                 session.close()
@@ -192,12 +186,6 @@ class MultipleResourcesViewMixin(ResourceBackUrlViewMixin):
                 if resource:
                     break
 
-            # TODO: Let the apps check permissions so anonymous user only has access to app specific resources?
-            if not getattr(settings, 'ENABLE_OPEN_PORTAL', False):
-                if resource and not request_app_user.can_view(session, request, resource):
-                    raise ATCoreException('You are not allowed to access this {}'.format(
-                        resource.DISPLAY_TYPE_SINGULAR.lower()
-                    ))
         finally:
             if manage_session:
                 session.close()

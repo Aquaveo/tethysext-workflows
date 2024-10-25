@@ -11,7 +11,7 @@ from django.http import JsonResponse
 from django.utils.functional import wraps
 from django.shortcuts import redirect
 from django.contrib import messages
-from ...exceptions import ATCoreException
+from ...exceptions import TethysWorkflowsException
 from .helpers import set_step_status, parse_workflow_step_args
 from ...utilities import clean_request, import_from_string
 from ...models import Step
@@ -54,7 +54,7 @@ def workflow_step_controller(is_rest_controller=False):
                 else:
                     return JsonResponse({'success': False, 'error': str(e)})
 
-            except ATCoreException as e:
+            except TethysWorkflowsException as e:
                 error_message = str(e)
                 messages.warning(request, error_message)
                 if not is_rest_controller:
@@ -113,14 +113,14 @@ def workflow_step_job(job_func):
 
             # Session vars
             step = None
-            resource_db_session = None
+            db_session = None
             ret_val = None
 
             try:
                 # Get the resource database session 
-                resource_db_engine = create_engine(args.resource_db_url)
-                make_resource_db_session = sessionmaker(bind=resource_db_engine)
-                resource_db_session = make_resource_db_session()
+                db_engine = create_engine(args.db_url)
+                make_db_session = sessionmaker(bind=db_engine)
+                db_session = make_db_session()
 
                 # Import Resource and Workflow Classes
                 WorkflowClass = import_from_string(args.workflow_class)
@@ -129,7 +129,7 @@ def workflow_step_job(job_func):
                 # NOTE: if you get an error related to polymorphic_identity not being found, it may be caused by import
                 # errors with a subclass of the Step. It could also be caused indirectly if the subclass
                 # has Pickle typed columns with values that import things.
-                step = resource_db_session.query(Step).get(args.workflow_step_id)
+                step = db_session.query(Step).get(args.workflow_step_id)
 
                 # Process parameters from workflow steps
                 with open(args.workflow_params_file, 'r') as p:
@@ -139,7 +139,7 @@ def workflow_step_job(job_func):
                 pprint(params_json)
 
                 ret_val = job_func(
-                    resource_db_session=resource_db_session,
+                    db_session=db_session,
                     workflow=step.workflow,
                     step=step,
                     gs_private_url=args.gs_private_url,
@@ -153,11 +153,11 @@ def workflow_step_job(job_func):
 
                 # Update step status
                 print('Updating status...')
-                set_step_status(resource_db_session, step, step.STATUS_COMPLETE)
+                set_step_status(db_session, step, step.STATUS_COMPLETE)
 
             except Exception as e:
-                if step and resource_db_session:
-                    set_step_status(resource_db_session, step, step.STATUS_FAILED)
+                if step and db_session:
+                    set_step_status(db_session, step, step.STATUS_FAILED)
                 sys.stderr.write('Error processing {0}'.format(args.tethys_workflow_step_id))
                 traceback.print_exc(file=sys.stderr)
                 sys.stderr.write(repr(e))
@@ -165,7 +165,7 @@ def workflow_step_job(job_func):
 
             finally:
                 print('Closing session...')
-                resource_db_session and resource_db_session.close()
+                db_session and db_session.close()
 
             print('Processing Complete')
             return ret_val

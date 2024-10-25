@@ -9,11 +9,11 @@
 """
 import sys
 import traceback
-from tethysext.workflows.services.resource_workflows.decorators import workflow_step_job
+from tethysext.workflows.services.workflows.decorators import workflow_step_job
 
 
 @workflow_step_job
-def main(resource_db_session, workflow, step, gs_private_url, gs_public_url,
+def main(db_session, workflow, step, gs_private_url, gs_public_url,
          workflow_class, params_json, params_file, cmd_args, extra_args):
     print('Given Arguments 2:')
     print(str(cmd_args))
@@ -28,12 +28,12 @@ def main(resource_db_session, workflow, step, gs_private_url, gs_public_url,
         else:
             step.set_status(step.ROOT_STATUS_KEY, step.STATUS_COMPLETE)
 
-        resource_db_session.commit()
+        db_session.commit()
 
     except Exception as e:
-        if step and resource_db_session:
+        if step and db_session:
             step.set_status(step.ROOT_STATUS_KEY, step.STATUS_FAILED)
-            resource_db_session.commit()
+            db_session.commit()
         sys.stderr.write('Error processing step {0}'.format(cmd_args.resource_workflow_step_id))
         traceback.print_exc(file=sys.stderr)
         sys.stderr.write(repr(e))
@@ -65,7 +65,7 @@ def main(resource_db_session, workflow, step, gs_private_url, gs_public_url,
             if unlock_workflow_on_complete:
                 step.workflow.release_user_lock()
 
-            resource_db_session and resource_db_session.commit()
+            db_session and db_session.commit()
 
         except Exception as e:
             sys.stderr.write('Error processing locks after processing step {0}'
