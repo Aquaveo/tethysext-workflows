@@ -37,7 +37,7 @@ class SpatialDatasetMWV(SpatialDataMWV):
             resource(Resource): the resource this workflow applies to.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
-            args, kwargs: Additional arguments passed to the controller.9699
+            args, kwargs: Additional arguments passed to the controller.
 
 
         Returns:

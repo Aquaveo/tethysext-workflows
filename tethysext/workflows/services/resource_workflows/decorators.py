@@ -28,7 +28,7 @@ def workflow_step_controller(is_rest_controller=False):
     def decorator(controller_func):
         def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, resource_id=None,
                                 resource=None, session=None, *args, **kwargs):
-            _Workflow = self.get_resource_workflow_model()
+            _Workflow = self.get_workflow_model()
             # Defer to outer scope if session is given
             manage_session = session is None
             current_step = None
@@ -143,7 +143,7 @@ def workflow_step_job(job_func):
                 # NOTE: if you get an error related to polymorphic_identity not being found, it may be caused by import
                 # errors with a subclass of the Step. It could also be caused indirectly if the subclass
                 # has Pickle typed columns with values that import things.
-                step = resource_db_session.query(Step).get(args.resource_workflow_step_id)
+                step = resource_db_session.query(Step).get(args.workflow_step_id)
 
                 # Process parameters from workflow steps
                 with open(args.workflow_params_file, 'r') as p:
@@ -172,7 +172,7 @@ def workflow_step_job(job_func):
             except Exception as e:
                 if step and resource_db_session:
                     set_step_status(resource_db_session, step, step.STATUS_FAILED)
-                sys.stderr.write('Error processing {0}'.format(args.resource_workflow_step_id))
+                sys.stderr.write('Error processing {0}'.format(args.tethys_workflow_step_id))
                 traceback.print_exc(file=sys.stderr)
                 sys.stderr.write(repr(e))
                 sys.stderr.write(str(e))

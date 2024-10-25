@@ -28,7 +28,7 @@ class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, Serializ
     TYPE = 'generic_workflow_result'
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
-    resource_workflow_id = Column(GUID, ForeignKey('app_users_resource_workflows.id'))
+    workflow_id = Column(GUID, ForeignKey('app_users_tethys_workflows.id'))
     controller_metadata_id = Column(GUID, ForeignKey('app_users_controller_metadata.id'))
     type = Column(String)
     name = Column(String)

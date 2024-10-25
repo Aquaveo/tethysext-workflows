@@ -21,14 +21,14 @@ __all__ = ['Result']
 
 class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
     """
-    Data model for storing information about resource workflow results.
+    Data model for storing information about workflow results.
     """
-    __tablename__ = 'results'
+    __tablename__ = 'workflow_results'
     CONTROLLER = 'tethysext.workflows.controllers.resource_workflows.workflow_results_view.WorkflowResultsView'
     TYPE = 'generic_workflow_result'
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
-    resource_workflow_id = Column(GUID, ForeignKey('resource_workflows.id'))
+    workflow_id = Column(GUID, ForeignKey('tethys_workflows.id'))
     controller_metadata_id = Column(GUID, ForeignKey('controller_metadata.id'))
     type = Column(String)
     name = Column(String)

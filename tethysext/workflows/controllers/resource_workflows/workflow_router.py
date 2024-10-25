@@ -214,7 +214,7 @@ class WorkflowRouter(WorkflowViewMixin):
                 _Organization=self._Organization,
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
-                _ResourceWorkflow=self._Workflow, # TODO look into changing this in the controller
+                _TethysWorkflow=self._TethysWorkflow, # TODO look into changing this in the controller
                 _Step=self._Step,
                 base_template=self.base_template
             )
@@ -286,7 +286,7 @@ class WorkflowRouter(WorkflowViewMixin):
                 _Resource=self._Resource,
                 _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
-                _ResourceWorkflow=self._Workflow,
+                _TethysWorkflow=self._TethysWorkflow,
                 _Step=self._Step,
                 base_template=self.base_template
             )

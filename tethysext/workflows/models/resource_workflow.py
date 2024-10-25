@@ -93,7 +93,7 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
     }
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} name="{self.name}" id="{self.id}" locked={self.is_user_locked}>'
+        return f'<{self.__class__.__name__} name="{self.name}" id="{self.id}"'
 
     @property
     def complete(self):
@@ -108,7 +108,6 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
         """
         idx = 0
         step = None
-
         for idx, step in enumerate(self.steps):
             if not step.complete:
                 return idx, step

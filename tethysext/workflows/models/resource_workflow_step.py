@@ -49,18 +49,18 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
         release_resource_lock_on_completion(bool): Attempt to release a resource lock when the view is initialized. Defaults to True.
         release_resource_lock_on_init(bool): Attempt to release a resource lock when the step is completed. Ignored if `resource_lock_required` is True. Defaults to False.
     """  # noqa: E501
-    __tablename__ = 'resource_workflow_steps'
+    __tablename__ = 'workflow_steps'
     CONTROLLER = ''
     TYPE = 'generic_workflow_step'
     ATTR_STATUS_MESSAGE = 'status_message'
     OPT_PARENT_STEP = 'parent'
-    UUID_FIELDS = ['id', 'child_id', 'resource_workflow_id']
-    SERIALIZED_FIELDS = ['id', 'child_id', 'resource_workflow_id', 'type', 'name', 'help']
+    UUID_FIELDS = ['id', 'child_id', 'workflow_id']
+    SERIALIZED_FIELDS = ['id', 'child_id', 'workflow_id', 'type', 'name', 'help']
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
-    result_id = Column(GUID, ForeignKey('resource_workflow_steps.id'))
+    result_id = Column(GUID, ForeignKey('workflow_steps.id'))
     controller_metadata_id = Column(GUID, ForeignKey('controller_metadata.id'))
-    resource_workflow_id = Column(GUID, ForeignKey('resource_workflows.id'))
+    workflow_id = Column(GUID, ForeignKey('tethys_workflows.id'))
     type = Column(String)
 
     name = Column(String)

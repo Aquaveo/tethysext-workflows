@@ -26,7 +26,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
                                          'resources', 'resource_workflows')
 
     def __init__(self, session, resource, workflow_step, user, working_directory, app, scheduler_name,
-                 jobs=None, input_files=None, gs_engine=None, 9699
+                 jobs=None, input_files=None, gs_engine=None,
                  workflow=None, workflow_kwargs=None, *args):
         """
         Constructor.
@@ -70,16 +70,16 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         # Important IDs
         # self.resource_id = str(resource_workflow_step.workflow.resource.id)
         # self.resource_name = resource_workflow_step.workflow.resource.name
-        self.resource_workflow = resource_workflow
-        self.resource_workflow_id = str(resource_workflow_step.workflow.id)
-        self.resource_workflow_name = resource_workflow_step.workflow.name
-        self.resource_workflow_type = resource_workflow_step.workflow.DISPLAY_TYPE_SINGULAR
-        self.resource_workflow_step_id = str(resource_workflow_step.id)
-        self.resource_workflow_step_name = resource_workflow_step.name
+        self.tethys_workflow = workflow
+        self.tethys_workflow_id = str(workflow_step.workflow.id)
+        self.tethys_workflow_name = workflow_step.workflow.name
+        self.tethys_workflow_type = workflow_step.workflow.DISPLAY_TYPE_SINGULAR
+        self.tethys_workflow_step_id = str(workflow_step.id)
+        self.tethys_workflow_step_name = workflow_step.name
 
         # Get Path to Resource and Workflow Classes
         # self.resource_class = self._get_class_path(resource_workflow_step.workflow.resource)
-        self.workflow_class = self._get_class_path(resource_workflow_step.workflow)
+        self.tethys_workflow_class = self._get_class_path(workflow_step.workflow)
 
         # Job Definition Variables
         self.jobs = jobs
@@ -95,19 +95,19 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         self.custom_job_args = args
 
         #: Safe name with only A-Z 0-9
-        self.safe_job_name = ''.join(s if s.isalnum() else '_' for s in self.resource_workflow_step_name)
+        self.safe_job_name = ''.join(s if s.isalnum() else '_' for s in self.tethys_workflow_step_name)
 
         # Prepare standard arguments for all jobs
         self.job_args = [
             self.resource_db_url,
-            # self.model_db_url,
+            # self.model_db_url, # TODO delete this
             # self.resource_id,
-            self.resource_workflow_id,
-            self.resource_workflow_step_id,
+            self.tethys_workflow_id,
+            self.tethys_workflow_step_id,
             self.gs_private_url,
             self.gs_public_url,
             # self.resource_class,
-            self.workflow_class
+            self.tethys_workflow_class
         ]
 
         # Add custom args
@@ -132,8 +132,8 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         if self._workspace_path is None:
             self._workspace_path = os.path.join(
                 self.working_directory,
-                str(self.resource_workflow_id),
-                str(self.resource_workflow_step_id),
+                str(self.tethys_workflow_id),
+                str(self.tethys_workflow_step_id),
                 self.safe_job_name
             )
 
@@ -179,15 +179,15 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         # Create Workflow
         self.workflow = job_manager.create_job(
             name=self.safe_job_name,
-            description='{}: {}'.format(self.resource_workflow_type, self.resource_workflow_step_name),
+            description='{}: {}'.format(self.tethys_workflow_type, self.tethys_workflow_step_name),
             job_type='CONDORWORKFLOW',
             workspace=self.workspace,
             user=self.user,
             scheduler=scheduler,
             extended_properties={
                 # 'resource_id': self.resource_id,
-                'resource_workflow_id': self.resource_workflow_id,
-                'resource_workflow_step_id': self.resource_workflow_step_id,
+                'workflow_id': self.tethys_workflow_id,
+                'workflow_step_id': self.tethys_workflow_step_id,
             },
             **self.workflow_kwargs,
         )

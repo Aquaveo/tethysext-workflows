@@ -11,7 +11,7 @@ class BaseWorkflowManager(object):
     ATCORE_EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
                                          'resources', 'resource_workflows')
 
-    def __init__(self, session, model_db, resource_workflow_step, user, working_directory, app, scheduler_name=None,
+    def __init__(self, session, model_db, workflow_step, user, working_directory, app, scheduler_name=None,
                  jobs=None, job_script=None, input_files=None, gs_engine=None, *args):
         """
         Constructor.
@@ -50,11 +50,11 @@ class BaseWorkflowManager(object):
         # Important IDs
         self.resource_id = str(resource_workflow_step.workflow.resource.id)
         self.resource_name = resource_workflow_step.workflow.resource.name
-        self.resource_workflow_id = str(resource_workflow_step.workflow.id)
-        self.resource_workflow_name = resource_workflow_step.workflow.name
-        self.resource_workflow_type = resource_workflow_step.workflow.DISPLAY_TYPE_SINGULAR
-        self.resource_workflow_step_id = str(resource_workflow_step.id)
-        self.resource_workflow_step_name = resource_workflow_step.name
+        self.workflow_id = str(workflow_step.workflow.id)
+        self.workflow_name = workflow_step.workflow.name
+        self.workflow_type = workflow_step.workflow.DISPLAY_TYPE_SINGULAR
+        self.workflow_step_id = str(workflow_step.id)
+        self.workflow_step_name = workflow_step.name
 
         # Job Definition Variables
         self.jobs = jobs
@@ -78,8 +78,8 @@ class BaseWorkflowManager(object):
             self.resource_db_url,
             self.model_db_url,
             self.resource_id,
-            self.resource_workflow_id,
-            self.resource_workflow_step_id,
+            self.workflow_id,
+            self.workflow_step_id,
             self.gs_private_url,
             self.gs_public_url,
         ]
@@ -113,7 +113,7 @@ class BaseWorkflowManager(object):
         if self._workspace_path is None:
             self._workspace_path = os.path.join(
                 self.working_directory,
-                str(self.resource_workflow_id),
+                str(self.workflow_id),
                 str(self.resource_workflow_step_id),
                 self.safe_job_name
             )

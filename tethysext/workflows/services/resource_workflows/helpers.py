@@ -36,11 +36,11 @@ def  parse_workflow_step_args():
     #     help='ID of the Resource this job is associated with.'
     # )
     parser.add_argument(
-        'resource_workflow_id',
+        'workflow_id',
         help='ID of the TethysWorkflow this job is associated with.'
     )
     parser.add_argument(
-        'resource_workflow_step_id',
+        'workflow_step_id',
         help='ID of the Step this job is associated with.'
     )
     parser.add_argument(

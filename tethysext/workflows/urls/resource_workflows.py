@@ -120,7 +120,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                     _Organization=_Organization,
                     _Resource=_Resource,
                     _PermissionsManager=_PermissionsManager,
-                    _ResourceWorkflow=_TethysWorkflow,
+                    _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
             ),
@@ -134,7 +134,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                     _Organization=_Organization,
                     _Resource=_Resource,
                     _PermissionsManager=_PermissionsManager,
-                    _ResourceWorkflow=_TethysWorkflow,
+                    _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 ),
                 handler=handler,
@@ -151,7 +151,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                     _Organization=_Organization,
                     _Resource=_Resource,
                     _PermissionsManager=_PermissionsManager,
-                    _ResourceWorkflow=_TethysWorkflow,
+                    _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
             )

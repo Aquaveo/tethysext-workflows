@@ -13,9 +13,9 @@ from ..models import Step, step_result_association
 
 class ResultsStep(Step, AttributesMixin, ResultsMixin):
     """
-    Abstract base class of all Results Resource Workflow Steps.
+    Abstract base class of all Results Workflow Steps.
     """  # noqa: E501
-    TYPE = 'results_resource_workflow_step'
+    TYPE = 'results_workflow_step'
 
     __mapper_args__ = {
         'polymorphic_identity': TYPE
