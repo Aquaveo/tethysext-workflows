@@ -24,7 +24,7 @@ class FormInputWV(WorkflowView):
     template_name = 'workflows/workflows/form_input_wv.html'
     valid_step_classes = [FormInputStep]
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -51,7 +51,7 @@ class FormInputWV(WorkflowView):
 
         # Django Renderer
         if renderer == 'django':
-            p = ParamClass(request=request, session=session, resource=resource)
+            p = ParamClass(request=request, session=session)
             if hasattr(p, 'update_precedence'):
                 p.update_precedence()
             for k, v in current_step.get_parameter('form-values').items():

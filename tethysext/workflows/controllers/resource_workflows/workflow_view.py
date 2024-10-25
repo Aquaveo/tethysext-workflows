@@ -35,7 +35,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
     finish_title = 'Finish'
     valid_step_classes = [Step]
 
-    def get_context(self, request, session, resource, context, workflow_id, step_id, *args, **kwargs):
+    def get_context(self, request, session, context, workflow_id, step_id, *args, **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior. This method is called during initialization of the view.
 
@@ -79,7 +79,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
             request=request,
             session=session,
             context=context,
-            resource=resource,
             current_step=current_step,
             previous_step=previous_step,
             next_step=next_step
@@ -89,7 +88,6 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         self.process_lock_options_on_init(
             request=request,
             session=session,
-            resource=resource,
             step=current_step
         )
 
@@ -102,6 +100,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         # Configure workflow lock display
         lock_display_options = self.build_lock_display_options(request, workflow)
 
+        # TODO need ot dleete this
         # Can user reset step
         user_has_active_role = self.user_has_active_role(request, current_step)
         workflow_locked_for_user = self.workflow_locked_for_request_user(request, workflow)
@@ -121,7 +120,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
             'next_title': self.next_title,
             'finish_title': self.finish_title,
             'lock_display_options': lock_display_options,
-            'show_reset_btn': show_reset_btn
+            'show_reset_btn': show_reset_btn # TODO delete this and make sure to delete this in the templates
         })
 
         # Hook for extending the context
@@ -434,7 +433,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         readonly = not user_has_active_role or workflow_locked_for_user
         return readonly
 
-    def process_lock_options_on_init(self, request, session, resource, step):
+    def process_lock_options_on_init(self, request, session, step):
         """
         Process lock options when the view initializes.
 
@@ -455,7 +454,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
 
             # release resource lock
             if step.options.get('release_resource_lock_on_init'):
-                self.release_lock_and_log(request, session, resource)
+                self.release_lock_and_log(request, session)
 
             # only acquire locks when the step is not completed
             if not step.complete:
@@ -465,7 +464,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
 
                 # acquire resource lock
                 if step.options.get('resource_lock_required'):
-                    self.acquire_lock_and_log(request, session, resource)
+                    self.acquire_lock_and_log(request, session)
 
             # Process lock when finished after releasing other locks - will be a lock for all users
             if step.workflow.complete and step.workflow.lock_when_finished:
@@ -569,7 +568,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
                 '", "'.join([valid_class.__name__ for valid_class in self.valid_step_classes])
             ))
 
-    def on_get(self, request, session, resource, workflow_id, step_id, *args, **kwargs):
+    def on_get(self, request, session, workflow_id, step_id, *args, **kwargs):
         """
         Override hook that is called at the beginning of the get request, before any other controller logic occurs.
 
@@ -588,14 +587,14 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         if real_next_step and current_step.id != real_next_step.id:
             if current_step.get_status() not in current_step.COMPLETE_STATUSES:
                 workflow_url_name = self.get_workflow_url_name(request, workflow)
-                workflow_url = reverse(workflow_url_name, args=(resource.id, workflow.id))
+                workflow_url = reverse(workflow_url_name, args=(workflow.id))
                 return redirect(workflow_url)
 
         previous_step, next_step = workflow.get_adjacent_steps(current_step)
-        return self.on_get_step(request, session, resource, workflow, current_step, previous_step, next_step,
+        return self.on_get_step(request, session, workflow, current_step, previous_step, next_step,
                                 *args, **kwargs)
 
-    def on_get_step(self, request, session, resource, workflow, current_step, previous_step, next_step,
+    def on_get_step(self, request, session, workflow, current_step, previous_step, next_step,
                     *args, **kwargs):
         """
         Hook that is called at the beginning of the get request for a workflow step, before any other controller logic occurs.
@@ -694,7 +693,7 @@ class WorkflowView(ResourceView, WorkflowViewMixin):
         return response
 
     @abc.abstractmethod
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step,
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step,
                              **kwargs):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).

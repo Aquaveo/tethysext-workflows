@@ -21,7 +21,7 @@ class SetStatusWV(WorkflowView):
     valid_step_classes = [SetStatusStep]
     default_status_label = 'Status'
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 

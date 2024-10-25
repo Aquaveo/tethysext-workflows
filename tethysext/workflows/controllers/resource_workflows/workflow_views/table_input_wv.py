@@ -25,7 +25,7 @@ class TableInputWV(WorkflowView):
     template_name = 'workflows/workflows/table_input_wv.html'
     valid_step_classes = [TableInputStep]
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -47,7 +47,7 @@ class TableInputWV(WorkflowView):
             dataset = current_step.options.get('template_dataset', current_step.DEFAULT_DATASET)
 
         if inspect.isfunction(dataset):
-            dataset = dataset(request, session, resource, current_step)
+            dataset = dataset(request, session, current_step)
 
         # If the dataset is a dictionary (i.e.: previously saved dataset parameter), convert it to a DataFrame
         if isinstance(dataset, dict):

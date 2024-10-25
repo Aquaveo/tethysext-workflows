@@ -13,7 +13,7 @@ class WorkflowResultsView(WorkflowView, ResultViewMixin):
     valid_step_classes = [ResultsStep]
     valid_result_classes = [Result]
 
-    def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
+    def get_context(self, request, session, context, workflow_id, step_id, result_id, *args,
                     **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
@@ -40,7 +40,6 @@ class WorkflowResultsView(WorkflowView, ResultViewMixin):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,
@@ -162,7 +161,7 @@ class WorkflowResultsView(WorkflowView, ResultViewMixin):
             next_url=next_url
         )
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 

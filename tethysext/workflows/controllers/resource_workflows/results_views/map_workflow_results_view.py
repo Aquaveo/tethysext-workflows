@@ -27,7 +27,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
     valid_result_classes = [SpatialWorkflowResult]
     show_legends = True
 
-    def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
+    def get_context(self, request, session, context, workflow_id, step_id, result_id, *args,
                     **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
@@ -45,7 +45,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,
@@ -68,7 +67,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,
@@ -88,7 +86,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         # Get managers
         map_manager = self.get_map_manager(
             request=request,
-            resource=resource,
         )
 
         # Get Map View and Layer Groups

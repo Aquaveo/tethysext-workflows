@@ -214,7 +214,7 @@ class MapView(ResourceView):
 
         return context
 
-    def get_permissions(self, request, permissions, resource, *args, **kwargs):
+    def get_permissions(self, request, permissions, *args, **kwargs):
         """
         Hook to modify permissions.
 
@@ -405,7 +405,7 @@ class MapView(ResourceView):
         """
         return self.default_disable_basemap
 
-    def get_map_manager(self, request, resource, *args, **kwargs):
+    def get_map_manager(self, request, *args, **kwargs):
         """
         Lazily build and retrieve a MapManager instance.
 
@@ -419,7 +419,7 @@ class MapView(ResourceView):
         if not getattr(self, '_map_manager', None):
             gs_engine = self._app.get_spatial_dataset_service(self.geoserver_name, as_engine=True)
             spatial_manager = self._SpatialManager(geoserver_engine=gs_engine)
-            self._map_manager = self._MapManager(spatial_manager=spatial_manager, resource=resource)
+            self._map_manager = self._MapManager(spatial_manager=spatial_manager)
         return self._map_manager
 
     def get_plot_data(self, request, session, resource, *args, **kwargs):

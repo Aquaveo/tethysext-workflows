@@ -72,9 +72,8 @@ class MapManagerBase(object):
 
     _DEFAULT_POPUP_EXCLUDED_PROPERTIES = ['id', 'type', 'layer_name']
 
-    def __init__(self, spatial_manager, resource):
+    def __init__(self, spatial_manager):
         self.spatial_manager = spatial_manager
-        self.resource = resource
         self._map_extent = None
         self._default_view = None
 

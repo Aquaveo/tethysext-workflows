@@ -65,7 +65,7 @@ class SpatialInputMWV(MapWorkflowView):
                 'allow_edit_attributes': allow_edit_attributes,
                 'allow_image': allow_image_uploads}
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -85,7 +85,7 @@ class SpatialInputMWV(MapWorkflowView):
             package, p_class = param_class.rsplit('.', 1)
             mod = __import__(package, fromlist=[p_class])
             ParamClass = getattr(mod, p_class, None)
-            attributes = ParamClass(request=request, session=session, resource=resource) if ParamClass else None
+            attributes = ParamClass(request=request, session=session) if ParamClass else None
 
         if attributes is not None:
             attributes_form = generate_django_form(attributes)
@@ -152,7 +152,6 @@ class SpatialInputMWV(MapWorkflowView):
             gs_engine = self.get_app().get_spatial_dataset_service(self.geoserver_name, as_engine=True)
             map_manager = self.get_map_manager(
                 request=request,
-                resource=resource,
             )
             for image in current_imagery:
                 if image:
@@ -183,7 +182,6 @@ class SpatialInputMWV(MapWorkflowView):
             request=request,
             session=session,
             context=context,
-            resource=resource,
             current_step=current_step,
             previous_step=previous_step,
             next_step=next_step

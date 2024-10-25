@@ -26,14 +26,14 @@ class ResourceView(ResourceViewMixin):
 
     @active_user_required()
     @resource_controller()
-    def get(self, request, session, resource, back_url, *args, **kwargs):
+    def get(self, request, session, back_url, *args, **kwargs):
         """
         Handle GET requests.
         """
         from django.conf import settings
 
         # Call on get hook
-        ret_on_get = self.on_get(request, session, resource, *args, **kwargs)
+        ret_on_get = self.on_get(request, session, *args, **kwargs)
         if ret_on_get and isinstance(ret_on_get, HttpResponse):
             return ret_on_get
         
@@ -45,7 +45,6 @@ class ResourceView(ResourceViewMixin):
                 *args,
                 request=request,
                 session=session,
-                resource=resource,
                 back_url=back_url,
                 **kwargs
             )
@@ -59,7 +58,6 @@ class ResourceView(ResourceViewMixin):
         # Add base view variables to context
         open_portal_mode = getattr(settings, 'ENABLE_OPEN_PORTAL', False)
         context.update({
-            'resource': resource,
             'is_in_debug': settings.DEBUG,
             'nav_subtitle': self.view_subtitle,
             'back_url': self.back_url,
@@ -67,10 +65,7 @@ class ResourceView(ResourceViewMixin):
             'base_template': self.base_template
         })
 
-        if resource:
-            context.update({'nav_title': self.view_title or resource.name})
-        else:
-            context.update({'nav_title': self.view_title})
+        context.update({'nav_title': self.view_title})
 
         # Context hook
         context = self.get_context(
@@ -78,7 +73,6 @@ class ResourceView(ResourceViewMixin):
             request=request,
             session=session,
             context=context,
-            resource=resource,
             **kwargs
         )
 
@@ -90,7 +84,6 @@ class ResourceView(ResourceViewMixin):
             *args,
             request=request,
             permissions=permissions,
-            resource=resource,
             **kwargs
         )
 
@@ -100,7 +93,7 @@ class ResourceView(ResourceViewMixin):
 
     @active_user_required()
     @resource_controller()
-    def post(self, request, session, resource, back_url, *args, **kwargs):
+    def post(self, request, session, back_url, *args, **kwargs):
         """
         Route POST requests.
         """
@@ -113,7 +106,6 @@ class ResourceView(ResourceViewMixin):
             *args,
             request=request,
             session=session,
-            resource=resource,
             back_url=back_url,
             **kwargs
         )
@@ -137,25 +129,24 @@ class ResourceView(ResourceViewMixin):
         the_method = getattr(self, python_method, None)
         return the_method
 
-    def on_get(self, request, session, resource, *args, **kwargs):
+    def on_get(self, request, session, *args, **kwargs):
         """
         Hook that is called at the beginning of the get request, before any other controller logic occurs.
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
+
         Returns:
             None or HttpResponse: If an HttpResponse is returned, render that instead.
         """  # noqa: E501
         return None
 
-    def get_context(self, request, session, resource, context, *args, **kwargs):
+    def get_context(self, request, session, context, *args, **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
 
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
 
         Returns:
@@ -163,14 +154,13 @@ class ResourceView(ResourceViewMixin):
         """  # noqa: E501
         return context
 
-    def get_permissions(self, request, permissions, resource, *args, **kwargs):
+    def get_permissions(self, request, permissions, *args, **kwargs):
         """
         Hook to modify permissions.
 
         Args:
             request (HttpRequest): The request.
             permissions (dict): The permissions dictionary with boolean values.
-            resource (Resource): the resource for this request.
 
         Returns:
             dict: modified permisssions dictionary.

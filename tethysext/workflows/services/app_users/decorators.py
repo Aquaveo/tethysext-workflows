@@ -72,11 +72,8 @@ def resource_controller(is_rest_controller=False):
                 make_session = self.get_sessionmaker()
                 session = make_session()
 
-                if resource_id:
-                    resource = self.get_resource(request, resource_id=resource_id, session=session)
-
                 # Call the Controller
-                return controller_func(self, request, session, resource, back_url, *args, **kwargs)
+                return controller_func(self, request, session, back_url, *args, **kwargs)
 
             except (StatementError, NoResultFound) as e:
                 message = 'The {} could not be found.'.format(

@@ -29,7 +29,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
     previous_steps_selectable = True
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -50,8 +50,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         can_run_workflows = not self.is_read_only(request, current_step)
 
         # get tabular data if any
-        tabular_data = current_step.workflow.get_tabular_data_for_previous_steps(current_step, request, session,
-                                                                                 resource)
+        tabular_data = current_step.workflow.get_tabular_data_for_previous_steps(current_step, request, session)
         has_tabular_data = len(tabular_data) > 0
 
         # get workflow name
@@ -59,8 +58,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         # Generate MVLayers for spatial data
         # Get managers
         map_manager = self.get_map_manager(
-            request=request,
-            resource=resource,
+            request=request
         )
 
         # Get DatasetWorkflowResult

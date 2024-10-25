@@ -24,7 +24,7 @@ class DatasetWorkflowResultView(WorkflowResultsView):
     template_name = 'workflows/workflows/dataset_workflow_results_view.html'
     valid_result_classes = [DatasetWorkflowResult]
 
-    def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
+    def get_context(self, request, session, context, workflow_id, step_id, result_id, *args,
                     **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
@@ -45,7 +45,6 @@ class DatasetWorkflowResultView(WorkflowResultsView):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,

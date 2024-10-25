@@ -21,7 +21,7 @@ class SpatialDataMWV(MapWorkflowView):
     # Disable the properties popup so we can create a custom pop-up
     properties_popup_enabled = False
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -46,8 +46,7 @@ class SpatialDataMWV(MapWorkflowView):
 
         # Get managers
         map_manager = self.get_map_manager(
-            request=request,
-            resource=resource,
+            request=request
         )
 
         parent_name = None
@@ -91,7 +90,6 @@ class SpatialDataMWV(MapWorkflowView):
             request=request,
             session=session,
             context=context,
-            resource=resource,
             current_step=current_step,
             previous_step=previous_step,
             next_step=next_step

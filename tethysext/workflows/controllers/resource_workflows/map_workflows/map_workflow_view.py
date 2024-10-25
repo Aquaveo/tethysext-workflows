@@ -24,7 +24,7 @@ class MapWorkflowView(MapView, WorkflowView):
     valid_step_classes = [Step]
     previous_steps_selectable = False
 
-    def get_context(self, request, session, resource, context, workflow_id, step_id, *args, **kwargs):
+    def get_context(self, request, session, context, workflow_id, step_id, *args, **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
 
@@ -41,7 +41,7 @@ class MapWorkflowView(MapView, WorkflowView):
         """  # noqa: E501
 
         # TODO reformat this function call
-        map_context = MapView.get_context(self, *args, request=request, session=session, resource=resource, context=context, 
+        map_context = MapView.get_context(self, *args, request=request, session=session, context=context, 
                                           workflow_id=workflow_id, step_id=step_id, **kwargs)
 
         workflow_context = WorkflowView.get_context(
@@ -49,7 +49,6 @@ class MapWorkflowView(MapView, WorkflowView):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,
@@ -74,7 +73,7 @@ class MapWorkflowView(MapView, WorkflowView):
             layer.feature_selection = enabled
             layer.editable = enabled
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -94,7 +93,6 @@ class MapWorkflowView(MapView, WorkflowView):
         # Generate layers for review of previous steps
         map_view, layer_groups = self.add_layers_for_previous_steps(
             request=request,
-            resource=resource,
             current_step=current_step,
             map_view=map_view,
             layer_groups=layer_groups
@@ -108,7 +106,7 @@ class MapWorkflowView(MapView, WorkflowView):
             'geocode_enabled': geocode_enabled_option,
         })
 
-    def add_layers_for_previous_steps(self, request, resource, current_step, map_view, layer_groups, selectable=None):
+    def add_layers_for_previous_steps(self, request, current_step, map_view, layer_groups, selectable=None):
         """
         Create layers for previous steps that have a spatial component to them for review of the previous steps.
         Args:
@@ -130,8 +128,7 @@ class MapWorkflowView(MapView, WorkflowView):
 
         # Get managers
         map_manager = self.get_map_manager(
-            request=request,
-            resource=resource
+            request=request
         )
 
         # Check if previous steps are selectable

@@ -29,7 +29,7 @@ class JobStepMWV(MapWorkflowView):
     previous_steps_selectable = True
     jobs_table_refresh_interval = int(os.getenv('JOBS_TABLE_REFRESH_INTERVAL', 30000))  # ms
 
-    def process_step_options(self, request, session, context, resource, current_step, previous_step, next_step):
+    def process_step_options(self, request, session, context, current_step, previous_step, next_step):
         """
         Hook for processing step options (i.e.: modify map or context based on step options).
 
@@ -50,8 +50,7 @@ class JobStepMWV(MapWorkflowView):
         can_run_workflows = not self.is_read_only(request, current_step)
 
         # get tabular data if any
-        tabular_data = current_step.workflow.get_tabular_data_for_previous_steps(current_step, request, session,
-                                                                                 resource)
+        tabular_data = current_step.workflow.get_tabular_data_for_previous_steps(current_step, request, session)
 
         has_tabular_data = len(tabular_data) > 0
         # Save changes to map view and layer groups
@@ -66,13 +65,12 @@ class JobStepMWV(MapWorkflowView):
             request=request,
             session=session,
             context=context,
-            resource=resource,
             current_step=current_step,
             previous_step=previous_step,
             next_step=next_step
         )
 
-    def on_get_step(self, request, session, resource, workflow, current_step, previous_step, next_step,
+    def on_get_step(self, request, session, workflow, current_step, previous_step, next_step,
                     *args, **kwargs):
         """
         Hook that is called at the beginning of the get request for a workflow step, before any other controller logic occurs.
@@ -89,10 +87,10 @@ class JobStepMWV(MapWorkflowView):
         step_status = current_step.get_status()
         if step_status != current_step.STATUS_PENDING:
             return self.render_condor_jobs_table(
-                request, session, resource, workflow, current_step, previous_step, next_step
+                request, session, workflow, current_step, previous_step, next_step
             )
 
-    def render_condor_jobs_table(self, request, session, resource, workflow, current_step, previous_step, next_step):
+    def render_condor_jobs_table(self, request, session, workflow, current_step, previous_step, next_step):
         """
         Render a condor jobs table showing the status of the current job that is processing.
             request(HttpRequest): The request.
@@ -134,7 +132,7 @@ class JobStepMWV(MapWorkflowView):
         lock_display_options = self.build_lock_display_options(request, workflow)
 
         context = {
-            'resource': resource,
+            #'resource': resource, # TODO look at this in the templates
             'workflow': workflow,
             'steps': steps,
             'current_step': current_step,
@@ -365,7 +363,7 @@ class JobStepMWV(MapWorkflowView):
 
         return json.dumps(parameters)
 
-    def process_lock_options_on_init(self, request, session, resource, step):
+    def process_lock_options_on_init(self, request, session, step):
         """
         Process lock options when the view initializes.
 
@@ -382,7 +380,7 @@ class JobStepMWV(MapWorkflowView):
             # Bypass locking when view loads if lock on submit is requested
             if not step.options.get('lock_resource_on_job_submit') \
                     and not step.options.get('lock_workflow_on_job_submit'):
-                super().process_lock_options_on_init(request, session, resource, step)
+                super().process_lock_options_on_init(request, session, step)
 
     def process_lock_options_after_submission(self, request, session, resource, step):
         """
