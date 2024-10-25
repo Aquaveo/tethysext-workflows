@@ -61,7 +61,7 @@ class ResourceSummaryTab(ResourceTab):
         """
         return []
 
-    def get_context(self, request, session, resource, context, *args, **kwargs):
+    def get_context(self, request, session, context, *args, **kwargs):
         """
         Build context for the ResourceSummaryTab template that is used to generate the tab content.
         """
@@ -72,32 +72,34 @@ class ResourceSummaryTab(ResourceTab):
         general_summary_tab_info = (
             'Description',
             {
-                'Name': resource.name,
-                'Description': resource.description,
-                'Created By': 'staff' if resource.created_by == '_staff_user' else resource.created_by,
-                'Date Created': resource.date_created
+                'Name': 'Resource Name',
+                'Description': 'Resource description',
+                'Created By': 'Resource Creator',
+                # 'Created By': 'staff' if resource.created_by == '_staff_user' else resource.created_by,
+                'Date Created': 'Resource Creation Date'
             }
         )
 
         # Add general_summary_tab_info as first item in first columns
-        summary_tab_info = self.get_summary_tab_info(request, session, resource)
+        summary_tab_info = self.get_summary_tab_info(request, session)
         if len(summary_tab_info) == 0:
             summary_tab_info = [[general_summary_tab_info]]
         else:
             summary_tab_info[0].insert(0, general_summary_tab_info)
 
-        # Debug Section
-        if request.user.is_staff:
-            debug_atts = {x.replace("_", " ").title(): y for x, y in resource.attributes.items() if x != 'files'}
-            debug_atts['Locked'] = resource.is_user_locked
+        # TODO remove this section
+        # # Debug Section
+        # if request.user.is_staff:
+        #     debug_atts = {x.replace("_", " ").title(): y for x, y in resource.attributes.items() if x != 'files'}
+        #     debug_atts['Locked'] = resource.is_user_locked
 
-            if resource.is_user_locked:
-                debug_atts['Locked By'] = 'All Users' if resource.is_locked_for_all_users else resource.user_lock
-            else:
-                debug_atts['Locked By'] = 'N/A'
+        #     if resource.is_user_locked:
+        #         debug_atts['Locked By'] = 'All Users' if resource.is_locked_for_all_users else resource.user_lock
+        #     else:
+        #         debug_atts['Locked By'] = 'N/A'
 
-            debug_summary_tab_info = ('Debug Info', debug_atts)
-            summary_tab_info[-1].append(debug_summary_tab_info)
+        #     debug_summary_tab_info = ('Debug Info', debug_atts)
+        #     summary_tab_info[-1].append(debug_summary_tab_info)
 
         context['columns'] = summary_tab_info
 

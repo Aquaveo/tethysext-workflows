@@ -185,7 +185,7 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
         previous_steps = self.steps[:step_index]
         return previous_steps
 
-    def get_tabular_data_for_previous_steps(self, step, request, session, resource):
+    def get_tabular_data_for_previous_steps(self, step, request, session):
         """
         Get all tabular data for previous steps based on the given step.
 
@@ -216,7 +216,7 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
                 package, p_class = step.options['param_class'].rsplit('.', 1)
                 mod = __import__(package, fromlist=[p_class])
                 ParamClass = getattr(mod, p_class)
-                step_param_class = ParamClass(request=request, session=session, resource=resource)
+                step_param_class = ParamClass(request=request, session=session)
             step_params = step.get_parameter('form-values')
             fixed_params = dict()
             for key, value in step_params.items():

@@ -113,7 +113,7 @@ class ResourceWorkflowsTab(ResourceTab):
         """
         return {'workflow_types': cls.get_workflow_types(request, context)}
 
-    def get_context(self, request, session, resource, context, *args, **kwargs):
+    def get_context(self, request, session, context, *args, **kwargs):
         """
         Build context for the ResourceWorkflowsTab template that is used to generate the tab content.
         """
@@ -123,7 +123,6 @@ class ResourceWorkflowsTab(ResourceTab):
         workflows_query = self.get_workflows_query(
             request=request,
             session=session,
-            resource=resource,
             app_user=app_user,
         )
 

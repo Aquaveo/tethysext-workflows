@@ -68,17 +68,19 @@ class ResourceListTab(ResourceTab):
             resource_cards.append(resource_card)
         return resource_cards
 
-    def get_context(self, request, session, resource, context, *args, **kwargs):
+    def get_context(self, request, session, context, *args, **kwargs):
         """
         Build context for the ResourceFilesTab template that is used to generate the tab content.
         """
-        all_resources = self.get_resources(request, resource, session)
+        all_resources = self.get_resources(request, session)
 
         # Build cards
         resource_cards = self._build_resource_cards(all_resources)
 
+        # TODO look into this slug
         context.update({
-            'resource_slug': resource.SLUG,
+            # 'resource_slug': resource.SLUG,
+            'resource_slug': 'resource',
             'resources': resource_cards,
             'base_template': 'atcore/resources/tabs/resource_list_tab_base.html',
         })

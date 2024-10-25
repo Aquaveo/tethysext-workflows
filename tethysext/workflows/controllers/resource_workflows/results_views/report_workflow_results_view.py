@@ -136,13 +136,12 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             request=request,
             session=session,
             context=context,
-            resource=resource,
             current_step=current_step,
             previous_step=previous_step,
             next_step=next_step
         )
 
-    def get_context(self, request, session, resource, context, workflow_id, step_id, result_id, *args,
+    def get_context(self, request, session, context, workflow_id, step_id, result_id, *args,
                     **kwargs):
         """
         Hook to add additional content to context. Avoid removing or modifying items in context already to prevent unexpected behavior.
@@ -166,7 +165,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,
@@ -178,7 +176,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             *args,
             request=request,
             session=session,
-            resource=resource,
             context=context,
             workflow_id=workflow_id,
             step_id=step_id,

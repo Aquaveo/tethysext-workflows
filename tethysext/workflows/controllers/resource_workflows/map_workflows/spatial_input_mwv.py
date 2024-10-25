@@ -274,7 +274,7 @@ class SpatialInputMWV(MapWorkflowView):
 
         return response
 
-    def validate_feature_attributes(self, request, session, resource, step_id, *args, **kwargs):
+    def validate_feature_attributes(self, request, session, step_id, *args, **kwargs):
         """
         Handle feature attribute validation AJAX requests.
         Args:

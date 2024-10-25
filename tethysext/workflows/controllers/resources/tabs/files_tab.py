@@ -57,11 +57,11 @@ class ResourceFilesTab(ResourceTab):
         """
         return []
 
-    def get_context(self, request, session, resource, context, *args, **kwargs):
+    def get_context(self, request, session, context, *args, **kwargs):
         """
         Build context for the ResourceFilesTab template that is used to generate the tab content.
         """
-        collections = self.get_file_collections(request, resource, session)
+        collections = self.get_file_collections(request, session)
         files_from_collection = {}
         for collection in collections:
             instance_id = collection.instance.id

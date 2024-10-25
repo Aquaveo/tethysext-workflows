@@ -203,7 +203,7 @@ class JobStepMWV(MapWorkflowView):
 
         return super().process_step_data(request, session, step, resource, current_url, previous_url, next_url)
 
-    def run_job(self, request, session, resource, workflow_id, step_id, *args, **kwargs):
+    def run_job(self, request, session, workflow_id, step_id, *args, **kwargs):
         """
         Handle run-job-form requests: prepare and submit the condor job.
         """
@@ -232,7 +232,7 @@ class JobStepMWV(MapWorkflowView):
         workflow_kwargs = step.options.get('workflow_kwargs', None)
 
         # Get map manager
-        map_manager = self.get_map_manager(request, resource)
+        map_manager = self.get_map_manager(request)
 
         # Get GeoServer Connection Information
         gs_engine = map_manager.spatial_manager.gs_engine
@@ -244,7 +244,6 @@ class JobStepMWV(MapWorkflowView):
         # Setup the Condor Workflow
         condor_job_manager = WorkflowCondorJobManager(
             session=session,
-            resource=resource,
             workflow_step=step,
             jobs=jobs,
             user=request.user,
@@ -271,7 +270,8 @@ class JobStepMWV(MapWorkflowView):
         job_id = condor_job_manager.prepare()
 
         # Deal with locking
-        self.handle_on_submit_locking(request, session, resource, step)
+        # TODO remove this
+        self.handle_on_submit_locking(request, session, step)
 
         # Submit job
         condor_job_manager.run_job()
@@ -293,7 +293,7 @@ class JobStepMWV(MapWorkflowView):
 
         return redirect(request.path)
 
-    def handle_on_submit_locking(self, request, session, resource, step):
+    def handle_on_submit_locking(self, request, session, step):
         """
         Acquires or releases the workflow or resource lock based on the step options.
 
@@ -316,14 +316,15 @@ class JobStepMWV(MapWorkflowView):
             raise RuntimeError('Improperly configured JobStep: lock_resource_on_job_submit and '
                                'unlock_resource_on_job_submit options are mutually exclusive.')
 
+        # TODO look into deleting all of these locks
         if lock_resource_on_submit:
-            self.acquire_lock_and_log(request, session, resource)
+            self.acquire_lock_and_log(request, session)
 
         if lock_workflow_on_submit:
             self.acquire_lock_and_log(request, session, step.workflow)
 
         if unlock_resource_on_submit:
-            self.release_lock_and_log(request, session, resource)
+            self.release_lock_and_log(request, session)
 
         if unlock_workflow_on_submit:
             self.release_lock_and_log(request, session, step.workflow)
