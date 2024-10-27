@@ -55,7 +55,7 @@ z
                 kwargs.update(self.kwargs)
                 controller = controller.as_controller(**kwargs)
 
-            # Call with all but workflow kwargs if ResourceView
+            # Call with all but workflow kwargs if TethysWorkflowLayout
             elif issubclass(controller, ResourceViewMixin):
                 kwargs.pop('_Workflow', None)
                 kwargs.pop('_Step', None)

@@ -14,7 +14,7 @@ from tethys_apps.utilities import get_active_app
 from tethys_sdk.permissions import has_permission
 from ...utilities import grammatically_correct_join # TODO CHECK THIS IMPORT
 from ...services.workflows.decorators import workflow_step_controller
-from ..resource_view import ResourceView
+from ..resource_view import TethysWorkflowLayout
 from .mixins import WorkflowViewMixin
 from ..utilities import get_style_for_status
 from ...models import Step
@@ -23,7 +23,7 @@ from ...models import Step
 log = logging.getLogger('tethys.' + __name__)
 
 
-class WorkflowView(ResourceView, WorkflowViewMixin):
+class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
     """
     Base class for workflow views.
     """

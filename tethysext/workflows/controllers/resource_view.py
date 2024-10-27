@@ -15,7 +15,7 @@ from .app_users.mixins import ResourceViewMixin
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class ResourceView(ResourceViewMixin):
+class TethysWorkflowLayout(ResourceViewMixin):
     """
     Base controller for all Resource-based views.
     """

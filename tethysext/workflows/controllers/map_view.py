@@ -15,7 +15,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from tethys_sdk.permissions import has_permission, permission_required
 from tethys_sdk.gizmos import ToggleSwitch, CesiumMapView, SlideSheet
-from .resource_view import ResourceView
+from .resource_view import TethysWorkflowLayout
 import json
 import shapefile
 from django.http import HttpResponse
@@ -26,7 +26,7 @@ import os
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class MapView(ResourceView):
+class MapView(TethysWorkflowLayout):
     """
     Controller for a map view page.
     """
