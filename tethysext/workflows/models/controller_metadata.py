@@ -39,7 +39,7 @@ z
             function: the controller method.
         """  # noqa: E501
         from tethys_sdk.base import TethysController
-        from ..controllers.app_users.mixins import ResourceViewMixin 
+        from ..controllers.workflows.mixins import WorkflowMixin
         from ..controllers.workflows.workflow_view import WorkflowView
 
         try:
@@ -56,7 +56,7 @@ z
                 controller = controller.as_controller(**kwargs)
 
             # Call with all but workflow kwargs if TethysWorkflowLayout
-            elif issubclass(controller, ResourceViewMixin):
+            elif issubclass(controller, WorkflowMixin):
                 kwargs.pop('_Workflow', None)
                 kwargs.pop('_Step', None)
                 kwargs.update(self.kwargs)

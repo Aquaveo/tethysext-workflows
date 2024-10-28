@@ -10,12 +10,15 @@ import logging
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponse
 from ..services.app_users.decorators import active_user_required, resource_controller
-from .app_users.mixins import ResourceViewMixin
+from .workflows.mixins import WorkflowMixin
+
+
 
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-class TethysWorkflowLayout(ResourceViewMixin):
+# class TethysWorkflowLayout(ResourceViewMixin):
+class TethysWorkflowLayout(WorkflowMixin):
     """
     Base controller for all Resource-based views.
     """

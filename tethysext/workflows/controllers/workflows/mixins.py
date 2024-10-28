@@ -1,8 +1,74 @@
 from ..app_users.mixins import ResourceViewMixin
 from ...models import TethysWorkflow, Step, Result
 
+from tethys_apps.utilities import get_active_app
+from tethys_sdk.base import TethysController
+from django.shortcuts import reverse
 
-class WorkflowViewMixin(ResourceViewMixin):
+
+class WorkflowMixin(TethysController):
+    """
+    Mixin for class-based views that adds convenience methods for working with workflows.
+    """
+    _app = None
+    _persistent_store_name = ''
+    _back_url = ''
+
+    def get_app(self):
+        """
+        Get the app object.
+        """
+        return self._app
+
+    def get_sessionmaker(self):
+        """
+        Get the sessionmaker for the persistent store database.
+        """
+        if not self._app:
+            raise NotImplementedError('get_sessionmaker method not implemented.')
+
+        return self._app.get_persistent_store_database(self._persistent_store_name, as_sessionmaker=True)
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Intercept kwargs before calling handler method.
+        """
+        # Handle back_url
+        self.back_url = kwargs.get('back_url', '')
+
+        # Default to the resource details page
+        if not self.back_url:
+            self.back_url = self.default_back_url(
+                *args,
+                request=request,
+                **kwargs
+            )
+        return super().dispatch(request, *args, **kwargs)
+    
+    def default_back_url(self, request, *args, **kwargs):
+        """
+        Hook for custom back url. Defaults to the resource details page.
+
+        Returns:
+            str: back url.
+        """
+        active_app = get_active_app(request)
+        app_namespace = active_app.url_namespace
+        resource_id = kwargs.get('resource_id', '')
+        resource = self.get_resource(request, resource_id) if resource_id else None
+        if resource:
+            # Get resource_details page for the resource
+            resource = self.get_resource(request, resource_id)
+            back_controller = f'{app_namespace}:{resource.SLUG}_resource_details'
+            return reverse(back_controller, args=(str(resource_id),))
+        else:
+            # If no resource_id provided, default to the index page of the app
+            back_controller = f'{app_namespace}:{active_app.index}'
+            return reverse(back_controller)
+
+
+
+class WorkflowViewMixin(WorkflowMixin):
     """
     Mixin for class-based views that adds convenience methods for working with resources and workflows.
     """
@@ -79,7 +145,7 @@ class WorkflowViewMixin(ResourceViewMixin):
         return step
 
 
-class ResultViewMixin(ResourceViewMixin):
+class ResultViewMixin(WorkflowMixin):
     """
     Mixin for class-based views that adds convenience methods for working with resources, workflows, and results.
     """

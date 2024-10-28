@@ -210,9 +210,6 @@ class WorkflowRouter(WorkflowViewMixin):
             
             controller = step.controller.instantiate(
                 _app=self._app,
-                _AppUser=self._AppUser,
-                _Organization=self._Organization,
-                _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
                 _TethysWorkflow=self._TethysWorkflow, # TODO look into changing this in the controller
                 _Step=self._Step,
@@ -281,10 +278,6 @@ class WorkflowRouter(WorkflowViewMixin):
 
             controller = result.controller.instantiate(
                 _app=self._app,
-                _AppUser=self._AppUser,
-                _Organization=self._Organization,
-                _Resource=self._Resource,
-                _PermissionsManager=self._PermissionsManager,
                 _persistent_store_name=self._persistent_store_name,
                 _TethysWorkflow=self._TethysWorkflow,
                 _Step=self._Step,

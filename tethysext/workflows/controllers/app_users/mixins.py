@@ -16,27 +16,17 @@ from ...models.app_users import AppUser, Organization, Resource # TODO will need
 from ...services.app_users.permissions_manager import AppPermissionsManager
 # TODO need to come in and remove all of this
 
+
 class AppUsersViewMixin(TethysController):
     """
     Mixin for class-based views that adds convenience methods for working with the app user models.
     """
-    _AppUser = AppUser
-    _Organization = Organization
-    _PermissionsManager = AppPermissionsManager
     _app = None
     _persistent_store_name = ''
 
     def get_app(self):
         return self._app
 
-    def get_app_user_model(self):
-        return self._AppUser
-
-    def get_organization_model(self):
-        return self._Organization
-
-    def get_permissions_manager(self):
-        return self._PermissionsManager(self._app.url_namespace)
 
     def get_sessionmaker(self):
         if not self._app:

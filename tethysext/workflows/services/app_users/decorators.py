@@ -64,9 +64,7 @@ def active_user_required():
 def resource_controller(is_rest_controller=False):
     def decorator(controller_func):
         def _wrapped_controller(self, request, resource_id=None, back_url=None, *args, **kwargs):
-            _Resource = self.get_resource_model()
             session = None
-            resource = None
 
             try:
                 make_session = self.get_sessionmaker()
@@ -76,9 +74,7 @@ def resource_controller(is_rest_controller=False):
                 return controller_func(self, request, session, back_url, *args, **kwargs)
 
             except (StatementError, NoResultFound) as e:
-                message = 'The {} could not be found.'.format(
-                    _Resource.DISPLAY_TYPE_SINGULAR.lower()
-                )
+                message = 'There was an error'
                 log.exception(message)
                 messages.warning(request, message)
                 if not is_rest_controller:

@@ -8,7 +8,7 @@
 """
 import inspect
 from django.utils.text import slugify
-from ..controllers.workflows import WorkflowRouter
+from ..controllers.workflows.workflow_router import WorkflowRouter
 from ..models.app_users import AppUser, Organization, Resource
 from ..models import TethysWorkflow
 from ..services.app_users.permissions_manager import AppPermissionsManager
@@ -116,10 +116,6 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                 controller=_WorkflowRouter.as_controller(
                     _app=app,
                     _persistent_store_name=persistent_store_name,
-                    _AppUser=_AppUser,
-                    _Organization=_Organization,
-                    _Resource=_Resource,
-                    _PermissionsManager=_PermissionsManager,
                     _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
@@ -130,10 +126,6 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                 controller=_WorkflowRouter.as_controller(
                     _app=app,
                     _persistent_store_name=persistent_store_name,
-                    _AppUser=_AppUser,
-                    _Organization=_Organization,
-                    _Resource=_Resource,
-                    _PermissionsManager=_PermissionsManager,
                     _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 ),
@@ -147,11 +139,6 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                 controller=_WorkflowRouter.as_controller(
                     _app=app,
                     _persistent_store_name=persistent_store_name,
-                    _AppUser=_AppUser,
-                    _Organization=_Organization,
-                    _Resource=_Resource,
-                    _PermissionsManager=_PermissionsManager,
-                    _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
             )

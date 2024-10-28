@@ -15,7 +15,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from tethys_sdk.permissions import has_permission, permission_required
 from tethys_sdk.gizmos import ToggleSwitch, CesiumMapView, SlideSheet
-from .resource_view import TethysWorkflowLayout
+from .tethys_workflow_layout import TethysWorkflowLayout
 import json
 import shapefile
 from django.http import HttpResponse
