@@ -62,6 +62,7 @@ class MapView(TethysWorkflowLayout):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
+        # TODO look at this
         # Use scenario id from the resource, if it is there
         #scenario_id = resource.get_attribute('scenario_id') or 1 if resource else 1\
         scenario_id = 1

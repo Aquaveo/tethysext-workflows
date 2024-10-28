@@ -1,5 +1,4 @@
-from ..app_users.mixins import ResourceViewMixin
-from ...models import TethysWorkflow, Step, Result
+from ..models import TethysWorkflow, Step, Result
 
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.base import TethysController
@@ -28,6 +27,10 @@ class WorkflowMixin(TethysController):
             raise NotImplementedError('get_sessionmaker method not implemented.')
 
         return self._app.get_persistent_store_database(self._persistent_store_name, as_sessionmaker=True)
+    
+    def get_permissions_manager(self):
+        return self._PermissionsManager(self._app.url_namespace)
+
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -36,7 +39,7 @@ class WorkflowMixin(TethysController):
         # Handle back_url
         self.back_url = kwargs.get('back_url', '')
 
-        # Default to the resource details page
+        # Default to the details page
         if not self.back_url:
             self.back_url = self.default_back_url(
                 *args,
@@ -52,6 +55,7 @@ class WorkflowMixin(TethysController):
         Returns:
             str: back url.
         """
+        # TODO fix this
         active_app = get_active_app(request)
         app_namespace = active_app.url_namespace
         resource_id = kwargs.get('resource_id', '')
@@ -70,7 +74,7 @@ class WorkflowMixin(TethysController):
 
 class WorkflowViewMixin(WorkflowMixin):
     """
-    Mixin for class-based views that adds convenience methods for working with resources and workflows.
+    Mixin for class-based views that adds convenience methods for working with workflows.
     """
     _TethysWorkflow = TethysWorkflow
     _Step = Step
@@ -91,7 +95,7 @@ class WorkflowViewMixin(WorkflowMixin):
             session: SQLAlchemy session. Optional
 
         Returns:
-            TethysWorkflow: the resource.
+            TethysWorkflow: the workflow.
         """
         # Setup
         _TethysWorkflow = self.get_workflow_model()

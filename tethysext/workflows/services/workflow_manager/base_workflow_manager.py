@@ -41,8 +41,6 @@ class BaseWorkflowManager(object):
             self.gs_private_url, self.gs_public_url = generate_geoserver_urls(gs_engine)
 
         # Important IDs
-        self.resource_id = str(workflow_step.workflow.resource.id)
-        self.resource_name = workflow_step.workflow.resource.name
         self.workflow_id = str(workflow_step.workflow.id)
         self.workflow_name = workflow_step.workflow.name
         self.workflow_type = workflow_step.workflow.DISPLAY_TYPE_SINGULAR
@@ -69,7 +67,6 @@ class BaseWorkflowManager(object):
         # Prepare standard arguments for all jobs
         self.job_args = [
             self.db_url,
-            self.resource_id,
             self.workflow_id,
             self.workflow_step_id,
             self.gs_private_url,

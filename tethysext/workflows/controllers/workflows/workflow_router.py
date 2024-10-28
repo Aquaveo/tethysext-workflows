@@ -13,7 +13,7 @@ from django.shortcuts import redirect, reverse
 from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from ...exceptions import TethysWorkflowsException
-from .mixins import WorkflowViewMixin
+from ...mixins.workflow_mixins import WorkflowViewMixin
 from ...steps import ResultsStep # TODO ADD THIS IMPORT
 
 

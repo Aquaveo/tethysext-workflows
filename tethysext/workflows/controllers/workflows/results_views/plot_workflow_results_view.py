@@ -30,7 +30,6 @@ class PlotWorkflowResultView(WorkflowResultsView):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
             workflow_id (str): The id of the workflow.
             step_id (str): The id of the step.

@@ -14,7 +14,7 @@ from tethys_apps.utilities import get_active_app
 from tethys_sdk.permissions import has_permission
 from ...utilities import grammatically_correct_join # TODO CHECK THIS IMPORT
 from ...services.workflows.decorators import workflow_step_controller
-from .mixins import WorkflowViewMixin
+from ...mixins.workflow_mixins import WorkflowViewMixin
 from ..tethys_workflow_layout import TethysWorkflowLayout
 from ..utilities import get_style_for_status
 from ...models import Step
@@ -249,73 +249,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
         active_app = get_active_app(request)
         url_map_name = '{}:{}_workflow'.format(active_app.url_namespace, workflow.type)
         return url_map_name
-
-    @staticmethod
-    def build_lock_display_options(request, workflow):
-        """
-        Build an object with the workflow lock indicator display options.
-        Args:
-            request(HttpRequest): The request.
-            workflow(TethysWorkflow): the workflow.
-
-        Returns:
-            dict<style,message,show>: Dictionary containing the display options for the workflow lock indicator.
-        """
-        lock_display_options = {
-            'style': 'warning',
-            'message': 'The workflow is not locked.',
-            'show': False
-        }
-
-        # TODO fix all of this
-        # # Check for user locks on resource.
-        # resource = workflow.resource
-        # if resource.is_user_locked:
-        #     lock_display_options['show'] = True
-
-        #     # Workflow is locked for all users
-        #     if resource.is_locked_for_all_users:
-        #         lock_display_options['message'] = f'The workflow is locked for editing for all users, ' \
-        #                                           f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
-
-        #     # Request user has permission to override permissions
-        #     elif has_permission(request, 'can_override_user_locks'):
-        #         lock_display_options['message'] = f'The workflow is locked for editing for user ' \
-        #                                           f'{resource.user_lock}, because the ' \
-        #                                           f'{resource.DISPLAY_TYPE_SINGULAR} is locked.'
-
-        #     # Different user possesses the user lock
-        #     elif resource.is_locked_for_request_user(request):
-        #         lock_display_options['message'] = f'The workflow is locked for editing by another user, ' \
-        #                                           f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
-
-        #     # Current user possesses the user lock
-        #     else:
-        #         lock_display_options['message'] = f'The workflow is locked for editing for all other users, ' \
-        #                                           f'because the {resource.DISPLAY_TYPE_SINGULAR} is locked.'
-
-        # # Check for user locks on the workflow
-        # elif workflow.is_user_locked:
-        #     lock_display_options['show'] = True
-
-        #     # Workflow is locked for all users
-        #     if workflow.is_locked_for_all_users:
-        #         lock_display_options['message'] = 'The workflow is locked for editing for all users.'
-        #         lock_display_options['style'] = 'info'
-
-        #     # Request user has permission to override permissions
-        #     elif has_permission(request, 'can_override_user_locks'):
-        #         lock_display_options['message'] = f'The workflow is locked for editing for user: {workflow.user_lock}'
-
-        #     # Different user possesses the user lock
-        #     elif workflow.is_locked_for_request_user(request):
-        #         lock_display_options['message'] = 'The workflow is locked for editing by another user.'
-
-        #     # Current user possesses the user lock
-        #     else:
-        #         lock_display_options['message'] = 'The workflow is locked for editing for all other users.'
-
-        return lock_display_options
 
     @staticmethod
     def get_style_for_status(status):

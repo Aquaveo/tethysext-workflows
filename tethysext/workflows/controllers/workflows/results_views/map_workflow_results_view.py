@@ -35,7 +35,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
 
         Returns:
@@ -55,7 +54,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         # result_workflow_context = super(WorkflowResultsView, self).get_context(
         #     request=request,
         #     session=session,
-        #     resource=resource,
         #     context=context,
         #     workflow_id=workflow_id,
         #     step_id=step_id,

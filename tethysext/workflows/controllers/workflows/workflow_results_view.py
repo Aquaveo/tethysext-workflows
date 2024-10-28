@@ -2,7 +2,7 @@ from tethys_apps.utilities import get_active_app
 from ...models import Result
 from ...steps import ResultsStep
 from .workflow_view import WorkflowView 
-from .mixins import ResultViewMixin
+from ...mixins.workflow_mixins import ResultViewMixin
 
 
 class WorkflowResultsView(WorkflowView, ResultViewMixin):

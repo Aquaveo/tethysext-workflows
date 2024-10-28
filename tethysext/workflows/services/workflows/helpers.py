@@ -25,7 +25,7 @@ def  parse_workflow_step_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'db_url',
-        help='SQLAlchemy URL to the database containing the Resource and Workflow data.'
+        help='SQLAlchemy URL to the database containing the Workflow data.'
     )
     parser.add_argument(
         'workflow_id',
