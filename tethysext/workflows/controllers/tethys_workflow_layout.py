@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: base_resource_view.py
+* Name: tethys_workflow_layout.py
 * Author: nswain
 * Created On: May 6, 2019
 * Copyright: (c) Aquaveo 2019
@@ -10,8 +10,7 @@ import logging
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponse
 from ..services.app_users.decorators import active_user_required, resource_controller
-from .workflows.mixins import WorkflowMixin
-
+from ..mixins.workflow_mixins import WorkflowMixin 
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -20,7 +19,7 @@ log = logging.getLogger(f'tethys.{__name__}')
 # class TethysWorkflowLayout(ResourceViewMixin):
 class TethysWorkflowLayout(WorkflowMixin):
     """
-    Base controller for all Resource-based views.
+    Base controller for all Workflow-based views.
     """
     view_title = ''
     view_subtitle = ''

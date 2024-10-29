@@ -1,5 +1,5 @@
-from ..app_users.mixins import ResourceViewMixin
-from ...models import TethysWorkflow, Step, Result
+from ..controllers.app_users.mixins import ResourceViewMixin
+from ..models import TethysWorkflow, Step, Result
 
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.base import TethysController
@@ -36,7 +36,7 @@ class WorkflowMixin(TethysController):
         # Handle back_url
         self.back_url = kwargs.get('back_url', '')
 
-        # Default to the resource details page
+        # Default to the details page
         if not self.back_url:
             self.back_url = self.default_back_url(
                 *args,
@@ -47,7 +47,7 @@ class WorkflowMixin(TethysController):
     
     def default_back_url(self, request, *args, **kwargs):
         """
-        Hook for custom back url. Defaults to the resource details page.
+        Hook for custom back url. Defaults to the details page.
 
         Returns:
             str: back url.

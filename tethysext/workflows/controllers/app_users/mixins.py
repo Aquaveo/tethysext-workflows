@@ -62,7 +62,7 @@ class ResourceBackUrlViewMixin(AppUsersViewMixin):
         # Handle back_url
         self.back_url = kwargs.get('back_url', '')
 
-        # Default to the resource details page
+        # Default to the details page
         if not self.back_url:
             self.back_url = self.default_back_url(
                 *args,
@@ -73,7 +73,7 @@ class ResourceBackUrlViewMixin(AppUsersViewMixin):
 
     def default_back_url(self, request, *args, **kwargs):
         """
-        Hook for custom back url. Defaults to the resource details page.
+        Hook for custom back url. Defaults to the details page.
 
         Returns:
             str: back url.

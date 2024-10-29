@@ -39,7 +39,7 @@ z
             function: the controller method.
         """  # noqa: E501
         from tethys_sdk.base import TethysController
-        from ..controllers.workflows.mixins import WorkflowMixin
+        from ..mixins.workflow_mixins import WorkflowMixin
         from ..controllers.workflows.workflow_view import WorkflowView
 
         try:

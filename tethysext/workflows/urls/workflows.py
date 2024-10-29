@@ -28,11 +28,11 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
 
     ::
 
-        {% url 'my_first_app:a_workflow_workflow', resource_id=resource.id, workflow_id=workflow.id %}
+        {% url 'my_first_app:a_workflow_workflow', workflow_id=workflow.id %}
 
         OR
 
-        reverse('my_first_app:a_workflow_workflow_step', kwargs={'resource_id': resource.id, 'workflow_id': workflow.id, 'step_id': step.id})
+        reverse('my_first_app:a_workflow_workflow_step', kwargs={'workflow_id': workflow.id, 'step_id': step.id})
 
     Args:
         url_map_maker(UrlMap): UrlMap class bound to app root url.
@@ -45,9 +45,9 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
         base_template(str): relative path to base template (e.g.: 'my_first_app/base.html'). Useful for customizing styles or overriding navigation of all views.
 
     Url Map Names:
-        <workflow_type>_workflow <resource_id> <workflow_id>
-        <workflow_type>_workflow_step <resource_id> <workflow_id> <step_id>
-        <workflow_type>_workflow_step_result <resource_id> <workflow_id> <step_id> <result_id>
+        <workflow_type>_workflow <workflow_id>
+        <workflow_type>_workflow_step <workflow_id> <step_id>
+        <workflow_type>_workflow_step_result <workflow_id> <step_id> <result_id>
 
     Returns:
         tuple: UrlMap objects for the app_users extension.
