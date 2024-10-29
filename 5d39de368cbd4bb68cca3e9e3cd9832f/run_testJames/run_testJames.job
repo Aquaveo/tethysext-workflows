@@ -1,0 +1,18 @@
+job_name = run_testJames
+universe = vanilla
+executable = run_generic_job.py
+arguments = postgresql://postgres:mysecretpassword@localhost:5432/whatever_you_want_whatever_you_want_db d1843836-e584-4f09-87c7-c9f1e390b9c3 06d8f255-832c-4894-99df-ce575c6fc307 http://admin:geoserver@localhost:8181/geoserver/rest/ http://admin:geoserver@localhost:8181/geoserver/rest/ tethysapp.whatever_you_want.workflows.run_simulation.RunSimulationWorkflow workflow_params.json testJames 0 run_testJames_out.json
+initialdir = $(job_name)
+logdir = logs
+log = $(logdir)/$(job_name).$(cluster).log
+output = $(logdir)/$(job_name).$(cluster).$(process).out
+error = $(logdir)/$(job_name).$(cluster).$(process).err
+transfer_executable = TRUE
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT_OR_EVICT
+transfer_input_files = ../run_generic_job.py, ../workflow_params.json
+transfer_output_files = run_testJames_out.json
+environment = FDB_ROOT_DIR=/fdbs;GEOSERVER_CLUSTER_PORTS=None;GDAL_DATA=/home/jakeymac/miniconda3/envs/workflows-ext-dev/share/gdal;GDAL_DRIVER_PATH=/home/jakeymac/miniconda3/envs/workflows-ext-dev/lib/python3.12/site-packages/osgeo/gdalplugins;PROJ_DATA=/home/jakeymac/miniconda3/envs/workflows-ext-dev/share/proj;PROJ_DEBUG=3
+request_cpus = 1
+
+queue 1

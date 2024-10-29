@@ -1,0 +1,44 @@
+000 (623.000.000) 2024-10-29 14:17:29 Job submitted from host: <127.0.0.1:9618?addrs=127.0.0.1-9618&alias=Uvs-Nuur.aquaveo.local&noUDP&sock=schedd_125137_26eb>
+    DAG Node: post_processing
+...
+040 (623.000.000) 2024-10-29 14:17:29 Started transferring input files
+	Transferring to host: <127.0.0.1:9618?addrs=127.0.0.1-9618&alias=Uvs-Nuur.aquaveo.local&noUDP&sock=slot1_1_125208_1cdd_292>
+...
+040 (623.000.000) 2024-10-29 14:17:29 Finished transferring input files
+...
+001 (623.000.000) 2024-10-29 14:17:30 Job executing on host: <127.0.0.1:9618?addrs=127.0.0.1-9618&alias=Uvs-Nuur.aquaveo.local&noUDP&sock=startd_125137_26eb>
+	SlotName: slot1_1@Uvs-Nuur.aquaveo.local
+	CondorScratchDir = "/var/lib/condor/execute/dir_193403"
+	Cpus = 1
+	Disk = 2048
+	GPUs = 0
+	Memory = 128
+...
+006 (623.000.000) 2024-10-29 14:17:32 Image size of job updated: 4
+	5  -  MemoryUsage of job (MB)
+	4224  -  ResidentSetSize of job (KB)
+...
+040 (623.000.000) 2024-10-29 14:17:32 Started transferring output files
+...
+040 (623.000.000) 2024-10-29 14:17:32 Finished transferring output files
+...
+005 (623.000.000) 2024-10-29 14:17:32 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	11505  -  Run Bytes Sent By Job
+	7213  -  Run Bytes Received By Job
+	11505  -  Total Bytes Sent By Job
+	7213  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :        0        1         1 
+	   Disk (KB)            :       35       10      2048 
+	   GPUs                 :                           0 
+	   Memory (MB)          :        5        1       128 
+	   TimeExecute (s)      :        2                    
+	   TimeSlotBusy (s)     :        3                    
+
+	Job terminated of its own accord at 2024-10-29T20:17:32Z with exit-code 0.
+...

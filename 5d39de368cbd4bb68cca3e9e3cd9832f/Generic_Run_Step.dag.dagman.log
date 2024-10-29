@@ -1,0 +1,15 @@
+000 (621.000.000) 2024-10-29 14:17:12 Job submitted from host: <127.0.0.1:9618?addrs=127.0.0.1-9618&alias=Uvs-Nuur.aquaveo.local&noUDP&sock=schedd_125137_26eb>
+...
+001 (621.000.000) 2024-10-29 14:17:13 Job executing on host: <127.0.0.1:9618?addrs=127.0.0.1-9618&alias=Uvs-Nuur.aquaveo.local&noUDP&sock=schedd_125137_26eb>
+...
+005 (621.000.000) 2024-10-29 14:17:44 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...

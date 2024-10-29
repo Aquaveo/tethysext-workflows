@@ -9,7 +9,7 @@ from tethysext.workflows.models.app_users import Resource
 
 def run(resource_db_url: str, resource_id: str, resource_class_path: str, status_keys: list):
     """
-    Update the root status of a resource based ont he status of one or more other statuses of the same resource.
+    Update the root status of a resource based on the status of one or more other statuses of the same resource.
 
     Args:
         resource_db_url (str): The SQLAlchemy to the resource database.
