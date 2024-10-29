@@ -35,7 +35,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
 
         Returns:

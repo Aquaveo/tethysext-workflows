@@ -99,7 +99,7 @@ class SpatialDataMWV(MapWorkflowView):
         Handle GET requests with method get-attributes-form.
         Args:
             request(HttpRequest): The request.
-            session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
+            session(sqlalchemy.Session): Session bound to the workflow and step instances.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
@@ -115,7 +115,7 @@ class SpatialDataMWV(MapWorkflowView):
         Handle GET requests with method get-attributes-form.
         Args:
             request(HttpRequest): The request.
-            session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
+            session(sqlalchemy.Session): Session bound to the workflow and step instances.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
