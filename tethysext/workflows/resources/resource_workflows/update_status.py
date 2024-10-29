@@ -38,40 +38,5 @@ def main(db_session, workflow, step, gs_private_url, gs_public_url,
         traceback.print_exc(file=sys.stderr)
         sys.stderr.write(repr(e))
         sys.stderr.write(str(e))
-    finally:
-        try:
-            lock_resource_on_complete = step.options.get('lock_resource_on_job_complete', None)
-            lock_workflow_on_complete = step.options.get('lock_workflow_on_job_complete', None)
-            unlock_resource_on_complete = step.options.get('unlock_resource_on_job_complete', None)
-            unlock_workflow_on_complete = step.options.get('unlock_workflow_on_job_complete', None)
-
-            if lock_resource_on_complete and unlock_resource_on_complete:
-                raise RuntimeError('Improperly configured JobStep: lock_resource_on_job_complete and '
-                                   'unlock_resource_on_job_complete options are mutually exclusive.')
-
-            if lock_workflow_on_complete and unlock_workflow_on_complete:
-                raise RuntimeError('Improperly configured JobStep: lock_workflow_on_job_complete and '
-                                   'unlock_workflow_on_job_complete options are mutually exclusive.')
-
-            if lock_resource_on_complete:
-                resource.acquire_user_lock()
-
-            if lock_workflow_on_complete:
-                step.workflow.acquire_user_lock()
-
-            if unlock_resource_on_complete:
-                resource.release_user_lock()
-
-            if unlock_workflow_on_complete:
-                step.workflow.release_user_lock()
-
-            db_session and db_session.commit()
-
-        except Exception as e:
-            sys.stderr.write('Error processing locks after processing step {0}'
-                             .format(cmd_args.resource_workflow_step_id))
-            traceback.print_exc(file=sys.stderr)
-            sys.stderr.write(repr(e))
-            sys.stderr.write(str(e))
 
     print('Updating Status Complete')

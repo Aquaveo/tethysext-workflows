@@ -9,14 +9,13 @@
 import logging
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponse
-from ..services.app_users.decorators import active_user_required, resource_controller
+from ..services.app_users.decorators import active_user_required, workflow_controller
 from ..mixins.workflow_mixins import WorkflowMixin 
 
 
 log = logging.getLogger(f'tethys.{__name__}')
 
 
-# class TethysWorkflowLayout(ResourceViewMixin):
 class TethysWorkflowLayout(WorkflowMixin):
     """
     Base controller for all Workflow-based views.
@@ -27,7 +26,7 @@ class TethysWorkflowLayout(WorkflowMixin):
     base_template = 'workflows/base.html'
 
     @active_user_required()
-    @resource_controller()
+    @workflow_controller()
     def get(self, request, session, back_url, *args, **kwargs):
         """
         Handle GET requests.
@@ -94,7 +93,7 @@ class TethysWorkflowLayout(WorkflowMixin):
         return render(request, self.template_name, context)
 
     @active_user_required()
-    @resource_controller()
+    @workflow_controller()
     def post(self, request, session, back_url, *args, **kwargs):
         """
         Route POST requests.

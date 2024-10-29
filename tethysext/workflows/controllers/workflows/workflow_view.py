@@ -102,8 +102,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             'previous_title': self.previous_title,
             'next_title': self.next_title,
             'finish_title': self.finish_title,
-            # 'lock_display_options': lock_display_options, # TODO remove this
-            # 'show_reset_btn': show_reset_btn # TODO delete this and make sure to delete this in the templates
         })
 
         # Hook for extending the context

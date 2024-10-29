@@ -54,7 +54,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         # result_workflow_context = super(WorkflowResultsView, self).get_context(
         #     request=request,
         #     session=session,
-        #     resource=resource,
         #     context=context,
         #     workflow_id=workflow_id,
         #     step_id=step_id,
@@ -166,7 +165,6 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Returns:
             JsonResponse: title, data, and layout options for the plot.
         """
-        # Get Resource
         layer_name = request.POST.get('layer_name', '')
         layer_id = request.POST.get('layer_id', layer_name)
         feature_id = request.POST.get('feature_id', '')
@@ -253,7 +251,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
         return title, data, layout
 
-    def update_result_layer(self, request, session, resource, *args, **kwargs):
+    def update_result_layer(self, request, session, *args, **kwargs):
         """
         Update color ramp of a layer in the result. In the future, we can add more things to update here.
         """

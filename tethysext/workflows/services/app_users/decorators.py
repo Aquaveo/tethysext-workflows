@@ -61,7 +61,7 @@ def active_user_required():
     return decorator
 
 
-def resource_controller(is_rest_controller=False):
+def workflow_controller(is_rest_controller=False):
     def decorator(controller_func):
         def _wrapped_controller(self, request, back_url=None, *args, **kwargs):
             session = None
