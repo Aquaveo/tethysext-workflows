@@ -9,7 +9,6 @@
 import inspect
 from django.utils.text import slugify
 from ..controllers.workflows.workflow_router import WorkflowRouter
-from ..models.app_users import AppUser, Organization, Resource
 from ..models import TethysWorkflow
 from ..services.app_users.permissions_manager import AppPermissionsManager
 from ..handlers import panel_step_handler
@@ -58,33 +57,6 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
             base_url_path = base_url_path[1:]
         if base_url_path.endswith('/'):
             base_url_path = base_url_path[:-1]
-
-    # Default model classes
-    _AppUser = AppUser
-    _Organization = Organization
-    _Resource = Resource
-
-    # Default permissions manager
-    _PermissionsManager = AppPermissionsManager
-
-    # Handle custom model classes
-    for custom_model in custom_models:
-        if inspect.isclass(custom_model) and issubclass(custom_model, AppUser):
-            _AppUser = custom_model
-        elif inspect.isclass(custom_model) and issubclass(custom_model, Organization):
-            _Organization = custom_model
-        elif inspect.isclass(custom_model) and issubclass(custom_model, Resource):
-            _Resource = custom_model
-        else:
-            raise ValueError('custom_models must contain only subclasses of AppUser, Resources, or Organization.')
-
-    # Handle custom permissions manager
-    if custom_permissions_manager is not None:
-        if inspect.isclass(custom_permissions_manager) and \
-                issubclass(custom_permissions_manager, AppPermissionsManager):
-            _PermissionsManager = custom_permissions_manager
-        else:
-            raise ValueError('custom_permissions_manager must be a subclass of AppPermissionsManager.')
 
     url_maps = []
 

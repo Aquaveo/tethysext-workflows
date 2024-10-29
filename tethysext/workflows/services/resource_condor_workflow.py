@@ -39,9 +39,7 @@ class ResourceCondorWorkflow(object):
         self.job_name = workflow_name
         self.safe_job_name = ''.join(s if s.isalnum() else '_' for s in self.job_name)  #: Safe name with only A-Z 0-9
         self.workspace_path = workspace_path
-        self.resource_db_url = resource_db_url
-        self.resource_id = str(resource.id)
-        self.resource_class_path = f'{resource.__module__}.{resource.__class__.__name__}'
+        self.resource_db_url = resource_db_url        
         self.workflow = None
         self.scheduler = scheduler
         self.job_manager = job_manager

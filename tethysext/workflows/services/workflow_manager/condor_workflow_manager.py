@@ -10,7 +10,6 @@ import inspect
 import logging
 import os
 from tethys_sdk.jobs import CondorWorkflowJobNode
-from ..model_database import ModelDatabase
 from .base_workflow_manager import BaseWorkflowManager
 from ...utilities import generate_geoserver_urls
 from tethys_apps.exceptions import TethysAppSettingDoesNotExist
@@ -32,33 +31,21 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         Constructor.
 
         Args:
-            session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the resource workflow.
-            resource_workflow_step(atcore.models.app_users.Step): Instance of Step. Note: Must have active session (i.e. not closed).
+            session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the workflow.
+            workflow_step(Step): Instance of Step. Note: Must have active session (i.e. not closed).
             user(auth.User): The Django user submitting the job.
             working_directory(str): Path to users's workspace.
             app(TethysAppBase): Class or instance of an app.
             scheduler_name(str): Name of the condor scheduler to use.
             jobs(list<CondorWorkflowJobNode or dict>): List of CondorWorkflowJobNodes to run.
             input_files(list<str>): List of paths to files to sends as inputs to every job. Optional.
-            resource_workflow(TethysWorkflow): The workflow.
+            workflow(TethysWorkflow): The workflow.
             workflow_kwargs(dict): Optional keyword arguments to pass to the CondorWorkflow.
         """  # noqa: E501
         self.validate_jobs(jobs)
 
         # DB url for database containing the resource
         self.db_url = str(session.get_bind().url)
-
-        # DB URL for database containing the model database
-        # self.model_db_url = None
-        # try:
-        #     database_id = resource.get_attribute('database_id', '99999999-9999-9999-9999-999999999999')
-        #     model_db = ModelDatabase(app, database_id=database_id)
-        #     self.model_db_url = model_db.db_url
-        # except TethysAppSettingDoesNotExist:
-        #     log.warning(f'Could not find model database {database_id} for resource: {resource}.')
-        # finally:
-        #     if not self.model_db_url:
-        #         log.warning('no model database provided')
 
         # Serialize GeoServer Connection
         self.gs_private_url = ''
@@ -67,8 +54,6 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
             self.gs_private_url, self.gs_public_url = generate_geoserver_urls(gs_engine)
 
         # Important IDs
-        # self.resource_id = str(resource_workflow_step.workflow.resource.id)
-        # self.resource_name = resource_workflow_step.workflow.resource.name
         self.tethys_workflow = workflow
         self.tethys_workflow_id = str(workflow_step.workflow.id)
         self.tethys_workflow_name = workflow_step.workflow.name
@@ -76,8 +61,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         self.tethys_workflow_step_id = str(workflow_step.id)
         self.tethys_workflow_step_name = workflow_step.name
 
-        # Get Path to Resource and Workflow Classes
-        # self.resource_class = self._get_class_path(resource_workflow_step.workflow.resource)
+        # Get Path to Workflow Class
         self.tethys_workflow_class = self._get_class_path(workflow_step.workflow)
 
         # Job Definition Variables
@@ -184,7 +168,6 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
             user=self.user,
             scheduler=scheduler,
             extended_properties={
-                # 'resource_id': self.resource_id,
                 'workflow_id': self.tethys_workflow_id,
                 'workflow_step_id': self.tethys_workflow_step_id,
             },
