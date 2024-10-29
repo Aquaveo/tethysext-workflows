@@ -65,7 +65,7 @@ class DatasetWorkflowResultView(WorkflowResultsView):
 
         # Get can_export_datatable permission
         can_export_datatable = has_permission(request, 'can_export_datatable')
-
+        
         for ds in datasets:
             # Check if the export options is there
             dom_attribute = ""

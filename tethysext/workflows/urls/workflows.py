@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: resource_workflows.py
+* Name: workflows.py
 * Author: nswain
 * Created On: November 19, 2018
 * Copyright: (c) Aquaveo 2018
@@ -19,7 +19,7 @@ DEFAULT_HANDLER = {
 }
 
 
-def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_path='', custom_models=(),
+def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_path='',
          custom_permissions_manager=None, base_template='workflows/base.html', handler=DEFAULT_HANDLER['handler'],
          handler_type=DEFAULT_HANDLER['type']):
     """
@@ -39,7 +39,6 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
         persistent_store_name(str): name of persistent store database setting the controllers should use to create sessions.
         workflow_pairs(2-tuple<TethysWorkflow, WorkflowRouter>): Pairs of TethysWorkflow models and TethysWorkFlow views.
         base_url_path(str): url path to prepend to all app_user urls (e.g.: 'foo/bar').
-        custom_models(list<cls>): custom subclasses of AppUser, Organization, or Resource models.
         custom_permissions_manager(cls): Custom AppPermissionsManager class. Defaults to AppPermissionsManager.
         base_template(str): relative path to base template (e.g.: 'my_first_app/base.html'). Useful for customizing styles or overriding navigation of all views.
 

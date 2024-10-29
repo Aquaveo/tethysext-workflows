@@ -17,6 +17,7 @@ def run(resource_db_url: str, resource_id: str, resource_class_path: str, status
         resource_class_path (str): Path to the class module.
         status_keys (list): One or more keys of statuses to check to determine resource status. The other jobs must update these statuses to one of the Resource.OK_STATUSES for the resource to be marked as SUCCESS.
     """  # noqa: E501
+    print("\n\n\n Running here... \n\n\n")
     resource_db_session = None
     resource_module_path = resource_class_path.rsplit('.', 1)[0]
     resource_class_name = resource_class_path.rsplit('.', 1)[1]

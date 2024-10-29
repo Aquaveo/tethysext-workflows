@@ -83,13 +83,10 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         # Prepare standard arguments for all jobs
         self.job_args = [
             self.db_url,
-            # self.model_db_url, # TODO delete this
-            # self.resource_id,
             self.tethys_workflow_id,
             self.tethys_workflow_step_id,
             self.gs_private_url,
             self.gs_public_url,
-            # self.resource_class,
             self.tethys_workflow_class
         ]
 

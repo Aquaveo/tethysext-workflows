@@ -25,7 +25,7 @@ __all__ = ['Step']
 
 class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     """
-    Data model for storing information about resource workflows.
+    Data model for storing information about workflows.
 
     Primary Workflow Step Status Progression:
     1. STATUS_PENDING = Step has not been started yet.
@@ -40,14 +40,6 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     3a. STATUS_APPROVED = Changes approved.
     3b. STATUS_REJECTED = Changes disapproved.
     3c. STATUS_CHANGES_REQUESTED = Changes required and resubmit
-
-    Options:
-        workflow_lock_required(bool): This step requires a workflow lock to be performed (to prevent conflicts). Defaults to False.
-        release_workflow_lock_on_completion(bool): Attempt to release a workflow lock when the view is initialized. Defaults to True.
-        release_workflow_lock_on_init(bool): Attempt to release a workflow lock when the step is completed. Ignored if `workflow_lock_required` is True. Defaults to False.
-        resource_lock_required(bool): This step requires a resource lock to be performed (to prevent conflicts). Defaults to False.
-        release_resource_lock_on_completion(bool): Attempt to release a resource lock when the view is initialized. Defaults to True.
-        release_resource_lock_on_init(bool): Attempt to release a resource lock when the step is completed. Ignored if `resource_lock_required` is True. Defaults to False.
     """  # noqa: E501
     __tablename__ = 'workflow_steps'
     CONTROLLER = ''
@@ -133,14 +125,7 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
         """
         Returns default options dictionary for the object.
         """  # noqa: E501
-        return {
-            'workflow_lock_required': False,
-            'release_workflow_lock_on_completion': True,
-            'release_workflow_lock_on_init': False,
-            'resource_lock_required': False,
-            'release_resource_lock_on_completion': True,
-            'release_resource_lock_on_init': False
-        }
+        return {}
 
     @property
     def complete(self):

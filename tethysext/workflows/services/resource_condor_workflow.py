@@ -10,7 +10,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from tethys_sdk.jobs import CondorWorkflowJobNode
 
-# from tethysext.atcore.models.app_users import Resource # TODO THIS WILL NEED WORK
 from job_scripts import update_resource_status as update_resource_status_script
 
 

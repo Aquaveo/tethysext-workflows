@@ -144,7 +144,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Args:
             request (HttpRequest): The request.
             session (sqlalchemy.Session): the session.
-            resource (Resource): the resource for this request.
             context (dict): The context dictionary.
             workflow_id (int): The workflow id.
             step_id (int): The step id.

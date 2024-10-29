@@ -30,7 +30,7 @@ __all__ = ['TethysWorkflow']
 
 class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixin):
     """
-    Data model for storing information about resource workflows.
+    Data model for storing information about workflows.
 
     Primary Workflow Status Progression:
     1. STATUS_PENDING = No steps have been started in workflow.

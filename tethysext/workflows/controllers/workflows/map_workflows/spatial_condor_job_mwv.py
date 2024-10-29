@@ -253,7 +253,6 @@ class JobStepMWV(MapWorkflowView):
         # Deal with locking
         
         # Submit job
-        breakpoint()
         condor_job_manager.run_job()
 
         # Update status of the resource workflow step

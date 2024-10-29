@@ -26,7 +26,7 @@ log = logging.getLogger(f'tethys.{__name__}')
 
 def workflow_step_controller(is_rest_controller=False):
     def decorator(controller_func):
-        def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, resource_id=None, session=None, *args, **kwargs):
+        def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, session=None, *args, **kwargs):
             _Workflow = self.get_workflow_model()
             # Defer to outer scope if session is given
             manage_session = session is None
@@ -74,7 +74,7 @@ def workflow_step_controller(is_rest_controller=False):
                 if not is_rest_controller:
                     # Remove method so we redirect to the primary GET page...
                     c_request = clean_request(request)
-                    return self.get(c_request, resource_id=resource_id, workflow_id=workflow_id, step_id=step_id)
+                    return self.get(c_request, workflow_id=workflow_id, step_id=step_id)
                 else:
                     return JsonResponse({'success': False, 'error': str(e)})
 
@@ -91,7 +91,7 @@ def workflow_step_controller(is_rest_controller=False):
                 if not is_rest_controller:
                     # Remove method so we redirect to the primary GET page...
                     c_request = clean_request(request)
-                    return self.get(c_request, resource_id=resource_id, workflow_id=workflow_id, step_id=step_id)
+                    return self.get(c_request, workflow_id=workflow_id, step_id=step_id)
 
                 else:
                     return JsonResponse({'success': False, 'error': str(e)})
@@ -117,12 +117,12 @@ def workflow_step_job(job_func):
             ret_val = None
 
             try:
-                # Get the resource database session 
+                # Get the database session 
                 db_engine = create_engine(args.db_url)
                 make_db_session = sessionmaker(bind=db_engine)
                 db_session = make_db_session()
 
-                # Import Resource and Workflow Classes
+                # Import Workflow Class
                 WorkflowClass = import_from_string(args.workflow_class)
 
                 # Get the step

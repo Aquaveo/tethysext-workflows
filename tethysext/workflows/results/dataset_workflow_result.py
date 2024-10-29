@@ -15,7 +15,7 @@ __all__ = ['DatasetWorkflowResult']
 
 class DatasetWorkflowResult(Result):
     """
-    Data model for storing spatial information about resource workflow results.
+    Data model for storing spatial information about workflow results.
     """
     CONTROLLER = 'tethysext.workflows.controllers.workflows.results_views.dataset_workflow_results_view.DatasetWorkflowResultView'  # noqa: E501
     TYPE = 'dataset_workflow_result'

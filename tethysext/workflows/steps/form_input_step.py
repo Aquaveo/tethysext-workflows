@@ -45,11 +45,4 @@ class FormInputStep(Step):
                 'value': {},
                 'required': True
             },
-
-            # TODO look at this
-            # 'resource_name': {
-            #     'help': 'The name of the resource',
-            #     'value': '',
-            #     'required': True
-            # }
         }
