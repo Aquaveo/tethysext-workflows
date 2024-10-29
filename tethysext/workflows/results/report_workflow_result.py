@@ -6,7 +6,7 @@
 * Copyright: (c) Aquaveo 2019
 ********************************************************************************
 """
-from ..models.resource_workflow_result import Result
+from ..models.workflow_result import Result
 
 
 __all__ = ['ReportWorkflowResult']

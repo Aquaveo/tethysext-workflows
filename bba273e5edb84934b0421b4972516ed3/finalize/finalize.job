@@ -1,0 +1,15 @@
+job_name = finalize
+universe = vanilla
+executable = update_status.py
+arguments = postgresql://postgres:mysecretpassword@localhost:5432/whatever_you_want_whatever_you_want_db 228d3f03-6cba-4f16-a103-8fa366932fb6 abc23fe3-7731-4d23-b6ec-ad1a852eac96 http://admin:geoserver@localhost:8181/geoserver/rest/ http://admin:geoserver@localhost:8181/geoserver/rest/ tethysapp.whatever_you_want.workflows.run_simulation.RunSimulationWorkflow workflow_params.json
+initialdir = $(job_name)
+logdir = logs
+log = $(logdir)/$(job_name).$(cluster).log
+output = $(logdir)/$(job_name).$(cluster).$(process).out
+error = $(logdir)/$(job_name).$(cluster).$(process).err
+transfer_executable = TRUE
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT_OR_EVICT
+transfer_input_files = ../workflow_params.json
+
+queue 1

@@ -17,9 +17,9 @@ class BaseWorkflowManager(object):
         Constructor.
 
         Args:
-            session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the resource workflow.
+            session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the workflow.
             model_db(ModelDatabase): ModelDatabase instance bound to model database.
-            resource_workflow_step(atcore.models.app_users.Step): Instance of Step. Note: Must have active session (i.e. not closed).
+            workflow_step(Step): Instance of Step. Note: Must have active session (i.e. not closed).
             user(auth.User): The Django user submitting the job.
             working_directory(str): Path to users's workspace.
             app(TethysAppBase): Class or instance of an app.
@@ -31,7 +31,7 @@ class BaseWorkflowManager(object):
             raise ValueError('Argument "jobs" is not defined or empty. Must provide at least one CondorWorkflowJobNode '
                              'or equivalent dictionary.')
 
-        # DB url for database containing the resource
+        # DB url for database for connection
         self.db_url = str(session.get_bind().url)
 
         # Serialize GeoServer Connection
@@ -41,8 +41,6 @@ class BaseWorkflowManager(object):
             self.gs_private_url, self.gs_public_url = generate_geoserver_urls(gs_engine)
 
         # Important IDs
-        self.resource_id = str(workflow_step.workflow.resource.id)
-        self.resource_name = workflow_step.workflow.resource.name
         self.workflow_id = str(workflow_step.workflow.id)
         self.workflow_name = workflow_step.workflow.name
         self.workflow_type = workflow_step.workflow.DISPLAY_TYPE_SINGULAR
@@ -64,12 +62,11 @@ class BaseWorkflowManager(object):
         self.custom_job_args = args
 
         #: Safe name with only A-Z 0-9
-        self.safe_job_name = ''.join(s if s.isalnum() else '_' for s in self.resource_workflow_step_name)
+        self.safe_job_name = ''.join(s if s.isalnum() else '_' for s in self.workflow_step_name)
 
         # Prepare standard arguments for all jobs
         self.job_args = [
             self.db_url,
-            self.resource_id,
             self.workflow_id,
             self.workflow_step_id,
             self.gs_private_url,

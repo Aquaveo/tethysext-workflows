@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: resource_workflow_result
+* Name: workflow_result
 * Author: nswain
 * Created On: April 30, 2019
 * Copyright: (c) Aquaveo 2019

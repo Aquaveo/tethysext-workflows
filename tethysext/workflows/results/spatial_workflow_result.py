@@ -7,7 +7,7 @@
 ********************************************************************************
 """
 import copy
-from ..models.resource_workflow_result import Result
+from ..models.workflow_result import Result
 
 
 __all__ = ['SpatialWorkflowResult']

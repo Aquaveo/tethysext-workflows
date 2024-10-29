@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: resource_workflow.py
+* Name: workflow.py
 * Author: nswain
 * Created On: September 25, 2018
 * Copyright: (c) Aquaveo 2018
@@ -20,7 +20,7 @@ from .guid import GUID
 
 from ..mixins import AttributesMixin, ResultsMixin, SerializeMixin
 from .base import WorkflowsBase
-from .resource_workflow_step import Step
+from .workflow_step import Step
 from ..steps import FormInputStep, ResultsStep
 
 
@@ -70,7 +70,6 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
     COMPLETE_STATUSES = Step.COMPLETE_STATUSES
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
-    #resource_id = Column(GUID, ForeignKey('app_users_resources.id'))
     creator_id = Column(Integer)
     creator_name = Column(String)
     type = Column(String)
@@ -79,8 +78,6 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
     date_created = Column(DateTime, default=dt.datetime.utcnow)
     lock_when_finished = Column(Boolean, default=False)
     _attributes = Column(String)
-
-    # resource = relationship('Resource', backref=backref('workflows', cascade='all,delete'))
 
     steps = relationship('Step', order_by='Step.order', backref='workflow',
                          cascade='all,delete')
@@ -285,7 +282,6 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
         """Get the URL to the workflow. IMPORTANT: Must implement get_url_name()."""
         n = self.get_url_name()
         return reverse(n, kwargs={
-            'resource_id': self.resource_id,
             'workflow_id': self.id,
         })
 

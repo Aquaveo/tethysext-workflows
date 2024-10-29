@@ -1,4 +1,3 @@
-from ..controllers.app_users.mixins import ResourceViewMixin
 from ..models import TethysWorkflow, Step, Result
 
 from tethys_apps.utilities import get_active_app
@@ -8,6 +7,7 @@ from django.shortcuts import reverse
 
 class WorkflowMixin(TethysController):
     """
+    TODO fix this doc string
     Mixin for class-based views that adds convenience methods for working with workflows.
     """
     _app = None
@@ -52,6 +52,7 @@ class WorkflowMixin(TethysController):
         Returns:
             str: back url.
         """
+        # TODO fix this
         active_app = get_active_app(request)
         app_namespace = active_app.url_namespace
         resource_id = kwargs.get('resource_id', '')
@@ -70,7 +71,7 @@ class WorkflowMixin(TethysController):
 
 class WorkflowViewMixin(WorkflowMixin):
     """
-    Mixin for class-based views that adds convenience methods for working with resources and workflows.
+    Mixin for class-based views that adds convenience methods for working with workflows.
     """
     _TethysWorkflow = TethysWorkflow
     _Step = Step
@@ -91,7 +92,7 @@ class WorkflowViewMixin(WorkflowMixin):
             session: SQLAlchemy session. Optional
 
         Returns:
-            TethysWorkflow: the resource.
+            TethysWorkflow: the workflow.
         """
         # Setup
         _TethysWorkflow = self.get_workflow_model()
@@ -147,7 +148,7 @@ class WorkflowViewMixin(WorkflowMixin):
 
 class ResultViewMixin(WorkflowMixin):
     """
-    Mixin for class-based views that adds convenience methods for working with resources, workflows, and results.
+    Mixin for class-based views that adds convenience methods for working with workflows, and results.
     """
     _Result = Result
 
