@@ -200,10 +200,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
                 'status': step_status.lower(),
                 'style': self.get_style_for_status(step_status),
                 'link': create_link,
-                # 'display_as_inactive': not user_has_active_role, # TODO make sure to remove this from the templates
-                # 'active_roles': active_roles, # TODO make sure to remove this from the templates
-                # 'show_lock': show_lock, 
-                # 'is_locked': step_locked 
             }
 
             # Hook to allow subclasses to extend the step card attributes

@@ -33,18 +33,13 @@ class SerializeMixin:
         Returns:
             Serialized Resource dictionary.
         """
-        from tethysext.workflows.mixins import UserLockMixin, AttributesMixin, StatusMixin
+        from tethysext.workflows.mixins import AttributesMixin, StatusMixin
 
         d = {
             'id': self.id,
             'name': self.name,
             'type': self.type,
         }
-
-        if isinstance(self, UserLockMixin):
-            d.update({
-                'locked': self.is_user_locked,
-            })
 
         if isinstance(self, StatusMixin):
             d.update({

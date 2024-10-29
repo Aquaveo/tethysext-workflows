@@ -76,7 +76,6 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
 
     name = Column(String)
     date_created = Column(DateTime, default=dt.datetime.utcnow)
-    lock_when_finished = Column(Boolean, default=False)
     _attributes = Column(String)
 
     steps = relationship('Step', order_by='Step.order', backref='workflow',

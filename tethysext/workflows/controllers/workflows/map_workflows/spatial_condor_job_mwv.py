@@ -247,8 +247,6 @@ class JobStepMWV(MapWorkflowView):
 
         # Prepare the job
         job_id = condor_job_manager.prepare()
-
-        # Deal with locking
         
         # Submit job
         condor_job_manager.run_job()
