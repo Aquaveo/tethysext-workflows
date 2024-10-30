@@ -21,8 +21,8 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
     """
     Helper class that prepares and submits condor workflows/jobs for resource workflows.
     """
-    ATCORE_EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                                         'resources', 'resource_workflows')
+    EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+                                         'job_sripts', 'workflow')
 
     def __init__(self, session, workflow_step, user, working_directory, app, scheduler_name,
                  jobs=None, input_files=None, gs_engine=None,
@@ -223,7 +223,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
             name='finalize',  # Better for display name
             condorpy_template_name='vanilla_transfer_files',
             remote_input_files=[
-                os.path.join(self.ATCORE_EXECUTABLE_DIR, 'update_status.py'),
+                os.path.join(self.EXECUTABLE_DIR, 'update_status.py'),
             ],
             workflow=self.workflow
         )

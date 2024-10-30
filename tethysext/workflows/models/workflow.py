@@ -293,34 +293,3 @@ class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixi
         :return: key associated with the value
         """
         return list(dict_object.keys())[list(dict_object.values()).index(value)]
-
-    def serialize_base_fields(self, d: dict) -> dict:
-        """Hook for ATCore base classes to add their custom fields to serialization.
-
-        Args:
-            d: Base serialized Resource dictionary.
-
-        Returns:
-            Serialized Resource dictionary.
-        """
-        results = [r.serialize(format='dict') for r in self.results]
-        for step in self.steps:
-            if isinstance(step, ResultsStep):
-                results.extend([r.serialize(format='dict') for r in step.results])
-
-        d.update({
-            'created_by': self.creator.username if self.creator else None,
-            'date_created': self.date_created,
-            'display_type_plural': self.DISPLAY_TYPE_PLURAL,
-            'display_type_singular': self.DISPLAY_TYPE_SINGULAR,
-            'results': results,
-            'status': self.get_status(),
-            'steps': [step.to_dict() for step in self.steps],
-            'url': None,
-        })
-        try:
-            url = self.get_url()
-            d['url'] = url
-        except NotImplementedError:
-            log.warning('get_url_name() not implemented for TethysWorkflow subclass. URL will be None.')
-        return d

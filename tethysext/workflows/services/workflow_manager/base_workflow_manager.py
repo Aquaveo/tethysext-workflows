@@ -8,8 +8,8 @@ log = logging.getLogger(f'tethys.{__name__}')
 
 
 class BaseWorkflowManager(object):
-    ATCORE_EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                                         'resources', 'resource_workflows')
+    EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+                                         'job_scripts', 'workflow')
 
     def __init__(self, session, model_db, workflow_step, user, working_directory, app, scheduler_name=None,
                  jobs=None, job_script=None, input_files=None, gs_engine=None, *args):

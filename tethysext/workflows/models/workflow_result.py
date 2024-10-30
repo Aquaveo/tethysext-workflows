@@ -91,19 +91,3 @@ class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, Serializ
         Resets result to initial state.
         """
         self._data = dict()
-
-    def serialize_base_fields(self, d: dict) -> dict:
-        """Hook for ATCore base classes to add their custom fields to serialization.
-
-        Args:
-            d: Base serialized Resource dictionary.
-
-        Returns:
-            Serialized Resource dictionary.
-        """
-        d.update({
-            'codename': self.codename,
-            'data': self.data,
-            'order': self.order,
-        })
-        return d
