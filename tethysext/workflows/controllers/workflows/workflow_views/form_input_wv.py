@@ -119,8 +119,6 @@ class FormInputWV(WorkflowView):
                 except ValueError as e:
                     raise ValueError('Invalid input to form: {}'.format(e))
 
-            # TODO look at this
-            # step.set_parameter('resource_name', "hello there")
             step.set_parameter('form-values', params)
 
         elif step.options['renderer'] == 'bokeh':
@@ -143,7 +141,6 @@ class FormInputWV(WorkflowView):
                 except ValueError as e:
                     raise ValueError('Invalid input to form: {}'.format(e))
 
-            step.set_parameter('resource_name', step.workflow.resource.name)
             step.set_parameter('form-values', params)
 
         # Save parameters

@@ -130,7 +130,6 @@ class JobStepMWV(MapWorkflowView):
             'previous_title': self.previous_title,
             'back_url': self.back_url,
             'nav_title': workflow.name,
-            # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO look at this
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'jobs_table': jobs_table,
             'base_template': self.base_template
@@ -247,7 +246,7 @@ class JobStepMWV(MapWorkflowView):
 
         # Prepare the job
         job_id = condor_job_manager.prepare()
-        
+
         # Submit job
         condor_job_manager.run_job()
 

@@ -16,7 +16,7 @@ import collections
 
 class MapManagerBase(object):
     """
-    Base class for object that orchestrates the map layers and resources.
+    Base class for object that orchestrates the map layers.
     """
     __metaclass__ = ABCMeta
 

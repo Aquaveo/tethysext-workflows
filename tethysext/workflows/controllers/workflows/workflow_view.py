@@ -97,7 +97,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             'next_step': next_step,
             'step_url_name': step_url_name,
             'nav_title': 'Replacement Resource Name: replacement workflow name',
-            # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO fix this 
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'previous_title': self.previous_title,
             'next_title': self.next_title,
