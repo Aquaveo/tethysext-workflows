@@ -24,7 +24,7 @@ class WorkflowRouter(WorkflowViewMixin):
     """
     Router for workflow views. Routes to appropriate step controller.
     """
-    base_template = 'atcore/app_users/base.html'
+    base_template = 'workflows/base.html'
     http_method_names = ['get', 'post', 'delete']
 
     def get(self, request, workflow_id, step_id=None, result_id=None, *args, **kwargs):
