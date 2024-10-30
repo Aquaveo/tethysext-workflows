@@ -303,6 +303,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
             self.prepare()
 
         # Execute
+        breakpoint()
         self.workflow.execute()
         return str(self.workflow.id)
 

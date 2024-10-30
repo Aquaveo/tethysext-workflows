@@ -62,13 +62,6 @@ class MapView(TethysWorkflowLayout):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-        # Use scenario id from the resource, if it is there
-        #scenario_id = resource.get_attribute('scenario_id') or 1 if resource else 1\
-        scenario_id = 1
-
-        # If "scenario-id" is passed in via the GET parameters, use that instead of the one given by the resource
-        scenario_id = request.GET.get('scenario-id', scenario_id)
-        
         # Get Managers Hook
         map_manager = self.get_map_manager(
             *args,
@@ -80,7 +73,6 @@ class MapView(TethysWorkflowLayout):
         map_view, model_extent, layer_groups = map_manager.compose_map(
             *args,
             request=request,
-            scenario_id=scenario_id,
             **kwargs
         )
 
@@ -88,11 +80,10 @@ class MapView(TethysWorkflowLayout):
         map_view.legend = False  # Ensure the built-in legend is not turned on.
         map_view.height = '100%'  # Ensure 100% height
         map_view.width = '100%'  # Ensure 100% width
-        # map_view.disable_basemap = self.should_disable_basemap(
-        #     request=request,
-        #     resource=resource,
-        #     map_manager=map_manager
-        # )
+        map_view.disable_basemap = self.should_disable_basemap(
+            request=request,
+            map_manager=map_manager
+        )
 
         map_view.controls = [
             'Rotate',

@@ -18,7 +18,7 @@ from sqlalchemy import Column, ForeignKey, String, DateTime, Boolean, Integer
 from sqlalchemy.orm import relationship, backref
 from .guid import GUID
 
-from ..mixins import AttributesMixin, ResultsMixin, SerializeMixin
+from ..mixins import AttributesMixin, ResultsMixin
 from .base import WorkflowsBase
 from .workflow_step import Step
 from ..steps import FormInputStep, ResultsStep
@@ -28,7 +28,7 @@ log = logging.getLogger(f'tethys.{__name__}')
 __all__ = ['TethysWorkflow']
 
 
-class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin, SerializeMixin):
+class TethysWorkflow(WorkflowsBase, AttributesMixin, ResultsMixin):
     """
     Data model for storing information about workflows.
 

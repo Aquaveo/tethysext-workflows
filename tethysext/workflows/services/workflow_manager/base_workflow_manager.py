@@ -11,14 +11,13 @@ class BaseWorkflowManager(object):
     EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
                                          'job_scripts', 'workflow')
 
-    def __init__(self, session, model_db, workflow_step, user, working_directory, app, scheduler_name=None,
+    def __init__(self, session, workflow_step, user, working_directory, app, scheduler_name=None,
                  jobs=None, job_script=None, input_files=None, gs_engine=None, *args):
         """
         Constructor.
 
         Args:
             session(sqlalchemy.orm.Session): An SQLAlchemy session bound to the workflow.
-            model_db(ModelDatabase): ModelDatabase instance bound to model database.
             workflow_step(Step): Instance of Step. Note: Must have active session (i.e. not closed).
             user(auth.User): The Django user submitting the job.
             working_directory(str): Path to users's workspace.
@@ -103,7 +102,7 @@ class BaseWorkflowManager(object):
             self._workspace_path = os.path.join(
                 self.working_directory,
                 str(self.workflow_id),
-                str(self.resource_workflow_step_id),
+                str(self.workflow_step_id),
                 self.safe_job_name
             )
 
@@ -128,5 +127,6 @@ class BaseWorkflowManager(object):
             self.prepare()
 
         # Execute
+        breakpoint()
         self.workflow.execute()
         return str(self.workflow.id)

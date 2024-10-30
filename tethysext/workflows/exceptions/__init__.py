@@ -12,18 +12,6 @@ class TethysWorkflowsException(Exception):
     pass
 
 
-class ModelDatabaseError(TethysWorkflowsException):
-    pass
-
-
-class ModelDatabaseInitializationError(ModelDatabaseError):
-    pass
-
-
-class ModelFileDatabaseInitializationError(ModelDatabaseError):
-    pass
-
-
 class UnboundFileCollectionError(Exception):
     pass
 
@@ -48,6 +36,5 @@ class FileCollectionItemAlreadyExistsError(Exception):
     pass
 
 
-__all__ = [TethysWorkflowsException, ModelDatabaseError, ModelDatabaseInitializationError, ModelFileDatabaseInitializationError,
-           UnboundFileCollectionError, UnboundFileDatabaseError, FileCollectionNotFoundError,
+__all__ = [TethysWorkflowsException, UnboundFileCollectionError, UnboundFileDatabaseError, FileCollectionNotFoundError,
            FileCollectionItemNotFoundError, FileDatabaseNotFoundError, FileCollectionItemAlreadyExistsError]

@@ -116,14 +116,6 @@ class BaseSpatialManager(object):
 
         return True
 
-    def get_db_specific_store_id(self, model_db):
-        """
-        Construct the model database specific store id.
-
-        Args:
-            model_db(ModelDatabase): the object representing the model database.
-        """
-        return '{0}:{1}'.format(self.WORKSPACE, model_db.get_id())
 
     def get_ows_endpoint(self, public_endpoint=True):
         """

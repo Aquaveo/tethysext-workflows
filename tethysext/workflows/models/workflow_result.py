@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, ForeignKey, String, PickleType, Integer
 from .guid import GUID
-from ..mixins import StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin
+from ..mixins import StatusMixin, AttributesMixin, OptionsMixin
 from .base import WorkflowsBase
 from .controller_metadata import ControllerMetadata
 
@@ -19,7 +19,7 @@ from .controller_metadata import ControllerMetadata
 __all__ = ['Result']
 
 
-class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
+class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     """
     Data model for storing information about workflow results.
     """
