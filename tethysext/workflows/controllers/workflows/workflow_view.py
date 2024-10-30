@@ -149,8 +149,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
         if previous_step:
             previous_url = reverse(step_url_name, args=(workflow.id, str(previous_step.id)))
 
-        # User has active role?
-
         if 'reset-submit' in request.POST:
             step.workflow.reset_next_steps(step, include_current=True)
             session.commit()
