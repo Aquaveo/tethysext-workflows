@@ -154,7 +154,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             session.commit()
             return redirect(current_url)
         
-        # Hook for processing step data when the user has the active role
+        # Process the step data
         response = self.process_step_data(
             request=request,
             session=session,
@@ -321,7 +321,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
 
     def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
-        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs. Only called if the user has an active role.
+        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
         Args:
             request(HttpRequest): The request.
@@ -347,7 +347,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
 
     def navigate_only(self, request, step, current_url, next_url, previous_url):
         """
-        Navigate to next or previous step without processing/saving data. Called instead of process_step_data when the user doesn't have an active role.
+        Navigate to next or previous step without processing/saving data. Called instead of process_step_data when the user doesn't have an active role. (THIS COMES FROM ATCORE)
 
         Args:
             request(HttpRequest): The request.

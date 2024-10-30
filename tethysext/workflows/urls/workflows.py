@@ -10,7 +10,6 @@ import inspect
 from django.utils.text import slugify
 from ..controllers.workflows.workflow_router import WorkflowRouter
 from ..models import TethysWorkflow
-from ..services.app_users.permissions_manager import AppPermissionsManager
 from ..handlers import panel_step_handler
 
 DEFAULT_HANDLER = {

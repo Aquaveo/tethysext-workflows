@@ -75,7 +75,7 @@ class FormInputWV(WorkflowView):
 
     def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
-        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs. Only called if the user has an active role.
+        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
         Args:
             request(HttpRequest): The request.
