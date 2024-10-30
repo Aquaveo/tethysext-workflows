@@ -19,10 +19,10 @@ log = logging.getLogger(f'tethys.{__name__}')
 
 class WorkflowCondorJobManager(BaseWorkflowManager):
     """
-    Helper class that prepares and submits condor workflows/jobs for resource workflows.
+    Helper class that prepares and submits condor workflows/jobs for workflows.
     """
     EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                                         'job_sripts', 'workflow')
+                                         'job_scripts', 'workflow')
 
     def __init__(self, session, workflow_step, user, working_directory, app, scheduler_name,
                  jobs=None, input_files=None, gs_engine=None,
@@ -44,7 +44,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         """  # noqa: E501
         self.validate_jobs(jobs)
 
-        # DB url for database containing the resource
+        # DB url for database connection 
         self.db_url = str(session.get_bind().url)
 
         # Serialize GeoServer Connection
@@ -303,7 +303,6 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
             self.prepare()
 
         # Execute
-        breakpoint()
         self.workflow.execute()
         return str(self.workflow.id)
 

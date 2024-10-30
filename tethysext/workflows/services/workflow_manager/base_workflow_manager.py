@@ -127,6 +127,5 @@ class BaseWorkflowManager(object):
             self.prepare()
 
         # Execute
-        breakpoint()
         self.workflow.execute()
         return str(self.workflow.id)
