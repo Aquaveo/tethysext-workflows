@@ -635,7 +635,6 @@ var WORKFLOWS_MAP_VIEW = (function() {
             else {
                 $("#legend-" + layer_variable).addClass('d-none');
             }
-
         });
 
         // Handle radio deselect events
@@ -704,6 +703,7 @@ var WORKFLOWS_MAP_VIEW = (function() {
 
                 // Hide the modal
                 hide_action_modal();
+
             });
         });
     };
@@ -1038,7 +1038,7 @@ var WORKFLOWS_MAP_VIEW = (function() {
                 m_map.addLayer(append_layer);
                 init_new_layers_tab(uuid);
 
-                // Save state of custom_layers
+                // Save the state of custom_layers
                 csrf_token = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
                     type: 'POST',
@@ -1103,23 +1103,23 @@ var WORKFLOWS_MAP_VIEW = (function() {
         if (coordinates instanceof ol.geom.Point) {
             c = coordinates.getCoordinates();
         }
-        m_$props_popup_container.trigger('show.atcore.popup');
+        m_$props_popup_container.trigger('show.workflows.popup');
         m_props_popup_overlay.setPosition(c);
-        m_$props_popup_container.trigger('shown.atcore.popup');
+        m_$props_popup_container.trigger('shown.workflows.popup');
     };
 
     hide_properties_pop_up = function() {
-        m_$props_popup_container.trigger('hide.atcore.popup');
+        m_$props_popup_container.trigger('hide.workflows.popup');
         m_props_popup_overlay.setPosition(undefined);
         m_$props_popup_closer.blur();
-        m_$props_popup_container.trigger('hidden.atcore.popup');
+        m_$props_popup_container.trigger('hidden.workflows.popup');
     };
 
     close_properties_pop_up = function() {
-        m_$props_popup_container.trigger('closing.atcore.popup');
+        m_$props_popup_container.trigger('closing.workflows.popup');
         hide_properties_pop_up();
         TETHYS_MAP_VIEW.clearSelection();
-        m_$props_popup_container.trigger('closed.atcore.popup');
+        m_$props_popup_container.trigger('closed.workflows.popup');
     };
 
     reset_properties_pop_up = function() {

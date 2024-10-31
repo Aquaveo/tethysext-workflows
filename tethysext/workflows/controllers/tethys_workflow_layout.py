@@ -9,7 +9,7 @@
 import logging
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponse
-from ..services.app_users.decorators import workflow_controller
+from ..services.workflows.decorators import workflow_controller
 from ..mixins.workflow_mixins import WorkflowMixin 
 
 

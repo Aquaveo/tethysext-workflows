@@ -23,6 +23,60 @@ from ...results import *  # noqa: F401, F403
 
 log = logging.getLogger(f'tethys.{__name__}')
 
+def workflow_controller(is_rest_controller=False):
+    def decorator(controller_func):
+        def _wrapped_controller(self, request, back_url=None, *args, **kwargs):
+            session = None
+
+            try:
+                make_session = self.get_sessionmaker()
+                session = make_session()
+
+                # Call the Controller
+                return controller_func(self, request, session, back_url, *args, **kwargs)
+
+            except (StatementError, NoResultFound) as e:
+                message = 'There was an error'
+                log.exception(message)
+                messages.warning(request, message)
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            except TethysWorkflowsException as e:
+                error_message = str(e)
+                messages.warning(request, error_message)
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            except ValueError as e:
+                if session:
+                    session.rollback()
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            except RuntimeError as e:
+                if session:
+                    session.rollback()
+
+                log.exception(str(e))
+                messages.error(request, "We're sorry, an unexpected error has occurred.")
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            finally:
+                session and session.close()
+
+        return wraps(controller_func)(_wrapped_controller)
+    return decorator
+
 
 def workflow_step_controller(is_rest_controller=False):
     def decorator(controller_func):
