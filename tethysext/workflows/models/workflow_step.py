@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: resource_workflow_step
+* Name: workflow_step
 * Author: nswain
 * Created On: November 19, 2018
 * Copyright: (c) Aquaveo 2018
@@ -25,7 +25,7 @@ __all__ = ['Step']
 
 class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     """
-    Data model for storing information about resource workflows.
+    Data model for storing information about workflows.
 
     Primary Workflow Step Status Progression:
     1. STATUS_PENDING = Step has not been started yet.
@@ -40,14 +40,6 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     3a. STATUS_APPROVED = Changes approved.
     3b. STATUS_REJECTED = Changes disapproved.
     3c. STATUS_CHANGES_REQUESTED = Changes required and resubmit
-
-    Options:
-        workflow_lock_required(bool): This step requires a workflow lock to be performed (to prevent conflicts). Defaults to False.
-        release_workflow_lock_on_completion(bool): Attempt to release a workflow lock when the view is initialized. Defaults to True.
-        release_workflow_lock_on_init(bool): Attempt to release a workflow lock when the step is completed. Ignored if `workflow_lock_required` is True. Defaults to False.
-        resource_lock_required(bool): This step requires a resource lock to be performed (to prevent conflicts). Defaults to False.
-        release_resource_lock_on_completion(bool): Attempt to release a resource lock when the view is initialized. Defaults to True.
-        release_resource_lock_on_init(bool): Attempt to release a resource lock when the step is completed. Ignored if `resource_lock_required` is True. Defaults to False.
     """  # noqa: E501
     __tablename__ = 'workflow_steps'
     CONTROLLER = ''
@@ -71,7 +63,6 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     _options = Column(PickleType, default={})
     _attributes = Column(String)
     _parameters = Column(PickleType, default={})
-    _active_roles = Column(PickleType, default=[])
 
     _controller = relationship(
         'ControllerMetadata',
@@ -117,9 +108,6 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
         else:
             self._options = self.default_options
 
-        if 'active_roles' in kwargs:
-            self.active_roles = kwargs['active_roles']
-
         self._controller = ControllerMetadata(path=self.CONTROLLER)
 
     def __str__(self):
@@ -133,28 +121,11 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
         """
         Returns default options dictionary for the object.
         """  # noqa: E501
-        return {
-            'workflow_lock_required': False,
-            'release_workflow_lock_on_completion': True,
-            'release_workflow_lock_on_init': False,
-            'resource_lock_required': False,
-            'release_resource_lock_on_completion': True,
-            'release_resource_lock_on_init': False
-        }
+        return {}
 
     @property
     def complete(self):
         return self.get_status(default=self.STATUS_PENDING) in self.COMPLETE_STATUSES
-
-    @property
-    def active_roles(self):
-        return self._active_roles
-
-    @active_roles.setter
-    def active_roles(self, value):
-        if not isinstance(value, list) or not all(isinstance(elem, str) for elem in value):
-            raise ValueError(f'Property "active_roles" must be a list of strings. Got "{value}" instead.')
-        self._active_roles = value
 
     @property
     def controller(self):

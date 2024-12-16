@@ -18,7 +18,6 @@ let LAZY_LOAD_TABS = (function() {
     *************************************************************************/
  	  // Constants
     let m_loaded_tabs,
-        m_resource_id,
         m_active_tab,
         m_default_tab,
         m_tab_page_url_template,

@@ -75,7 +75,7 @@ class FormInputWV(WorkflowView):
 
     def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
-        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs. Only called if the user has an active role.
+        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
         Args:
             request(HttpRequest): The request.
@@ -119,8 +119,6 @@ class FormInputWV(WorkflowView):
                 except ValueError as e:
                     raise ValueError('Invalid input to form: {}'.format(e))
 
-            # TODO look at this
-            # step.set_parameter('resource_name', "hello there")
             step.set_parameter('form-values', params)
 
         elif step.options['renderer'] == 'bokeh':
@@ -143,7 +141,6 @@ class FormInputWV(WorkflowView):
                 except ValueError as e:
                     raise ValueError('Invalid input to form: {}'.format(e))
 
-            step.set_parameter('resource_name', step.workflow.resource.name) # TODO look at this
             step.set_parameter('form-values', params)
 
         # Save parameters

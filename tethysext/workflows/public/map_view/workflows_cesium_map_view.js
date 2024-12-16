@@ -1,5 +1,5 @@
 /*****************************************************************************
- * FILE:    atcore_map_view.js
+ * FILE:    workflows_cesium_map_view.js
  * DATE:    October, 19, 2018
  * AUTHOR:  Nathan Swain
  * COPYRIGHT: (c) Aquaveo 2018
@@ -18,7 +18,7 @@ import WebXRPolyfill from './modules/third-party/webxr-polyfill/build/webxr-poly
  *                      LIBRARY WRAPPER
  *****************************************************************************/
 
-var ATCORE_MAP_VIEW = (function() {
+var WORKFLOWS_MAP_VIEW = (function() {
 	// Wrap the library in a package function
 	"use strict"; // And enable strict mode for this library
 
@@ -118,7 +118,7 @@ var ATCORE_MAP_VIEW = (function() {
  	*************************************************************************/
     // Config
     parse_attributes = function() {
-        var $map_attributes = $('#atcore-map-attributes');
+        var $map_attributes = $('#workflows-map-attributes');
         m_layer_groups = $map_attributes.data('layer-groups');
         m_extent = $map_attributes.data('map-extent');
         m_workspace = $map_attributes.data('workspace');
@@ -127,7 +127,7 @@ var ATCORE_MAP_VIEW = (function() {
     };
 
     parse_permissions = function() {
-        var $map_permissions = $('#atcore-map-permissions');
+        var $map_permissions = $('#workflows-map-permissions');
         p_can_geocode = $map_permissions.data('can-use-geocode');
         p_can_plot = $map_permissions.data('can-use-plot');
         if (typeof p_can_plot !== "boolean") {
@@ -920,7 +920,6 @@ var ATCORE_MAP_VIEW = (function() {
                 $("#legend-" + layer_variable).addClass('d-none');
             }
 
-            // TODO: Save state to resource - store in attributes?
         });
 
         // Handle radio deselect events
@@ -940,7 +939,6 @@ var ATCORE_MAP_VIEW = (function() {
             // Set the visibility of legend
             $("#legend-" + layer_variable).addClass('d-none');
 
-            // TODO: Save state to resource - store in attributes?
         });
     };
 
@@ -975,7 +973,6 @@ var ATCORE_MAP_VIEW = (function() {
                     }
                 }
             }
-            // TODO: Save state to resource - store in attributes?
         });
     };
 
@@ -1012,7 +1009,6 @@ var ATCORE_MAP_VIEW = (function() {
                 // Hide the modal
                 hide_action_modal();
 
-                // TODO: Save state to resource - store in attributes?
             });
         });
     };
@@ -1085,8 +1081,7 @@ var ATCORE_MAP_VIEW = (function() {
                 // Hide the modal
                 hide_action_modal();
 
-                // TODO: Save state to resource - store in attributes?
-                // Save state of custom_layers to resource
+                // Save state of custom_layers
                 if (remove_type === 'layer') {
                     csrf_token = $('input[name=csrfmiddlewaretoken]').val()
                     $.ajax({
@@ -1288,7 +1283,7 @@ var ATCORE_MAP_VIEW = (function() {
                 m_map.addLayer(wms_layers);
                 init_new_layers_tab(uuid);
 
-                // Save to resource
+                // Save state of custom_layers
                 csrf_token = $('input[name=csrfmiddlewaretoken]').val()
                 $.ajax({
                     type: 'POST',
@@ -1305,7 +1300,6 @@ var ATCORE_MAP_VIEW = (function() {
                 }).done(function (data) {
 
                 })
-                // TODO: Save state to resource - store in attributes?
             });
         });
 
@@ -1354,23 +1348,23 @@ var ATCORE_MAP_VIEW = (function() {
         if (coordinates instanceof ol.geom.Point) {
             c = coordinates.getCoordinates();
         }
-        m_$props_popup_container.trigger('show.atcore.popup');
+        m_$props_popup_container.trigger('show.workflows.popup');
         m_props_popup_overlay.setPosition(c);
-        m_$props_popup_container.trigger('shown.atcore.popup');
+        m_$props_popup_container.trigger('shown.workflows.popup');
     };
 
     hide_properties_pop_up = function() {
-        m_$props_popup_container.trigger('hide.atcore.popup');
+        m_$props_popup_container.trigger('hide.workflows.popup');
         m_props_popup_overlay.setPosition(undefined);
         m_$props_popup_closer.blur();
-        m_$props_popup_container.trigger('hidden.atcore.popup');
+        m_$props_popup_container.trigger('hidden.workflows.popup');
     };
 
     close_properties_pop_up = function() {
-        m_$props_popup_container.trigger('closing.atcore.popup');
+        m_$props_popup_container.trigger('closing.workflows.popup');
         hide_properties_pop_up();
         TETHYS_MAP_VIEW.clearSelection();
-        m_$props_popup_container.trigger('closed.atcore.popup');
+        m_$props_popup_container.trigger('closed.workflows.popup');
     };
 
     reset_properties_pop_up = function() {
@@ -2083,7 +2077,7 @@ var ATCORE_MAP_VIEW = (function() {
 }());
 
 // Export it to global
-window.ATCORE_MAP_VIEW = ATCORE_MAP_VIEW;
+window.WORKFLOWS_MAP_VIEW = WORKFLOWS_MAP_VIEW;
 
 // End of package wrapper
 // NOTE: that the call operator (open-closed parenthesis) is used to invoke the library wrapper

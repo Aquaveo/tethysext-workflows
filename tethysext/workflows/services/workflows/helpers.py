@@ -52,12 +52,6 @@ def  parse_workflow_step_args():
         help='Path to a file containing the JSON-serialized parameters from the workflow.'
     )
     parser.add_argument(
-        '-s', '--scenario_id',
-        dest='scenario_id',
-        help='Scenario ID for this GSSHA model.',
-        default=1
-    )
-    parser.add_argument(
         '-a', '--app_namespace',
         help='Namespace of the app the database belongs to.',
         dest='app_namespace',

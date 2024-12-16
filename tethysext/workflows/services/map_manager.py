@@ -16,7 +16,7 @@ import collections
 
 class MapManagerBase(object):
     """
-    Base class for object that orchestrates the map layers and resources.
+    Base class for object that orchestrates the map layers.
     """
     __metaclass__ = ABCMeta
 
@@ -552,7 +552,7 @@ class MapManagerBase(object):
         Returns:
             MVView, 4-list<float>: default view and extent of the project.
         """
-        # Get extent for resource
+        # Get extent for project
         extent = self.spatial_manager.get_extent_for_project()
 
         # Construct the default view

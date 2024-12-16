@@ -31,7 +31,7 @@ class WorkflowLayout(TethysLayout):
 
     http_method_names = ["get", "post", "delete"]
 
-    def __init__(self, spatial_manager, map_manager,**kwargs):
+    def __init__(self, spatial_manager, map_manager, db_name, **kwargs):
         """
         Constructor
         """
@@ -39,6 +39,7 @@ class WorkflowLayout(TethysLayout):
         self.template_name = 'workflow_layout/workflow_layout.html'
         self.spatial_manager = spatial_manager
         self.map_manager = map_manager
+        self.db_name = db_name
 
     def get_context(self, request, context, *args, **kwargs):
         """
@@ -143,7 +144,7 @@ class WorkflowLayout(TethysLayout):
         if not self.app:
             raise NotImplementedError('The app attribute must be set before calling get_sessionmaker.')
         
-        return self.app.get_persistent_store_database('whatever_you_want_db', as_sessionmaker=True) # TODO look at this database name
+        return self.app.get_persistent_store_database(self.db_name, as_sessionmaker=True)
 
     def post(self, request, *args, **kwargs):
         """

@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-* Name: resource_workflow_result
+* Name: workflow_result
 * Author: nswain
 * Created On: April 30, 2019
 * Copyright: (c) Aquaveo 2019
@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, ForeignKey, String, PickleType, Integer
 from .guid import GUID
-from ..mixins import StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin
+from ..mixins import StatusMixin, AttributesMixin, OptionsMixin
 from .base import WorkflowsBase
 from .controller_metadata import ControllerMetadata
 
@@ -19,7 +19,7 @@ from .controller_metadata import ControllerMetadata
 __all__ = ['Result']
 
 
-class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, SerializeMixin):
+class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     """
     Data model for storing information about workflow results.
     """
@@ -91,19 +91,3 @@ class Result(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin, Serializ
         Resets result to initial state.
         """
         self._data = dict()
-
-    def serialize_base_fields(self, d: dict) -> dict:
-        """Hook for ATCore base classes to add their custom fields to serialization.
-
-        Args:
-            d: Base serialized Resource dictionary.
-
-        Returns:
-            Serialized Resource dictionary.
-        """
-        d.update({
-            'codename': self.codename,
-            'data': self.data,
-            'order': self.order,
-        })
-        return d

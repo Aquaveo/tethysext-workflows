@@ -62,14 +62,6 @@ class MapView(TethysWorkflowLayout):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-        # TODO look at this
-        # Use scenario id from the resource, if it is there
-        #scenario_id = resource.get_attribute('scenario_id') or 1 if resource else 1\
-        scenario_id = 1
-
-        # If "scenario-id" is passed in via the GET parameters, use that instead of the one given by the resource
-        scenario_id = request.GET.get('scenario-id', scenario_id)
-        
         # Get Managers Hook
         map_manager = self.get_map_manager(
             *args,
@@ -81,7 +73,6 @@ class MapView(TethysWorkflowLayout):
         map_view, model_extent, layer_groups = map_manager.compose_map(
             *args,
             request=request,
-            scenario_id=scenario_id,
             **kwargs
         )
 
@@ -89,11 +80,10 @@ class MapView(TethysWorkflowLayout):
         map_view.legend = False  # Ensure the built-in legend is not turned on.
         map_view.height = '100%'  # Ensure 100% height
         map_view.width = '100%'  # Ensure 100% width
-        # map_view.disable_basemap = self.should_disable_basemap(
-        #     request=request,
-        #     resource=resource,
-        #     map_manager=map_manager
-        # )
+        map_view.disable_basemap = self.should_disable_basemap(
+            request=request,
+            map_manager=map_manager
+        )
 
         map_view.controls = [
             'Rotate',
@@ -173,14 +163,21 @@ class MapView(TethysWorkflowLayout):
         
         context.update({'nav_title': self.map_title})
 
+        # TODO replace permissions here
+
         # open_portal_mode = getattr(settings, 'ENABLE_OPEN_PORTAL', False)
-        show_rename = has_permission(request, 'rename_layers')
-        show_remove = has_permission(request, 'remove_layers')
-        show_public_toggle = has_permission(request, 'toggle_public_layers')
-        can_download = has_permission(request, 'can_download')
+        # show_rename = has_permission(request, 'rename_layers')
+        # show_remove = has_permission(request, 'remove_layers')
+        # show_public_toggle = has_permission(request, 'toggle_public_layers')
+        # can_download = has_permission(request, 'can_download')
+
+        show_rename = True
+        show_remove = True
+        show_public_toggle = True
+        can_download = True
 
         context.update({
-            'show_rename': show_rename,
+            'show_rename': show_rename, 
             'show_remove': show_remove,
             'show_public_toggle': show_public_toggle,
             'can_download': can_download,
@@ -221,8 +218,10 @@ class MapView(TethysWorkflowLayout):
             dict: modified permissions dictionary.
         """
         permissions = {
-            'can_use_geocode': has_permission(request, 'use_map_geocode'),
-            'can_use_plot': has_permission(request, 'use_map_plot')
+            'can_use_geocode': True,
+            'can_use_plot': True,
+            # 'can_use_geocode': has_permission(request, 'use_map_geocode'),
+            # 'can_use_plot': has_permission(request, 'use_map_plot')
         }
         return permissions
 

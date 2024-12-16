@@ -7,6 +7,7 @@ from django.shortcuts import reverse
 
 class WorkflowMixin(TethysController):
     """
+    TODO fix this doc string
     Mixin for class-based views that adds convenience methods for working with workflows.
     """
     _app = None
@@ -50,7 +51,7 @@ class WorkflowMixin(TethysController):
     
     def default_back_url(self, request, *args, **kwargs):
         """
-        Hook for custom back url. Defaults to the resource details page.
+        Hook for custom back url. Defaults to the details page.
 
         Returns:
             str: back url.
@@ -58,18 +59,8 @@ class WorkflowMixin(TethysController):
         # TODO fix this
         active_app = get_active_app(request)
         app_namespace = active_app.url_namespace
-        resource_id = kwargs.get('resource_id', '')
-        resource = self.get_resource(request, resource_id) if resource_id else None
-        if resource:
-            # Get resource_details page for the resource
-            resource = self.get_resource(request, resource_id)
-            back_controller = f'{app_namespace}:{resource.SLUG}_resource_details'
-            return reverse(back_controller, args=(str(resource_id),))
-        else:
-            # If no resource_id provided, default to the index page of the app
-            back_controller = f'{app_namespace}:{active_app.index}'
-            return reverse(back_controller)
-
+        back_controller = f'{app_namespace}:{active_app.index}'
+        return reverse(back_controller)
 
 
 class WorkflowViewMixin(WorkflowMixin):
@@ -127,7 +118,7 @@ class WorkflowViewMixin(WorkflowMixin):
             session: SQLAlchemy session.
 
         Returns:
-            TethysWorkflow: the resource.
+            Step: the workflow step
         """
         _Step = self.get_workflow_step_model()
         manage_session = False
@@ -151,7 +142,7 @@ class WorkflowViewMixin(WorkflowMixin):
 
 class ResultViewMixin(WorkflowMixin):
     """
-    Mixin for class-based views that adds convenience methods for working with resources, workflows, and results.
+    Mixin for class-based views that adds convenience methods for working with workflows, and results.
     """
     _Result = Result
 
@@ -168,7 +159,7 @@ class ResultViewMixin(WorkflowMixin):
             session: SQLAlchemy session. Optional
 
         Returns:
-            TethysWorkflow: the resource result. # TODO review this
+            result: the workflow result. # TODO review this
         """
         # Setup
         _Result = self.get_workflow_result_model()
@@ -180,7 +171,7 @@ class ResultViewMixin(WorkflowMixin):
             session = make_session()
 
         try:
-            workflow = session.query(_Result). \
+            result = session.query(_Result). \
                 filter(_Result.id == result_id). \
                 one()
 
@@ -188,4 +179,4 @@ class ResultViewMixin(WorkflowMixin):
             if manage_session:
                 session.close()
 
-        return workflow
+        return result

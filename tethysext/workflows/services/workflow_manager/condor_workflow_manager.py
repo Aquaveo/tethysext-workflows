@@ -10,7 +10,6 @@ import inspect
 import logging
 import os
 from tethys_sdk.jobs import CondorWorkflowJobNode
-from ..model_database import ModelDatabase
 from .base_workflow_manager import BaseWorkflowManager
 from ...utilities import generate_geoserver_urls
 from tethys_apps.exceptions import TethysAppSettingDoesNotExist
@@ -20,10 +19,10 @@ log = logging.getLogger(f'tethys.{__name__}')
 
 class WorkflowCondorJobManager(BaseWorkflowManager):
     """
-    Helper class that prepares and submits condor workflows/jobs for resource workflows.
+    Helper class that prepares and submits condor workflows/jobs for workflows.
     """
-    ATCORE_EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                                         'resources', 'resource_workflows')
+    EXECUTABLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+                                         'job_scripts', 'workflow')
 
     def __init__(self, session, workflow_step, user, working_directory, app, scheduler_name,
                  jobs=None, input_files=None, gs_engine=None,
@@ -45,7 +44,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
         """  # noqa: E501
         self.validate_jobs(jobs)
 
-        # DB url for database connection
+        # DB url for database connection 
         self.db_url = str(session.get_bind().url)
 
         # Serialize GeoServer Connection
@@ -224,7 +223,7 @@ class WorkflowCondorJobManager(BaseWorkflowManager):
             name='finalize',  # Better for display name
             condorpy_template_name='vanilla_transfer_files',
             remote_input_files=[
-                os.path.join(self.ATCORE_EXECUTABLE_DIR, 'update_status.py'),
+                os.path.join(self.EXECUTABLE_DIR, 'update_status.py'),
             ],
             workflow=self.workflow
         )

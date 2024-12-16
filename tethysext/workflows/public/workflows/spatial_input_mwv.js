@@ -95,7 +95,7 @@ var SPATIAL_INPUT_MWV = (function() {
                 });
 
                 // Close popup and deselect
-                ATCORE_MAP_VIEW.close_properties_pop_up();
+                WORKFLOWS_MAP_VIEW.close_properties_pop_up();
             } else {
                 // Display error message to user
                 $(m_sel_attributes_error).html(response.error);
@@ -121,21 +121,21 @@ var SPATIAL_INPUT_MWV = (function() {
     };
 
     bind_popup_shown_event = function() {
-        $(m_sel_props_popup_container).on('shown.atcore.popup', function(e) {
+        $(m_sel_props_popup_container).on('shown.workflows.popup', function(e) {
             // Focus on first element in the form when form is shown
  	        $(m_sel_attributes_form + ':first *:input[type!=hidden]:first').select();
         });
     };
 
     bind_popup_closed_event = function() {
-        $(m_sel_props_popup_container).on('closed.atcore.popup', function(e) {
+        $(m_sel_props_popup_container).on('closed.workflows.popup', function(e) {
             // Reset when the popup container is closed
             reset();
         });
     };
 
     parse_allow_edit_attributes = function() {
-        var $map_attributes = $('#atcore-spatial-input-attributes');
+        var $map_attributes = $('#workflows-spatial-input-attributes');
         return $map_attributes.data('allow-edit-attributes');
     };
 
@@ -165,11 +165,11 @@ var SPATIAL_INPUT_MWV = (function() {
 
 	    if (allow_edit_attributes) {
             // Override normal properties table
-            ATCORE_MAP_VIEW.properties_table_generator(function(feature, layer) { return ''; });
+            WORKFLOWS_MAP_VIEW.properties_table_generator(function(feature, layer) { return ''; });
 
             // Add attributes form to the properties pop-up
-            ATCORE_MAP_VIEW.custom_properties_generator(generate_attributes_form);
-            ATCORE_MAP_VIEW.custom_properties_initializer(initialize_attributes_form);
+            WORKFLOWS_MAP_VIEW.custom_properties_generator(generate_attributes_form);
+            WORKFLOWS_MAP_VIEW.custom_properties_initializer(initialize_attributes_form);
 	    }
 
         // Bind to various popup events

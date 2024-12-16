@@ -18,7 +18,7 @@
   <div class="map-tabs">
     <!-- Nav tabs -->
     {% block map_tabs %}
-      <ul class="nav nav-tabs atcore-nav-tabs" role="tablist">
+      <ul class="nav nav-tabs workflows-nav-tabs" role="tablist">
         {# LAYERS TAB #}
         <li class="nav-item" role="presentation">
           <a class="nav-link {% block disable_default_tab %}active{% endblock %}"
@@ -221,7 +221,7 @@
 
   {# MAP ATTRIBUTES #}
   <div id="vr-button-container"></div>
-  <div id="atcore-map-attributes"
+  <div id="workflows-map-attributes"
        data-layer-groups="{{ layer_groups|jsonify }}"
        data-map-extent="{{ map_extent|jsonify }}"
        data-workspace="{{ workspace }}"
@@ -229,7 +229,7 @@
        data-map-type={{ map_type|jsonify }}
        style="display: none;"
   ></div>
-  <div id="atcore-map-permissions"
+  <div id="workflows-map-permissions"
        data-can-use-geocode="{{ can_use_geocode|jsonify }}"
        data-can-use-plot="{{ can_use_plot|jsonify }}"
        style="display: none;"
@@ -279,9 +279,9 @@
   <link href="{% static 'workflows/css/nav_header.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/css/nav_tabs.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/map_view/flat_map.css' %}" rel="stylesheet"/>
-  <link href="{% static 'workflows/map_view/atcore_map_view.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/map_view/workflows_map_view.css' %}" rel="stylesheet"/>
   {% if map_type == "cesium_map_view" %}
-  <link href="{% static 'workflows/map_view/atcore_cesium_map_view.css' %}" rel="stylesheet"/>
+  <link href="{% static 'workflows/map_view/workflows_cesium_map_view.css' %}" rel="stylesheet"/>
   {% endif %}
   <link href="{% static 'workflows/map_view/geocoder.css' %}" rel="stylesheet"/>
   <link href="{% static 'workflows/css/messages.css' %}" rel="stylesheet"/>
@@ -296,8 +296,8 @@
   <script src="{% static 'workflows/js/collapse.js' %}" type="text/javascript"></script>
   <script src="{% static 'workflows/js/csrf.js' %}" type="text/javascript"></script>
   {% if map_type == "cesium_map_view" %}
-    <script src="{% static 'workflows/map_view/atcore_cesium_map_view.js' %}" type="module"></script>
+    <script src="{% static 'workflows/map_view/workflows_cesium_map_view.js' %}" type="module"></script>
   {% else %}
-    <script src="{% static 'workflows/map_view/atcore_map_view.js' %}" type="text/javascript"></script>
+    <script src="{% static 'workflows/map_view/workflows_map_view.js' %}" type="text/javascript"></script>
   {% endif %}
 {% endblock %}

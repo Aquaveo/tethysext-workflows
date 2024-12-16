@@ -119,7 +119,6 @@ class JobStepMWV(MapWorkflowView):
         step_url_name = self.get_step_url_name(request, workflow)
 
         context = {
-            #'resource': resource, # TODO look at this in the templates
             'workflow': workflow,
             'steps': steps,
             'current_step': current_step,
@@ -131,10 +130,8 @@ class JobStepMWV(MapWorkflowView):
             'previous_title': self.previous_title,
             'back_url': self.back_url,
             'nav_title': workflow.name,
-            # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO look at this
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'jobs_table': jobs_table,
-            # 'lock_display_options': lock_display_options, # TODO remove this from the template
             'base_template': self.base_template
         }
 
@@ -250,12 +247,10 @@ class JobStepMWV(MapWorkflowView):
         # Prepare the job
         job_id = condor_job_manager.prepare()
 
-        # Deal with locking
-        
         # Submit job
         condor_job_manager.run_job()
 
-        # Update status of the resource workflow step
+        # Update status of the workflow step
         step.set_status(step.ROOT_STATUS_KEY, step.STATUS_WORKING)
         step.set_attribute(step.ATTR_STATUS_MESSAGE, None)
 

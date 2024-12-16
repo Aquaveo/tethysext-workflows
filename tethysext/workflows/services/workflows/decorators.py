@@ -23,10 +23,64 @@ from ...results import *  # noqa: F401, F403
 
 log = logging.getLogger(f'tethys.{__name__}')
 
+def workflow_controller(is_rest_controller=False):
+    def decorator(controller_func):
+        def _wrapped_controller(self, request, back_url=None, *args, **kwargs):
+            session = None
+
+            try:
+                make_session = self.get_sessionmaker()
+                session = make_session()
+
+                # Call the Controller
+                return controller_func(self, request, session, back_url, *args, **kwargs)
+
+            except (StatementError, NoResultFound) as e:
+                message = 'There was an error'
+                log.exception(message)
+                messages.warning(request, message)
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            except TethysWorkflowsException as e:
+                error_message = str(e)
+                messages.warning(request, error_message)
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            except ValueError as e:
+                if session:
+                    session.rollback()
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            except RuntimeError as e:
+                if session:
+                    session.rollback()
+
+                log.exception(str(e))
+                messages.error(request, "We're sorry, an unexpected error has occurred.")
+                if not is_rest_controller:
+                    return redirect(self.back_url)
+                else:
+                    return JsonResponse({'success': False, 'error': str(e)})
+
+            finally:
+                session and session.close()
+
+        return wraps(controller_func)(_wrapped_controller)
+    return decorator
+
 
 def workflow_step_controller(is_rest_controller=False):
     def decorator(controller_func):
-        def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, resource_id=None, session=None, *args, **kwargs):
+        def _wrapped_controller(self, request, workflow_id, step_id, back_url=None, session=None, *args, **kwargs):
             _Workflow = self.get_workflow_model()
             # Defer to outer scope if session is given
             manage_session = session is None
@@ -74,7 +128,7 @@ def workflow_step_controller(is_rest_controller=False):
                 if not is_rest_controller:
                     # Remove method so we redirect to the primary GET page...
                     c_request = clean_request(request)
-                    return self.get(c_request, resource_id=resource_id, workflow_id=workflow_id, step_id=step_id)
+                    return self.get(c_request, workflow_id=workflow_id, step_id=step_id)
                 else:
                     return JsonResponse({'success': False, 'error': str(e)})
 
@@ -91,7 +145,7 @@ def workflow_step_controller(is_rest_controller=False):
                 if not is_rest_controller:
                     # Remove method so we redirect to the primary GET page...
                     c_request = clean_request(request)
-                    return self.get(c_request, resource_id=resource_id, workflow_id=workflow_id, step_id=step_id)
+                    return self.get(c_request, workflow_id=workflow_id, step_id=step_id)
 
                 else:
                     return JsonResponse({'success': False, 'error': str(e)})
@@ -117,12 +171,12 @@ def workflow_step_job(job_func):
             ret_val = None
 
             try:
-                # Get the resource database session 
+                # Get the database session 
                 db_engine = create_engine(args.db_url)
                 make_db_session = sessionmaker(bind=db_engine)
                 db_session = make_db_session()
 
-                # Import Resource and Workflow Classes
+                # Import Workflow Class
                 WorkflowClass = import_from_string(args.workflow_class)
 
                 # Get the step

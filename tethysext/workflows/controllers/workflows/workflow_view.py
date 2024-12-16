@@ -12,7 +12,6 @@ from django.shortcuts import redirect, reverse
 from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.permissions import has_permission
-from ...utilities import grammatically_correct_join # TODO CHECK THIS IMPORT
 from ...services.workflows.decorators import workflow_step_controller
 from ...mixins.workflow_mixins import WorkflowViewMixin
 from ..tethys_workflow_layout import TethysWorkflowLayout
@@ -97,13 +96,10 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             'next_step': next_step,
             'step_url_name': step_url_name,
             'nav_title': 'Replacement Resource Name: replacement workflow name',
-            # 'nav_title': '{}: {}'.format(resource.name, workflow.name), # TODO fix this 
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'previous_title': self.previous_title,
             'next_title': self.next_title,
             'finish_title': self.finish_title,
-            # 'lock_display_options': lock_display_options, # TODO remove this
-            # 'show_reset_btn': show_reset_btn # TODO delete this and make sure to delete this in the templates
         })
 
         # Hook for extending the context
@@ -127,7 +123,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
 
         Args:
             request(HttpRequest): The request.
-            session(sqlalchemy.Session): Session bound to the resource, workflow, and step instances.
+            session(sqlalchemy.Session): Session bound to the workflow and step instances.
             workflow(TethysWorkflow): the workflow.
             step(Step): the step.
             args, kwargs: Additional arguments passed to the controller.
@@ -151,14 +147,12 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
         if previous_step:
             previous_url = reverse(step_url_name, args=(workflow.id, str(previous_step.id)))
 
-        # User has active role?
-
         if 'reset-submit' in request.POST:
             step.workflow.reset_next_steps(step, include_current=True)
             session.commit()
             return redirect(current_url)
         
-        # Hook for processing step data when the user has the active role
+        # Process the step data
         response = self.process_step_data(
             request=request,
             session=session,
@@ -202,10 +196,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
                 'status': step_status.lower(),
                 'style': self.get_style_for_status(step_status),
                 'link': create_link,
-                # 'display_as_inactive': not user_has_active_role, # TODO make sure to remove this from the templates
-                # 'active_roles': active_roles, # TODO make sure to remove this from the templates
-                # 'show_lock': show_lock, 
-                # 'is_locked': step_locked 
             }
 
             # Hook to allow subclasses to extend the step card attributes
@@ -329,7 +319,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
 
     def process_step_data(self, request, session, step, current_url, previous_url, next_url):
         """
-        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs. Only called if the user has an active role.
+        Hook for processing user input data coming from the map view. Process form data found in request.POST and request.GET parameters and then return a redirect response to one of the given URLs.
 
         Args:
             request(HttpRequest): The request.
@@ -355,7 +345,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
 
     def navigate_only(self, request, step, current_url, next_url, previous_url):
         """
-        Navigate to next or previous step without processing/saving data. Called instead of process_step_data when the user doesn't have an active role.
+        Navigate to next or previous step without processing/saving data. Called instead of process_step_data when the user doesn't have an active role. (THIS COMES FROM ATCORE)
 
         Args:
             request(HttpRequest): The request.

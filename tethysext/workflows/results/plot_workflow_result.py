@@ -20,7 +20,7 @@ __all__ = ['PlotWorkflowResult']
 
 class PlotWorkflowResult(Result):
     """
-    Data model for storing spatial information about resource workflow results.
+    Data model for storing spatial information about workflow results.
 
     Options:
         renderer (str): bokeh or plotly
