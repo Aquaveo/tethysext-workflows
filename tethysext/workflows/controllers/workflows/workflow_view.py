@@ -12,7 +12,6 @@ from django.shortcuts import redirect, reverse
 from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from tethys_sdk.permissions import has_permission
-from ...utilities import grammatically_correct_join # TODO CHECK THIS IMPORT
 from ...services.workflows.decorators import workflow_step_controller
 from ...mixins.workflow_mixins import WorkflowViewMixin
 from ..tethys_workflow_layout import TethysWorkflowLayout

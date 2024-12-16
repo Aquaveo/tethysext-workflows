@@ -14,7 +14,7 @@ from django.contrib import messages
 from tethys_apps.utilities import get_active_app
 from ...exceptions import TethysWorkflowsException
 from ...mixins.workflow_mixins import WorkflowViewMixin
-from ...steps import ResultsStep # TODO ADD THIS IMPORT
+from ...steps import ResultsStep 
 
 
 log = logging.getLogger(f'tethys.{__name__}')
@@ -211,7 +211,7 @@ class WorkflowRouter(WorkflowViewMixin):
             controller = step.controller.instantiate(
                 _app=self._app,
                 _persistent_store_name=self._persistent_store_name,
-                _TethysWorkflow=self._TethysWorkflow, # TODO look into changing this in the controller
+                _TethysWorkflow=self._TethysWorkflow,
                 _Step=self._Step,
                 base_template=self.base_template
             )
