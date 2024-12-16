@@ -28,10 +28,6 @@ class WorkflowMixin(TethysController):
             raise NotImplementedError('get_sessionmaker method not implemented.')
 
         return self._app.get_persistent_store_database(self._persistent_store_name, as_sessionmaker=True)
-    
-    def get_permissions_manager(self):
-        return self._PermissionsManager(self._app.url_namespace)
-
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -56,7 +52,6 @@ class WorkflowMixin(TethysController):
         Returns:
             str: back url.
         """
-        # TODO fix this
         active_app = get_active_app(request)
         app_namespace = active_app.url_namespace
         back_controller = f'{app_namespace}:{active_app.index}'

@@ -85,6 +85,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                 url='/'.join([base_url_path, workflow_url]) if base_url_path else workflow_url,
                 controller=_WorkflowRouter.as_controller(
                     _app=app,
+                    _persistent_store_name=persistent_store_name,
                     _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 )
@@ -94,6 +95,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                 url='/'.join([base_url_path, workflow_step_url]) if base_url_path else workflow_step_url,
                 controller=_WorkflowRouter.as_controller(
                     _app=app,
+                    _persistent_store_name=persistent_store_name,
                     _TethysWorkflow=_TethysWorkflow,
                     base_template=base_template
                 ),
@@ -106,6 +108,7 @@ def urls(url_map_maker, app, persistent_store_name, workflow_pairs, base_url_pat
                 url='/'.join([base_url_path, workflow_step_result_url]) if base_url_path else workflow_step_result_url,
                 controller=_WorkflowRouter.as_controller(
                     _app=app,
+                    _persistent_store_name=persistent_store_name,
                     base_template=base_template
                 )
             )
