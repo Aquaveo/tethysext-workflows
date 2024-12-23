@@ -88,11 +88,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
         # Get the current app
         step_url_name = self.get_step_url_name(request, workflow)
 
-        
-        if workflow.resource_name:
-            nav_title = f'{workflow.resource_name}: {workflow.name}'
-        else:
-            nav_title = workflow.name
 
         context.update({
             'workflow': workflow,
@@ -101,7 +96,8 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             'previous_step': previous_step,
             'next_step': next_step,
             'step_url_name': step_url_name,
-            'nav_title': nav_title,
+            'nav_title': workflow.name,
+            'description': workflow.description,
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
             'previous_title': self.previous_title,
             'next_title': self.next_title,
@@ -432,3 +428,4 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             dict: key-value pairs to add to context.
         """
         return {}
+        

@@ -118,10 +118,6 @@ class JobStepMWV(MapWorkflowView):
         # Get the current app
         step_url_name = self.get_step_url_name(request, workflow)
 
-        if workflow.resource_name:
-            nav_title = f'{workflow.resource_name}: {workflow.name}'
-        else:
-            nav_title = workflow.name
 
         context = {
             'workflow': workflow,
@@ -134,8 +130,9 @@ class JobStepMWV(MapWorkflowView):
             'finish_title': self.finish_title,
             'previous_title': self.previous_title,
             'back_url': self.back_url,
-            'nav_title': nav_title,
+            'nav_title': workflow.name,
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
+            'description': workflow.description,
             'jobs_table': jobs_table,
             'base_template': self.base_template
         }

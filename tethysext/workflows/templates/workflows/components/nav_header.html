@@ -8,6 +8,9 @@ Required Context Variables:
   nav_title(str): Title to show at the top of the nav.
   nav_subtitle(str, optional): Sub-title to show below the title.
 
+Optional Context Variables:
+  description(str): Description to show below the subtitle.
+
 Required CSS:
   <link href="{% static 'workflows/css/nav_header.css' %}" rel="stylesheet"/>
 Optional CSS:
@@ -31,6 +34,9 @@ Optional CSS:
       <p class="title">{{ nav_title }}</p>
       {% if nav_subtitle %}
       <p class="subtitle">{{ nav_subtitle }}</p>
+      {% endif %}
+      {% if description %}
+      <p class="description" title="{{ description }}">{{ description }}</p>
       {% endif %}
     </div>
   {% endblock %}

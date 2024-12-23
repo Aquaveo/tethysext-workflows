@@ -159,7 +159,7 @@ class WorkflowLayout(TethysLayout):
         if 'new-workflow' in params:
             workflow_name = params.get('workflow-name')
             workflow_type = params.get('workflow-type')
-            resource_name = params.get('resource-name', None)
+            description = params.get('description', None)
 
             if not workflow_name:
                 messages.error(request, 'Unable to create new workflow: no name given.')
@@ -174,7 +174,7 @@ class WorkflowLayout(TethysLayout):
                 workflow = workflow_model.new(
                     app=self.app,
                     name=workflow_name,
-                    resource_name=resource_name,
+                    description=description,
                     creator_id = request.user.id,
                     creator_name = request.user.username,
                     geoserver_name = self.app.GEOSERVER_NAME, 
