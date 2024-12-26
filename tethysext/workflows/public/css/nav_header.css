@@ -47,3 +47,10 @@
 #nav-header #nav-title .subtitle {
     font-size: 12pt;
 }
+
+#nav-header #nav-title .description {
+    /* Prevent text from wrapping and add ellipsis at the end of line for overlap*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}

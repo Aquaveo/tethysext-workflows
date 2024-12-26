@@ -118,6 +118,7 @@ class JobStepMWV(MapWorkflowView):
         # Get the current app
         step_url_name = self.get_step_url_name(request, workflow)
 
+
         context = {
             'workflow': workflow,
             'steps': steps,
@@ -131,6 +132,7 @@ class JobStepMWV(MapWorkflowView):
             'back_url': self.back_url,
             'nav_title': workflow.name,
             'nav_subtitle': workflow.DISPLAY_TYPE_SINGULAR,
+            'description': workflow.description,
             'jobs_table': jobs_table,
             'base_template': self.base_template
         }
