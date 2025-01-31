@@ -1,0 +1,9 @@
+{
+  "label": "Documentation",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "This section provides documentation on the Tethys Workflows Extension."
+  }
+}
+
