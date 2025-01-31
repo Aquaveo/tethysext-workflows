@@ -1,20 +1,29 @@
 from setuptools import setup, find_namespace_packages
-from tethys_apps.app_installation import find_all_resource_files
-from tethys_apps.base.app_base import TethysExtensionBase
+import os
+
+def find_resource_files(directory):
+    paths = []
+    for (path, _, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+    return paths
 
 # -- Apps Definition -- #
 ext_package = 'workflows'
-release_package = f'{TethysExtensionBase.package_namespace}-{ext_package}'
+release_package = 'tethysext-workflows'
 
 # -- Python Dependencies -- #
-dependencies = []
+dependencies = ['param', 'geojson', 'panel', 'plotly', 'pyshp', 'tethys_dataset_services', 'tethys-platform']
 
 # -- Get Resource File -- #
-resource_files = find_all_resource_files(ext_package, TethysExtensionBase.package_namespace)
+resource_files = find_resource_files('tethysext/workflows/templates')
+resource_files += find_resource_files('tethysext/workflows/public')
+resource_files += find_resource_files('tethysext/workflows/job_scripts')
+
 
 setup(
     name=release_package,
-    version='0.0.1',
+    version='0.0.3',
     description='',
     long_description='',
     keywords='',
