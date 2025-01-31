@@ -14,3 +14,8 @@ build
 dist
 working_dir
 test_local.sh
+
+/docs/build
+/docs/node_modules
+/docs/.docusaurus
+/docs/.cache-loader
