@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkworkflows_extension=self.webpackChunkworkflows_extension||[]).push([[1903],{1912:s=>{s.exports=JSON.parse('{"blogBasePath":"/tethysext-workflows/blog","blogTitle":"Blog","authorsListPath":"/tethysext-workflows/blog/authors"}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkworkflows_extension=self.webpackChunkworkflows_extension||[]).push([[6226],{8465:e=>{e.exports=JSON.parse('{"metadata":{"permalink":"/tethysext-workflows/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
