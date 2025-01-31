@@ -14,15 +14,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://aquaveo.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/tethysext-workflows/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'Aquaveo', // Usually your GitHub org/user name.
+  projectName: 'tethysext-workflows', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -42,10 +42,8 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/Aquaveo/tethysext-workflows/edit/main/docs/',
         },
         blog: {
           showReadingTime: true,
@@ -53,10 +51,8 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/Aquaveo/tethysext-workflows/edit/main/blog/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -117,23 +113,6 @@ const config = {
               }
             ],
           },
-          // {
-          //   title: 'Community',
-          //   items: [
-          //     {
-          //       label: 'Stack Overflow',
-          //       href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-          //     },
-          //     {
-          //       label: 'Discord',
-          //       href: 'https://discordapp.com/invite/docusaurus',
-          //     },
-          //     {
-          //       label: 'X',
-          //       href: 'https://x.com/docusaurus',
-          //     },
-          //   ],
-          // },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Tethys Platform, Built with Docusaurus.`,
       },
