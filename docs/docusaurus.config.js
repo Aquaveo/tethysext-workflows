@@ -71,11 +71,10 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: '',
+        title: 'Tethys Workflows',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/light-mode-tethys-icon-with-text.svg',
-          srcDark: 'img/dark-mode-tethys-icon-with-text.svg'
+          src: 'img/tethys-icon-only.svg',
         },
         items: [
           {

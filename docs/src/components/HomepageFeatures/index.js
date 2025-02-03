@@ -4,32 +4,33 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Testing here',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'About Tethys Workflows',
+    Svg: require('@site/static/img/home_page_images/tethys-on-blue-icon-only.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        The Tethys Workflows Extension allows you to add custom step-by-step 
+        workflows to your Tethys applications
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Tutorial',
+    Svg: require('@site/static/img/home_page_images/tutorial-icon.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        The tutorial will guide you through the process of creating a Tethys application
+        with a simple workflow.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Documentation',
+    Svg: require('@site/static/img/home_page_images/python-icon.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        In the documentation you will find detailed information on 
+        how to use the Tethys Workflows Extension with details on 
+        creating and using workflow steps and results
       </>
     ),
   },
