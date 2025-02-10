@@ -112,6 +112,7 @@ import math
 from pprint import pprint
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from tethysext.workflows.services.workflows.decorators import workflow_step_job
 
@@ -242,13 +243,24 @@ def main(
     plot_result.reset()
     plot_result.add_series(dataset_choice, [data['X'], data['Y']])
 
+    # Add image to image result
+    image_result = step.result.get_result_by_codename('image_result')
+    image_result.reset()
+    buf = io.BytesIO()
+    df.plot()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+    uri = urllib.parse.quote(string)
+    image_result.add_image(uri)
+
 ```
 Next, you'll need a `results.py` file in the same directory as your `jobs.py` file. Add this code to that file:
 
 ```python title="/tethysapp/workflows_tutorial/workflows/basic_workflow/results.py"
 
 from tethysext.workflows.results import (
-    SpatialWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, ReportWorkflowResult
+    SpatialWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, ReportWorkflowResult, ImageWorkflowResult
 )
 
 
@@ -302,16 +314,26 @@ def build_results_tabs(geoserver_name, map_manager, spatial_manager):
         },
     )
 
+    image_result = ImageWorkflowResult(
+        name='PNG Image',
+        codename='image_result',
+        description='PNG image result.',
+        order=40,
+        options={
+            'no_dataset_message': 'No image found.'
+        },
+    )
+
     report_result = ReportWorkflowResult(
         geoserver_name, 
         map_manager,
         spatial_manager,
         name='Report',
-        order=40
+        order=50
     )
 
 
-    return [map_result, table_result, plot_result, report_result]
+    return [map_result, table_result, plot_result, image_result, report_result]
 
 ```
 Lastly, we'll add your results step to your workflow:
