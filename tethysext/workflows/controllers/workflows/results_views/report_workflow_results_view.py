@@ -7,7 +7,8 @@
 ********************************************************************************
 """
 import logging
-from ....results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult
+from ....results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult, \
+    ImageWorkflowResult
 from ..map_workflows.map_workflow_view import MapWorkflowView
 from ..workflow_results_view import WorkflowResultsView
 
@@ -79,6 +80,9 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                 plot_view_params = dict(plot_input=result.get_plot_object(), height='95%', width='95%')
                 plot_view = BokehView(**plot_view_params) if renderer == 'bokeh' else PlotlyView(**plot_view_params)
                 results.append({'plot': {'name': result.name, 'description': result.description, 'plot': plot_view}})
+            elif isinstance(result, ImageWorkflowResult):
+                image_view = result.get_image_object()
+                results.append({'image': {'name': result.name, 'description': result.description, 'image': image_view}})    
             elif isinstance(result, SpatialWorkflowResult):
                 result_map_layers = list()
                 legend_info = None
