@@ -78,9 +78,6 @@ class ImageWorkflowResult(Result):
         data['image'] = value
         self.data = data
 
-    # def reset(self):
-        # self.datasets = []
-
     def _add_image(self, image_object):
         """
         Update image object.
@@ -110,7 +107,7 @@ class ImageWorkflowResult(Result):
 
     def add_image(self, image, description=''):
         """
-        Adds a image to the result.
+        Adds an image to the result.
 
         Args:
             image(str): base64 image uri.  Add only one image.
