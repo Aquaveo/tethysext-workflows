@@ -62,21 +62,9 @@ class ImageWorkflowResult(Result):
 
         default_options = super().default_options
         default_options.update({
-            'no_dataset_message': 'No dataset found.'
+            'no_image_message': 'No image found.'
         })
         return default_options
-
-    @property
-    def datasets(self):
-        if 'datasets' not in self.data:
-            self.data['datasets'] = []
-        return copy.deepcopy(self.data['datasets'])
-
-    @datasets.setter
-    def datasets(self, value):
-        data = copy.deepcopy(self.data)
-        data['datasets'] = value
-        self.data = data
 
     @property
     def image(self):
@@ -90,19 +78,8 @@ class ImageWorkflowResult(Result):
         data['image'] = value
         self.data = data
 
-    def reset(self):
-        self.datasets = []
-
-    def _add_dataset(self, dataset):
-        """
-        Adds the dataset to the datasets array.
-
-        Args:
-            dataset(dict): The data.
-        """
-        datasets = self.datasets
-        datasets.append(dataset)
-        self.datasets = datasets
+    # def reset(self):
+        # self.datasets = []
 
     def _add_image(self, image_object):
         """
@@ -129,21 +106,18 @@ class ImageWorkflowResult(Result):
         string = base64.b64encode(buf.read())
         uri = urllib.parse.quote(string)
 
-        d = {
-            'dataset': uri,
-        }
-        self._add_dataset(d)
+        self.add_image(uri)
 
     def add_image(self, image, description=''):
         """
         Adds a image to the result.
 
         Args:
-            image(str): image uri.  Add only one image.
+            image(str): base64 image uri.  Add only one image.
             description(str): description of the image.  Defaults to ''.
         """
         image_object = {
-            'image_object': image,
+            'image_uri': image,
             'image_description': description,
         }
 

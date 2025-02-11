@@ -56,7 +56,7 @@ class ImageWorkflowResultView(WorkflowResultsView):
 
         # Get image view gizmo
         image = result.get_image_object()
-        image_view = image.get('image_object', '')
+        image_view = image.get('image_uri', '')
         image_description = image.get('image_description', '')
 
         # Page title same as result name.

@@ -88,7 +88,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                     image_description = result.description
                 results.append({'image': {'name': result.name,
                                           'description': image_description,
-                                          'image': image['image_object']}})
+                                          'image': image['image_uri']}})
             elif isinstance(result, SpatialWorkflowResult):
                 result_map_layers = list()
                 legend_info = None
@@ -162,8 +162,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-        
-
         base_context = MapWorkflowView.get_context(
             self,
             *args,
