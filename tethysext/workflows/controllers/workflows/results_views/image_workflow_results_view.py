@@ -55,7 +55,9 @@ class ImageWorkflowResultView(WorkflowResultsView):
         options = result.options
 
         # Get image view gizmo
-        image_view = result.get_image_object()
+        image = result.get_image_object()
+        image_view = image.get('image_object', '')
+        image_description = image.get('image_description', '')
 
         # Page title same as result name.
         page_title = options.get('page_title', result.name)
@@ -64,6 +66,7 @@ class ImageWorkflowResultView(WorkflowResultsView):
             'page_title': page_title,
             'no_dataset_message': options.get('no_dataset_message', 'No dataset found.'),
             'image_view_input': image_view,
+            'image_view_description': image_description,
         })
 
         return base_context

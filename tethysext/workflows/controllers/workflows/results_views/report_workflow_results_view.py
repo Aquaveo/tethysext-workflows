@@ -81,8 +81,14 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                 plot_view = BokehView(**plot_view_params) if renderer == 'bokeh' else PlotlyView(**plot_view_params)
                 results.append({'plot': {'name': result.name, 'description': result.description, 'plot': plot_view}})
             elif isinstance(result, ImageWorkflowResult):
-                image_view = result.get_image_object()
-                results.append({'image': {'name': result.name, 'description': result.description, 'image': image_view}})    
+                image = result.get_image_object()
+                if image['image_description']:
+                    image_description = f'{result.description}: {image["image_description"]}'
+                else:
+                    image_description = result.description
+                results.append({'image': {'name': result.name,
+                                          'description': image_description,
+                                          'image': image['image_object']}})
             elif isinstance(result, SpatialWorkflowResult):
                 result_map_layers = list()
                 legend_info = None

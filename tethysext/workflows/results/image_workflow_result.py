@@ -134,15 +134,17 @@ class ImageWorkflowResult(Result):
         }
         self._add_dataset(d)
 
-    def add_image(self, image):
+    def add_image(self, image, description=''):
         """
         Adds a image to the result.
 
         Args:
             image(str): image uri.  Add only one image.
+            description(str): description of the image.  Defaults to ''.
         """
         image_object = {
             'image_object': image,
+            'image_description': description,
         }
 
         self._add_image(image_object)
@@ -153,4 +155,4 @@ class ImageWorkflowResult(Result):
 
         Returns image object.
         """
-        return self.image['image_object']
+        return self.image
