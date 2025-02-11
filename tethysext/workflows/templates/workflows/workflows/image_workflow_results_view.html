@@ -1,0 +1,38 @@
+{% extends "workflows/workflows/workflow_results_view.html" %}
+{% load static tethys_gizmos %}
+
+{% block content_dependent_styles %}
+  {{ block.super }}
+{% endblock %}
+
+{% block import_gizmos %}
+  {{ block.super }}
+  {% import_gizmo_dependency datatable_view %}
+{% endblock %}
+
+{% block app_content %}
+  <h1>{{ page_title }}</h1>
+  <!-- Tab panes -->
+  {% if image_view_description %}
+    <h2>{{ image_view_description }}</h2>
+  {% endif %}
+  {% if image_view_input %}
+    <div id="resultImageDiv" style="width:95%;">
+      <!-- Use a base64 uri string for a png image -->
+      <img src="data:image/png;base64, {{ image_view_input }}" alt="Workflow Result Image">
+    </div>
+  {% else %}
+    <p>{{ no_dataset_message }}</p>
+  {% endif %}
+
+  {{ block.super }}
+{% endblock %}
+
+
+{% block scripts %}
+  {{ block.super }}
+{% endblock %}
+
+{% block styles %}
+  {{ block.super }}
+{% endblock %}
