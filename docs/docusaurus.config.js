@@ -78,16 +78,14 @@ const config = {
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
+            to: '/docs/category/tutorial',
             label: 'Tutorial',
+            position: 'left',
           },
           {
-            type: 'docSidebar',
-            sidebarId: 'documentationSidebar',
-            position: 'left',
+            to: '/docs/category/documentation',
             label: 'Documentation',
+            position: 'left',
           },
           {
             href: 'https://github.com/Aquaveo/tethysext-workflows',
