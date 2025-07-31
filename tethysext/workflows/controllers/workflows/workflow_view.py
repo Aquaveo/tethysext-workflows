@@ -50,6 +50,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
         """  # noqa: E501
         workflow = self.get_workflow(request, workflow_id, session=session)
         current_step = self.get_step(request, step_id=step_id, session=session)
+        current_step_info_text = current_step.options.get('info_text', None)
         previous_step, next_step = workflow.get_adjacent_steps(current_step)
 
         # Hook for validating the current step
@@ -88,7 +89,6 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
         # Get the current app
         step_url_name = self.get_step_url_name(request, workflow)
 
-
         context.update({
             'workflow': workflow,
             'steps': steps,
@@ -102,6 +102,7 @@ class WorkflowView(TethysWorkflowLayout, WorkflowViewMixin):
             'previous_title': self.previous_title,
             'next_title': self.next_title,
             'finish_title': self.finish_title,
+            'workflow_info_text': current_step_info_text,
         })
 
         # Hook for extending the context

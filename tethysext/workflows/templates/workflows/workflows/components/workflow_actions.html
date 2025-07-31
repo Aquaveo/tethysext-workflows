@@ -13,6 +13,36 @@ Required Context:
 {% endcomment %}
 
 {% block workflow_actions %}
+  {% block workflow_info_button %}
+    {% if workflow_info_text %}
+      <link href="{% static 'workflows/css/workflow_popup.css' %}" rel="stylesheet"/>
+      <button id="popupButton-Info" class="btn btn-info btn-workflow-info" type="button" data-toggle="modal">Info</button>
+
+      <!-- The pop-up text container -->
+      <div id="popupText-Info" class="popup-text">
+        {{ workflow_info_text|safe }}
+      </div>
+      <script>
+        // Get references to the button and the pop-up text element
+        const popupButtonInfo = document.getElementById('popupButton-Info');
+        const popupTextInfo = document.getElementById('popupText-Info');
+
+        // Add a click event listener to the button
+        popupButtonInfo.addEventListener('click', () => {
+            // Toggle the 'show' class to display/hide the text with animation
+            popupTextInfo.classList.toggle('show');
+        });
+
+        // Optional: Hide the pop-up if clicked anywhere outside of it or the button
+        document.addEventListener('click', (event) => {
+            if (!popupButtonInfo.contains(event.target) && !popupTextInfo.contains(event.target) && popupTextInfo.classList.contains('show')) {
+                popupTextInfo.classList.remove('show');
+            }
+        });
+      </script>
+    {% endif %}
+  {% endblock %}
+
   {% block reset_step_button %}
     <button class="btn btn-warning btn-reset" name="reset-submit" type='submit' form="workflow-form">Reset</button>
   {% endblock %}
