@@ -30,10 +30,13 @@ include-package-data = true
 where = ["."]
 include = ["*"]
 
-
 [tool.setuptools.package-data]
 "tethysext.workflows" = [
     "templates/**/*",
     "public/**/*",
     "resources/**/*",
 ]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"
