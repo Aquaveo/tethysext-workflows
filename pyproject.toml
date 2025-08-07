@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tethysext-workflows"
-version = "1.3"
 description =  "Tethys extension for adding step-by-step workflows to apps."
 keywords = []
 authors = [
