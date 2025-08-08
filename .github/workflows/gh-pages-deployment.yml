@@ -42,4 +42,4 @@ jobs:
           GIT_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx docusaurus deploy --skip-build --ci
+          npx docusaurus deploy --skip-build
