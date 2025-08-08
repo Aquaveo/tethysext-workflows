@@ -3,43 +3,35 @@ name: Deploy Docs
 on:
   push:
     tags:
-      - "*.*"  
+      - "*" 
   workflow_dispatch:
 
 permissions:
-  contents: write  # Required to push to gh-pages
+  contents: write 
 
 jobs:
-  deploy:
-    name: Deploy Docusaurus Docs
+  build-and-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: documentation
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: yarn
+          node-version: 18
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm install
 
-      - name: Build Docusaurus site
-        run: yarn build
+      - name: Build site
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         env:
-          GIT_USER: github-actions[bot]
-          GIT_EMAIL: github-actions[bot]@users.noreply.github.com
-          GIT_PASS: ${{ secrets.GH_TOKEN }}
-          USE_SSH: false
+          GIT_USER: ${{ github.actor }}
+          GIT_EMAIL: "${{ github.actor }}@users.noreply.github.com"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          yarn deploy
+          npx docusaurus deploy --skip-build
