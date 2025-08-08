@@ -44,5 +44,4 @@ jobs:
         run: |
           export USE_SSH=false
           export DEPLOYMENT_BRANCH=gh-pages
-          export REPOSITORY_URL=https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          npx docusaurus deploy --skip-build
+          npx docusaurus deploy --skip-build --git-remote origin --url "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
