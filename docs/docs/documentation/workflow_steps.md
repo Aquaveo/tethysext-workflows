@@ -10,8 +10,11 @@ sidebar_position: 1
 Steps all take certain parameters:
 - name(str): name of the workflow
 - order(int): place in the workflow order of steps
-- help(str): help text that shows up under teh name of the step
+- help(str): help text that shows up under the name of the step
 - options(dict): dictionary of options for the step, these options differ for each type of step
+
+    **Common option available to all steps:**  
+  - `info_text` (str): Optional additional text displayed below the step description to provide more context or guidance to the user. When provided, an **"Info"** button appears beneath the step. Clicking this button opens a popup displaying the guidance text to the user. This text can be raw HTML to include hyperlinks, formatting, etc.
 - geoserver_name(str): name for geoserver access
 - map_manager(MapManager): class for managing any spatial features
 - spatial_manager(SpatialManager): class for interacting with geoserver

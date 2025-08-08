@@ -1,5 +1,5 @@
 # This file may be committed to your app code.
-version: 1.1
+version: 1.3
 # This should be greater or equal to your tethys-platform in your environment
 tethys_version: ">=4.0.0"
 # This should match the app - package name in your setup.py
@@ -16,11 +16,15 @@ requirements:
       - param
       - geojson
       - panel
+      - plotly
+      - pyshp
+      - tethys_dataset_services
+      - tethys-platform
   pip:
   # Add JavaScript packages and versions under npm as a key value pair
   # If you include JavaScript packages it is recommended the you include "nodejs" as a conda package.
     - django-bootstrap-datepicker-plus
-    - django_select2
+    - django-select2<8.3.0
     - django-taggit
     - bokeh_django
   npm:

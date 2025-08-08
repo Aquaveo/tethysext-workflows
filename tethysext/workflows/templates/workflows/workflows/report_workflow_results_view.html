@@ -101,6 +101,17 @@
               </div>
             <div contentEditable=true class="add-border" data-ph="Plot Note"></div>
           </div>
+        {% elif type == 'image' %}
+          <div id="resultType-image-{{ forloop.counter }}">
+            <h3>{{ value.name }}</h3>
+            {% if value.description %}
+              <h4>Description: {{ value.description }}</h4>
+            {% endif %}
+            <div id="resultImageDiv{{ forloop.counter }}" style="width:95%;">
+              <img src="data:image/png;base64, {{ value.image }}" alt="Workflow Result Image">
+            </div>
+            <div contentEditable=true class="add-border" data-ph="Image Note"></div>
+          </div>
         {% endif %}
       {% endfor %}
     {% endfor %}

@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tethysext-workflows"
+description =  "Tethys extension for adding step-by-step workflows to apps."
+keywords = []
+authors = [
+  {name = "Jacob Johnson", email = "jjohnson@aquaveo.com"},
+]
+
+classifiers = [
+     "Environment :: Web Environment",
+     "Framework :: Django",
+     "Intended Audience :: Developers",
+     "Operating System :: OS Independent",
+     "Programming Language :: Python",
+     "Programming Language :: Python :: 3",
+     "Programming Language :: Python :: 3.10",
+     "Topic :: Internet :: WWW/HTTP",
+     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dynamic = ["version"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+
+[tool.setuptools.package-data]
+"tethysext.workflows" = [
+    "templates/**/*",
+    "public/**/*",
+    "resources/**/*",
+]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"

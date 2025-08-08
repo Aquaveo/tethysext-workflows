@@ -7,7 +7,8 @@
 ********************************************************************************
 """
 import logging
-from ....results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult
+from ....results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult, \
+    ImageWorkflowResult
 from ..map_workflows.map_workflow_view import MapWorkflowView
 from ..workflow_results_view import WorkflowResultsView
 
@@ -79,6 +80,15 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                 plot_view_params = dict(plot_input=result.get_plot_object(), height='95%', width='95%')
                 plot_view = BokehView(**plot_view_params) if renderer == 'bokeh' else PlotlyView(**plot_view_params)
                 results.append({'plot': {'name': result.name, 'description': result.description, 'plot': plot_view}})
+            elif isinstance(result, ImageWorkflowResult):
+                image = result.get_image_object()
+                if image['image_description']:
+                    image_description = f'{result.description}: {image["image_description"]}'
+                else:
+                    image_description = result.description
+                results.append({'image': {'name': result.name,
+                                          'description': image_description,
+                                          'image': image['image_uri']}})
             elif isinstance(result, SpatialWorkflowResult):
                 result_map_layers = list()
                 legend_info = None
@@ -152,8 +162,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Returns:
             dict: modified context dictionary.
         """  # noqa: E501
-        
-
         base_context = MapWorkflowView.get_context(
             self,
             *args,

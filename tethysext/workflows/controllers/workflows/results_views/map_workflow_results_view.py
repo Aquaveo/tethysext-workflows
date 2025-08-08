@@ -160,7 +160,7 @@ class MapWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         Args:
             request (HttpRequest): The request.
             session(sqlalchemy.Session): The database session.
-            
+
 
         Returns:
             JsonResponse: title, data, and layout options for the plot.

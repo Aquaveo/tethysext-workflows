@@ -1,0 +1,33 @@
+.popup-text {
+    position: absolute;
+    bottom: 100%; /* Position above the button */
+    margin-bottom: 16px; /* Space between pop-up and button */
+    padding: 20px; /* p-5 */
+    background-color: #1f2937; /* bg-gray-800 */
+    color: white;
+    border-radius: 8px; /* rounded-lg */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    text-align: center;
+    width: 100%;
+    max-width: 320px; /* max-w-xs */
+    transition: opacity 500ms ease, transform 500ms ease; /* transition-all duration-500 */
+    opacity: 0;
+    transform: translateY(8px); /* Start slightly below its final position (to animate upwards) */
+    visibility: hidden; /* Start hidden */
+}
+
+.popup-text.show {
+    opacity: 1;
+    transform: translateY(0); /* translate-y-0 */
+    visibility: visible; /* Make visible when 'show' class is present */
+}
+
+.popup-text p:first-child {
+    font-size: 1.125rem; /* text-lg */
+}
+
+.popup-text p {
+    margin-top: 8px; /* mt-2 */
+    font-size: 0.875rem; /* text-sm */
+    color: #d1d5db; /* text-gray-300 */
+}
