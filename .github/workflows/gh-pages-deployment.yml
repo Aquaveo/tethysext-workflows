@@ -42,4 +42,7 @@ jobs:
           GIT_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          export USE_SSH=false
+          export DEPLOYMENT_BRANCH=gh-pages
+          export REPOSITORY_URL=https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           npx docusaurus deploy --skip-build
