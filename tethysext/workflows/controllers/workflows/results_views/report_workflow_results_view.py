@@ -64,6 +64,8 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             if isinstance(result, DatasetWorkflowResult):
                 for ds in result.datasets:
                     # Check if the export options is there
+                    if 'show_in_report' in ds and not ds['show_in_report']:
+                        continue
                     data_table = DataTableView(
                         column_names=ds['dataset'].columns,
                         rows=[list(record.values()) for record in ds['dataset'].to_dict(orient='records',

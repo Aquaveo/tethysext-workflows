@@ -75,7 +75,7 @@ class DatasetWorkflowResult(Result):
         datasets.append(dataset)
         self.datasets = datasets
 
-    def add_pandas_dataframe(self, title, data_frame, show_export_button=False):
+    def add_pandas_dataframe(self, title, data_frame, show_export_button=False, show_in_report=True):
         """
         Adds a pandas.DataFrame to the result.
 
@@ -83,6 +83,7 @@ class DatasetWorkflowResult(Result):
             title(str): Display name.
             data_frame(pandas.DataFrame): The data.
             show_export_button(boolean): Enable data export option.
+            show_in_report(boolean): Enable showing the dataset on a report result.
         """
 
         if not title:
@@ -98,5 +99,6 @@ class DatasetWorkflowResult(Result):
             'title': title,
             'dataset': data_frame,
             'show_export_button': show_export_button,
+            'show_in_report': show_in_report,
         }
         self._add_dataset(d)
