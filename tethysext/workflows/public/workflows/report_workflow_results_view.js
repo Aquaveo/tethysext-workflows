@@ -119,7 +119,7 @@ $(function() {
           margin:       0.3,
           filename:     workflow_name,
           image:        { type: 'jpeg', quality: 1},
-          html2canvas:  { dpi: 192, scale: 4, letterRenderding: true, },
+          html2canvas:  { scale: 4 },
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
           pagebreak:    { mode: 'avoid-all'}
         };
