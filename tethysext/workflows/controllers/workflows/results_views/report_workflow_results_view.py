@@ -75,7 +75,8 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                         info=False
                     )
                     ds.update({'data_table': data_table})
-                    ds.update({'data_description': result.description})
+                    description = ds['description'] if 'description' in ds and ds['description'] else result.description
+                    ds.update({'data_description': description})
                     results.append({'dataset': ds})
             elif isinstance(result, PlotWorkflowResult):
                 renderer = result.options.get('renderer', 'plotly')
