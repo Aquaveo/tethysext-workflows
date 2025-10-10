@@ -10,6 +10,7 @@ import json
 import uuid
 from abc import abstractmethod
 from copy import deepcopy
+from geojson import Feature
 
 from sqlalchemy import Column, ForeignKey, String, PickleType, Integer, Boolean
 from sqlalchemy.orm import relationship, backref
@@ -46,6 +47,7 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
     TYPE = 'generic_workflow_step'
     ATTR_STATUS_MESSAGE = 'status_message'
     OPT_PARENT_STEP = 'parent'
+    OPT_GEOJSON_SOURCE = 'geojson_source'
     UUID_FIELDS = ['id', 'child_id', 'workflow_id']
     SERIALIZED_FIELDS = ['id', 'child_id', 'workflow_id', 'type', 'name', 'help']
 
@@ -304,6 +306,12 @@ class Step(WorkflowsBase, StatusMixin, AttributesMixin, OptionsMixin):
                     raise RuntimeError(str(e))
 
             raise RuntimeError('Cannot resolve option from parent: no parents match criteria given.')
+        elif isinstance(option_value, dict) and self.OPT_GEOJSON_SOURCE in option_value:
+            # Handle geojson source option
+            geojson_source = option_value[self.OPT_GEOJSON_SOURCE]
+            if not Feature(**geojson_source).is_valid:
+                raise RuntimeError('Invalid geojson source provided.')
+            return geojson_source
 
     def reset(self):
         """
