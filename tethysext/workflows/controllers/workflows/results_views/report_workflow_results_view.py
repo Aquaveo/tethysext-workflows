@@ -185,6 +185,14 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                 results.append({'map': {'name': result.name, 'description': result.description,
                                         'legend': legend_info, 'map': result_map_layers}})
 
+        # Check if download data button should be shown (check ReportWorkflowResult options)
+        show_download_button = True  # Default to True
+        for result in current_step.results:
+            if isinstance(result, ReportWorkflowResult):
+                # Get the option from the ReportWorkflowResult (defaults to True if not specified)
+                show_download_button = result.options.get('show_download_button', True)
+                break  # Use the first ReportWorkflowResult's setting
+
         # Save changes to map view and layer groups
         context.update({
             'has_tabular_data': has_tabular_data,
@@ -193,6 +201,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             'workflow_name': workflow_name,
             'has_dataset_zip_files': has_dataset_zip_files,
             'dataset_zip_files': dataset_zip_files,
+            'show_download_button': show_download_button,
         })
         # Note: new layer created by super().process_step_options will have feature selection enabled by default
         super().process_step_options(
