@@ -7,6 +7,11 @@
 ********************************************************************************
 """
 import logging
+import os
+import tempfile
+from io import BytesIO
+from zipfile import ZipFile
+from django.http import HttpResponse
 from ....results import ReportWorkflowResult, DatasetWorkflowResult, PlotWorkflowResult, SpatialWorkflowResult, \
     ImageWorkflowResult
 from ..map_workflows.map_workflow_view import MapWorkflowView
@@ -60,6 +65,8 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
         # Get DatasetWorkflowResult
         results = list()
+        has_dataset_zip_files = False
+        dataset_zip_files = []
         for result in current_step.results:
             if isinstance(result, DatasetWorkflowResult):
                 for ds in result.datasets:
@@ -77,6 +84,49 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                     ds.update({'data_table': data_table})
                     description = ds['description'] if 'description' in ds and ds['description'] else result.description
                     ds.update({'data_description': description})
+                    
+                    # Create a zip file for the dataset
+                    zip_file_path = None
+                    try:
+                        # Create a temporary CSV file
+                        csv_file_handle, csv_file_path = tempfile.mkstemp(suffix='.csv')
+                        os.close(csv_file_handle)
+                        
+                        # Write the dataframe to CSV
+                        ds['dataset'].to_csv(csv_file_path, index=False)
+                        
+                        # Create a zip file
+                        zip_file_handle, zip_file_path = tempfile.mkstemp(suffix='.zip')
+                        os.close(zip_file_handle)
+                        
+                        with ZipFile(zip_file_path, 'w') as zip_file:
+                            # Add CSV to zip with a clean filename
+                            dataset_name = ds.get('title', 'dataset').replace(' ', '_')
+                            zip_file.write(csv_file_path, f"{dataset_name}.csv")
+                        
+                        # Clean up the CSV file
+                        if os.path.exists(csv_file_path):
+                            os.remove(csv_file_path)
+                        
+                        # Add zip file path to dataset
+                        ds.update({'zip_file_path': zip_file_path})
+                        has_dataset_zip_files = True
+                        
+                        # Add to zip files list for context
+                        dataset_zip_files.append({
+                            'title': ds.get('title', 'dataset'),
+                            'path': zip_file_path,
+                            'filename': f"{dataset_name}.zip"
+                        })
+                        
+                    except Exception as e:
+                        log.error(f"Error creating zip file for dataset: {e}")
+                        # Clean up on error
+                        if zip_file_path and os.path.exists(zip_file_path):
+                            os.remove(zip_file_path)
+                        if 'csv_file_path' in locals() and os.path.exists(csv_file_path):
+                            os.remove(csv_file_path)
+                    
                     results.append({'dataset': ds})
             elif isinstance(result, PlotWorkflowResult):
                 renderer = result.options.get('renderer', 'plotly')
@@ -138,6 +188,8 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             'tabular_data': tabular_data,
             'report_results': results,
             'workflow_name': workflow_name,
+            'has_dataset_zip_files': has_dataset_zip_files,
+            'dataset_zip_files': dataset_zip_files,
         })
         # Note: new layer created by super().process_step_options will have feature selection enabled by default
         super().process_step_options(
@@ -192,6 +244,66 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         base_context.update(result_workflow_context)
 
         return base_context
+
+    def download_datasets(self, request, session, workflow_id, step_id, result_id, *args, **kwargs):
+        """
+        Download all dataset zip files as a single combined zip file.
+
+        Args:
+            request (HttpRequest): The request.
+            session (sqlalchemy.Session): the session.
+            workflow_id (int): The workflow id.
+            step_id (int): The step id.
+            result_id (int): The result id.
+
+        Returns:
+            HttpResponse: Zip file download response.
+        """
+        current_step = self.get_step(request, step_id, session)
+        workflow_name = current_step.workflow.name
+        
+        # Create a combined zip file in memory
+        in_memory = BytesIO()
+        
+        with ZipFile(in_memory, 'w') as combined_zip:
+            for result in current_step.results:
+                if isinstance(result, DatasetWorkflowResult):
+                    for ds in result.datasets:
+                        # Check if the export options is there
+                        if 'show_in_report' in ds and not ds['show_in_report']:
+                            continue
+                        
+                        try:
+                            # Create a temporary CSV file
+                            csv_file_handle, csv_file_path = tempfile.mkstemp(suffix='.csv')
+                            os.close(csv_file_handle)
+                            
+                            # Write the dataframe to CSV
+                            ds['dataset'].to_csv(csv_file_path, index=False)
+                            
+                            # Add CSV to combined zip with a clean filename
+                            dataset_name = ds.get('title', 'dataset').replace(' ', '_')
+                            combined_zip.write(csv_file_path, f"{dataset_name}.csv")
+                            
+                            # Clean up the CSV file
+                            if os.path.exists(csv_file_path):
+                                os.remove(csv_file_path)
+                                
+                        except Exception as e:
+                            log.error(f"Error adding dataset to zip: {e}")
+                            # Clean up on error
+                            if 'csv_file_path' in locals() and os.path.exists(csv_file_path):
+                                os.remove(csv_file_path)
+        
+        # Prepare the response
+        response = HttpResponse(content_type='application/zip')
+        filename = f"{workflow_name.replace(' ', '_')}_datasets.zip"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        
+        in_memory.seek(0)
+        response.write(in_memory.read())
+        
+        return response
 
     @staticmethod
     def geoserver_url(link):
