@@ -9,6 +9,8 @@
 import logging
 import os
 import tempfile
+import base64
+import urllib.parse
 from io import BytesIO
 from zipfile import ZipFile
 from django.http import HttpResponse
@@ -337,6 +339,42 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                         # Clean up on error
                         if 'html_file_path' in locals() and os.path.exists(html_file_path):
                             os.remove(html_file_path)
+                
+                elif isinstance(result, ImageWorkflowResult):
+                    try:
+                        image_object = result.get_image_object()
+                        image_uri = image_object.get('image_uri', '')
+                        image_description = image_object.get('image_description', '')
+                        image_name = result.name.replace(' ', '_')
+                        
+                        if image_description:
+                            image_name = f"{image_name}_{image_description.replace(' ', '_')}"
+                        
+                        # Decode base64 image
+                        # The image_uri is URL-encoded base64 string
+                        decoded_uri = urllib.parse.unquote(image_uri)
+                        image_data = base64.b64decode(decoded_uri)
+                        
+                        # Create temporary PNG file
+                        png_file_handle, png_file_path = tempfile.mkstemp(suffix='.png')
+                        os.close(png_file_handle)
+                        
+                        # Write image data to file
+                        with open(png_file_path, 'wb') as f:
+                            f.write(image_data)
+                        
+                        # Add to zip
+                        combined_zip.write(png_file_path, f"{image_name}.png")
+                        
+                        # Clean up
+                        if os.path.exists(png_file_path):
+                            os.remove(png_file_path)
+                    
+                    except Exception as e:
+                        log.error(f"Error adding image to zip: {e}")
+                        # Clean up on error
+                        if 'png_file_path' in locals() and os.path.exists(png_file_path):
+                            os.remove(png_file_path)
         
         # Prepare the response
         response = HttpResponse(content_type='application/zip')
