@@ -87,41 +87,41 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                     ds.update({'data_table': data_table})
                     description = ds['description'] if 'description' in ds and ds['description'] else result.description
                     ds.update({'data_description': description})
-                    
+
                     # Create a zip file for the dataset
                     zip_file_path = None
                     try:
                         # Create a temporary CSV file
                         csv_file_handle, csv_file_path = tempfile.mkstemp(suffix='.csv')
                         os.close(csv_file_handle)
-                        
+
                         # Write the dataframe to CSV
                         ds['dataset'].to_csv(csv_file_path, index=False)
-                        
+
                         # Create a zip file
                         zip_file_handle, zip_file_path = tempfile.mkstemp(suffix='.zip')
                         os.close(zip_file_handle)
-                        
+
                         with ZipFile(zip_file_path, 'w') as zip_file:
                             # Add CSV to zip with a clean filename
                             dataset_name = ds.get('title', 'dataset').replace(' ', '_')
                             zip_file.write(csv_file_path, f"{dataset_name}.csv")
-                        
+
                         # Clean up the CSV file
                         if os.path.exists(csv_file_path):
                             os.remove(csv_file_path)
-                        
+
                         # Add zip file path to dataset
                         ds.update({'zip_file_path': zip_file_path})
                         has_dataset_zip_files = True
-                        
+
                         # Add to zip files list for context
                         dataset_zip_files.append({
                             'title': ds.get('title', 'dataset'),
                             'path': zip_file_path,
                             'filename': f"{dataset_name}.zip"
                         })
-                        
+
                     except Exception as e:
                         log.error(f"Error creating zip file for dataset: {e}")
                         # Clean up on error
@@ -129,7 +129,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                             os.remove(zip_file_path)
                         if 'csv_file_path' in locals() and os.path.exists(csv_file_path):
                             os.remove(csv_file_path)
-                    
+
                     results.append({'dataset': ds})
             elif isinstance(result, PlotWorkflowResult):
                 renderer = result.options.get('renderer', 'plotly')
@@ -264,10 +264,10 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
         """
         current_step = self.get_step(request, step_id, session)
         workflow_name = current_step.workflow.name
-        
+
         # Create a combined zip file in memory
         in_memory = BytesIO()
-        
+
         with ZipFile(in_memory, 'w') as combined_zip:
             for result in current_step.results:
                 if isinstance(result, DatasetWorkflowResult):
@@ -275,116 +275,116 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                         # Check if the export options is there
                         if 'show_in_report' in ds and not ds['show_in_report']:
                             continue
-                        
+
                         try:
                             # Create a temporary CSV file
                             csv_file_handle, csv_file_path = tempfile.mkstemp(suffix='.csv')
                             os.close(csv_file_handle)
-                            
+
                             # Write the dataframe to CSV
                             ds['dataset'].to_csv(csv_file_path, index=False)
-                            
+
                             # Add CSV to combined zip with a clean filename
                             dataset_name = ds.get('title', 'dataset').replace(' ', '_')
                             combined_zip.write(csv_file_path, f"{dataset_name}.csv")
-                            
+
                             # Clean up the CSV file
                             if os.path.exists(csv_file_path):
                                 os.remove(csv_file_path)
-                                
+
                         except Exception as e:
                             log.error(f"Error adding dataset to zip: {e}")
                             # Clean up on error
                             if 'csv_file_path' in locals() and os.path.exists(csv_file_path):
                                 os.remove(csv_file_path)
-                
+
                 elif isinstance(result, PlotWorkflowResult):
                     try:
                         renderer = result.options.get('renderer', 'plotly')
                         plot_object = result.get_plot_object()
                         plot_name = result.name.replace(' ', '_')
-                        
+
                         if renderer == 'plotly':
                             # Export plotly plot as HTML (static image export requires kaleido)
                             import plotly
                             html_file_handle, html_file_path = tempfile.mkstemp(suffix='.html')
                             os.close(html_file_handle)
-                            
+
                             plotly.offline.plot(plot_object, filename=html_file_path, auto_open=False)
                             combined_zip.write(html_file_path, f"{plot_name}.html")
-                            
+
                             # Clean up
                             if os.path.exists(html_file_path):
                                 os.remove(html_file_path)
-                        
+
                         elif renderer == 'bokeh':
                             # Export bokeh plot as HTML
                             from bokeh.embed import file_html
                             from bokeh.resources import CDN
-                            
+
                             html_content = file_html(plot_object, CDN, plot_name)
                             html_file_handle, html_file_path = tempfile.mkstemp(suffix='.html')
                             os.close(html_file_handle)
-                            
+
                             with open(html_file_path, 'w') as f:
                                 f.write(html_content)
-                            
+
                             combined_zip.write(html_file_path, f"{plot_name}.html")
-                            
+
                             # Clean up
                             if os.path.exists(html_file_path):
                                 os.remove(html_file_path)
-                    
+
                     except Exception as e:
                         log.error(f"Error adding plot to zip: {e}")
                         # Clean up on error
                         if 'html_file_path' in locals() and os.path.exists(html_file_path):
                             os.remove(html_file_path)
-                
+
                 elif isinstance(result, ImageWorkflowResult):
                     try:
                         image_object = result.get_image_object()
                         image_uri = image_object.get('image_uri', '')
                         image_description = image_object.get('image_description', '')
                         image_name = result.name.replace(' ', '_')
-                        
+
                         if image_description:
                             image_name = f"{image_name}_{image_description.replace(' ', '_')}"
-                        
+
                         # Decode base64 image
                         # The image_uri is URL-encoded base64 string
                         decoded_uri = urllib.parse.unquote(image_uri)
                         image_data = base64.b64decode(decoded_uri)
-                        
+
                         # Create temporary PNG file
                         png_file_handle, png_file_path = tempfile.mkstemp(suffix='.png')
                         os.close(png_file_handle)
-                        
+
                         # Write image data to file
                         with open(png_file_path, 'wb') as f:
                             f.write(image_data)
-                        
+
                         # Add to zip
                         combined_zip.write(png_file_path, f"{image_name}.png")
-                        
+
                         # Clean up
                         if os.path.exists(png_file_path):
                             os.remove(png_file_path)
-                    
+
                     except Exception as e:
                         log.error(f"Error adding image to zip: {e}")
                         # Clean up on error
                         if 'png_file_path' in locals() and os.path.exists(png_file_path):
                             os.remove(png_file_path)
-                
+
                 elif isinstance(result, SpatialWorkflowResult):
                     try:
                         spatial_name = result.name.replace(' ', '_')
                         layer_count = 0
-                        
+
                         for layer in result.layers:
                             layer_type = layer.get('type', None)
-                            
+
                             if layer_type == 'geojson':
                                 # Export as GeoJSON
                                 geojson_data = layer.get('geojson', None)
@@ -392,20 +392,20 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                                     layer_title = layer.get('layer_title', f'layer_{layer_count}').replace(' ', '_')
                                     geojson_file_handle, geojson_file_path = tempfile.mkstemp(suffix='.geojson')
                                     os.close(geojson_file_handle)
-                                    
+
                                     # Write GeoJSON to file
                                     with open(geojson_file_path, 'w') as f:
                                         json.dump(geojson_data, f, indent=2)
-                                    
+
                                     # Add to zip
                                     combined_zip.write(geojson_file_path, f"{spatial_name}_{layer_title}.geojson")
-                                    
+
                                     # Clean up
                                     if os.path.exists(geojson_file_path):
                                         os.remove(geojson_file_path)
-                                    
+
                                     layer_count += 1
-                            
+
                             elif layer_type == 'wms':
                                 # For WMS layers, save layer metadata as JSON
                                 layer_title = layer.get('layer_title', f'layer_{layer_count}').replace(' ', '_')
@@ -417,21 +417,21 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                                     'layer_variable': layer.get('layer_variable', ''),
                                     'extent': layer.get('extent', None)
                                 }
-                                
+
                                 metadata_file_handle, metadata_file_path = tempfile.mkstemp(suffix='.json')
                                 os.close(metadata_file_handle)
-                                
+
                                 with open(metadata_file_path, 'w') as f:
                                     json.dump(metadata, f, indent=2)
-                                
+
                                 combined_zip.write(metadata_file_path, f"{spatial_name}_{layer_title}_wms_info.json")
-                                
+
                                 # Clean up
                                 if os.path.exists(metadata_file_path):
                                     os.remove(metadata_file_path)
-                                
+
                                 layer_count += 1
-                    
+
                     except Exception as e:
                         log.error(f"Error adding spatial layer to zip: {e}")
                         # Clean up on error
@@ -439,15 +439,15 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                             os.remove(geojson_file_path)
                         if 'metadata_file_path' in locals() and os.path.exists(metadata_file_path):
                             os.remove(metadata_file_path)
-        
+
         # Prepare the response
         response = HttpResponse(content_type='application/zip')
         filename = f"{workflow_name.replace(' ', '_')}_datasets.zip"
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
-        
+
         in_memory.seek(0)
         response.write(in_memory.read())
-        
+
         return response
 
     @staticmethod
