@@ -11,6 +11,7 @@ import os
 import tempfile
 import base64
 import urllib.parse
+import json
 from io import BytesIO
 from zipfile import ZipFile
 from django.http import HttpResponse
@@ -375,6 +376,69 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                         # Clean up on error
                         if 'png_file_path' in locals() and os.path.exists(png_file_path):
                             os.remove(png_file_path)
+                
+                elif isinstance(result, SpatialWorkflowResult):
+                    try:
+                        spatial_name = result.name.replace(' ', '_')
+                        layer_count = 0
+                        
+                        for layer in result.layers:
+                            layer_type = layer.get('type', None)
+                            
+                            if layer_type == 'geojson':
+                                # Export as GeoJSON
+                                geojson_data = layer.get('geojson', None)
+                                if geojson_data:
+                                    layer_title = layer.get('layer_title', f'layer_{layer_count}').replace(' ', '_')
+                                    geojson_file_handle, geojson_file_path = tempfile.mkstemp(suffix='.geojson')
+                                    os.close(geojson_file_handle)
+                                    
+                                    # Write GeoJSON to file
+                                    with open(geojson_file_path, 'w') as f:
+                                        json.dump(geojson_data, f, indent=2)
+                                    
+                                    # Add to zip
+                                    combined_zip.write(geojson_file_path, f"{spatial_name}_{layer_title}.geojson")
+                                    
+                                    # Clean up
+                                    if os.path.exists(geojson_file_path):
+                                        os.remove(geojson_file_path)
+                                    
+                                    layer_count += 1
+                            
+                            elif layer_type == 'wms':
+                                # For WMS layers, save layer metadata as JSON
+                                layer_title = layer.get('layer_title', f'layer_{layer_count}').replace(' ', '_')
+                                metadata = {
+                                    'type': 'WMS',
+                                    'endpoint': layer.get('endpoint', ''),
+                                    'layer_name': layer.get('layer_name', ''),
+                                    'layer_title': layer.get('layer_title', ''),
+                                    'layer_variable': layer.get('layer_variable', ''),
+                                    'extent': layer.get('extent', None)
+                                }
+                                
+                                metadata_file_handle, metadata_file_path = tempfile.mkstemp(suffix='.json')
+                                os.close(metadata_file_handle)
+                                
+                                with open(metadata_file_path, 'w') as f:
+                                    json.dump(metadata, f, indent=2)
+                                
+                                combined_zip.write(metadata_file_path, f"{spatial_name}_{layer_title}_wms_info.json")
+                                
+                                # Clean up
+                                if os.path.exists(metadata_file_path):
+                                    os.remove(metadata_file_path)
+                                
+                                layer_count += 1
+                    
+                    except Exception as e:
+                        log.error(f"Error adding spatial layer to zip: {e}")
+                        # Clean up on error
+                        if 'geojson_file_path' in locals() and os.path.exists(geojson_file_path):
+                            os.remove(geojson_file_path)
+                        if 'metadata_file_path' in locals() and os.path.exists(metadata_file_path):
+                            os.remove(metadata_file_path)
         
         # Prepare the response
         response = HttpResponse(content_type='application/zip')
