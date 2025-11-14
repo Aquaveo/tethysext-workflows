@@ -247,7 +247,7 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
     def download_datasets(self, request, session, workflow_id, step_id, result_id, *args, **kwargs):
         """
-        Download all dataset zip files as a single combined zip file.
+        Download all dataset zip files and plot images as a single combined zip file.
 
         Args:
             request (HttpRequest): The request.
@@ -294,6 +294,49 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                             # Clean up on error
                             if 'csv_file_path' in locals() and os.path.exists(csv_file_path):
                                 os.remove(csv_file_path)
+                
+                elif isinstance(result, PlotWorkflowResult):
+                    try:
+                        renderer = result.options.get('renderer', 'plotly')
+                        plot_object = result.get_plot_object()
+                        plot_name = result.name.replace(' ', '_')
+                        
+                        if renderer == 'plotly':
+                            # Export plotly plot as HTML (static image export requires kaleido)
+                            import plotly
+                            html_file_handle, html_file_path = tempfile.mkstemp(suffix='.html')
+                            os.close(html_file_handle)
+                            
+                            plotly.offline.plot(plot_object, filename=html_file_path, auto_open=False)
+                            combined_zip.write(html_file_path, f"{plot_name}.html")
+                            
+                            # Clean up
+                            if os.path.exists(html_file_path):
+                                os.remove(html_file_path)
+                        
+                        elif renderer == 'bokeh':
+                            # Export bokeh plot as HTML
+                            from bokeh.embed import file_html
+                            from bokeh.resources import CDN
+                            
+                            html_content = file_html(plot_object, CDN, plot_name)
+                            html_file_handle, html_file_path = tempfile.mkstemp(suffix='.html')
+                            os.close(html_file_handle)
+                            
+                            with open(html_file_path, 'w') as f:
+                                f.write(html_content)
+                            
+                            combined_zip.write(html_file_path, f"{plot_name}.html")
+                            
+                            # Clean up
+                            if os.path.exists(html_file_path):
+                                os.remove(html_file_path)
+                    
+                    except Exception as e:
+                        log.error(f"Error adding plot to zip: {e}")
+                        # Clean up on error
+                        if 'html_file_path' in locals() and os.path.exists(html_file_path):
+                            os.remove(html_file_path)
         
         # Prepare the response
         response = HttpResponse(content_type='application/zip')
