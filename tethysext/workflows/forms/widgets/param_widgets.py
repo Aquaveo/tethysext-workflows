@@ -167,7 +167,7 @@ def generate_django_form(parameterized_obj, form_field_prefix=None):
     params = list(
         filter(
             lambda x: (x.precedence is None or x.precedence >= 0) and not x.constant,
-            parameterized_obj.param.params().values()
+            parameterized_obj.param.objects().values()
         )
     )
 
