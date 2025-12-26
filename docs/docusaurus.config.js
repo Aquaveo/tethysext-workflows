@@ -11,7 +11,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Tethys Workflows Extension',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/tethys-icon-only.svg',
 
   // Set the production url of your site here
   url: 'https://aquaveo.github.io',

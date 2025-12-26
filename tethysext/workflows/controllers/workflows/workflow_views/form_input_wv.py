@@ -112,7 +112,7 @@ class FormInputWV(WorkflowView):
             # Get the param class and save the data from the form
             # for the next time the form is loaded
             param_class = ParamClass(request=request, session=session)
-            param_values = dict(param_class.param.get_param_values())
+            param_values = param_class.param.values()
             for k, v in params.items():
                 try:
                     params[k] = type(param_values[k])(v)
@@ -134,7 +134,7 @@ class FormInputWV(WorkflowView):
                         raise RuntimeError('error setting param data: {}'.format(e))
 
             param_class = ParamClass(request=request, session=session)
-            param_values = dict(param_class.get_param_values())
+            param_values = param_class.param.values()
             for k, v in params.items():
                 try:
                     params[k] = type(param_values[k])(v)
