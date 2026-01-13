@@ -68,7 +68,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
         # Get DatasetWorkflowResult
         results = list()
-        has_dataset_zip_files = False
         dataset_zip_files = []
         for result in current_step.results:
             if isinstance(result, DatasetWorkflowResult):
@@ -113,7 +112,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
 
                         # Add zip file path to dataset
                         ds.update({'zip_file_path': zip_file_path})
-                        has_dataset_zip_files = True
 
                         # Add to zip files list for context
                         dataset_zip_files.append({
@@ -186,11 +184,18 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
                                         'legend': legend_info, 'map': result_map_layers}})
 
         # Check if download data button should be shown (check ReportWorkflowResult options)
-        show_download_button = True  # Default to True
+        show_download_button = False
         for result in current_step.results:
             if isinstance(result, ReportWorkflowResult):
                 # Get the option from the ReportWorkflowResult (defaults to True if not specified)
-                show_download_button = result.options.get('show_download_button', True)
+                option_value = result.options.get('show_download_button', True)
+                # Show button if option is True and there are any downloadable results
+                has_downloadable_results = any(
+                    isinstance(r, (DatasetWorkflowResult, PlotWorkflowResult,
+                                   ImageWorkflowResult, SpatialWorkflowResult))
+                    for r in current_step.results
+                )
+                show_download_button = True if option_value and has_downloadable_results else False
                 break  # Use the first ReportWorkflowResult's setting
 
         # Save changes to map view and layer groups
@@ -199,7 +204,6 @@ class ReportWorkflowResultsView(MapWorkflowView, WorkflowResultsView):
             'tabular_data': tabular_data,
             'report_results': results,
             'workflow_name': workflow_name,
-            'has_dataset_zip_files': has_dataset_zip_files,
             'dataset_zip_files': dataset_zip_files,
             'show_download_button': show_download_button,
         })

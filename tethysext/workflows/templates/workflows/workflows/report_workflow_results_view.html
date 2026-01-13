@@ -9,7 +9,7 @@
 
 {% block app_content_wrapper_override %}
   {{ block.super }}
-  {% if has_dataset_zip_files and show_download_button %}
+  {% if show_download_button %}
     <input type="button" value="Download Data" id="btnDownloadData" class="btn btn-info" style="position:absolute;right:253px;top:70px;"/>
   {% endif %}
   <input type="button" value="Generate PDF" id="btnPDF" class="btn btn-info" style="position:absolute;right:130px;top:70px;"/>
