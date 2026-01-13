@@ -140,4 +140,50 @@ $(function() {
         window.print();
         history.replaceState(history.state, '', curURL);
     });
+
+    // Download Data (zip files)
+    $("#btnDownloadData").on("click", function() {
+        // Create a form to submit the download request
+        var currentUrl = window.location.href;
+        var form = $('<form>', {
+            'method': 'POST',
+            'action': currentUrl
+        });
+        
+        // Add CSRF token
+        var csrfToken = getCookie('csrftoken');
+        form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'csrfmiddlewaretoken',
+            'value': csrfToken
+        }));
+        
+        // Add method parameter
+        form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'method',
+            'value': 'download-datasets'
+        }));
+        
+        // Submit form
+        $('body').append(form);
+        form.submit();
+        form.remove();
+    });
+    
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 });
