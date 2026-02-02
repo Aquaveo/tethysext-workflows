@@ -9,6 +9,9 @@
 
 {% block app_content_wrapper_override %}
   {{ block.super }}
+  {% if show_download_button %}
+    <input type="button" value="Download Data" id="btnDownloadData" class="btn btn-info" style="position:absolute;right:253px;top:70px;"/>
+  {% endif %}
   <input type="button" value="Generate PDF" id="btnPDF" class="btn btn-info" style="position:absolute;right:130px;top:70px;"/>
   <input type="button" value="Print Report" id="btnPrint" class="btn btn-info" style="position:absolute;right:20px;top:70px;"/>
 {% endblock %}
