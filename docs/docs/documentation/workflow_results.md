@@ -53,5 +53,8 @@ Options:
 ### Report Workflow Result
 ![Report Result Screenshot](/img/workflow_result_screenshots/report_workflow_result_screenshot.png)
 
-Report workflow results generate a report page on the workflow that can be put into PDF format or printed out. There are multiple fields for addinng notes to steps or results.
+Report workflow results generate a report page on the workflow that can be put into PDF format or printed out. There are multiple fields for adding notes to steps or results.
+
+Options:
+    - show_download_button (bool): Show a download button on the report. Set to `True` or `False`. Defaults to `True`.
 
