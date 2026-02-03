@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aquaveo.github.io/tethysext-workflows/blog"/>
     <subtitle>Tethys Workflows Extension Blog</subtitle>
-    <icon>https://aquaveo.github.io/tethysext-workflows/img/favicon.ico</icon>
+    <icon>https://aquaveo.github.io/tethysext-workflows/img/tethys-icon-only.svg</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
         <id>https://aquaveo.github.io/tethysext-workflows/blog/welcome</id>
